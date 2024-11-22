@@ -7,4 +7,117 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileActivity">
 
+    <TextView
+        android:id="@+id/tvProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Profile"
+        android:textStyle="bold"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvLabelUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="username"
+        android:textSize="21sp"
+        app:layout_constraintStart_toStartOf="@+id/tvProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfile" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Admin"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelUsername" />
+
+    <TextView
+        android:id="@+id/tvLabelEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21sp"
+        android:layout_marginTop="32dp"
+        android:text="Email"
+        app:layout_constraintStart_toStartOf="@+id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Email@gmail.com"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelEmail"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelEmail" />
+
+    <View
+        android:id="@+id/lineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_marginTop="32dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+    <TextView
+        android:id="@+id/tvDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Dark Mode"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/lineHorizontal"
+        app:layout_constraintTop_toBottomOf="@+id/lineHorizontal" />
+
+    <TextView
+        android:id="@+id/tvLabelDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Enable Dark Mode"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tvDarkMode"
+        app:layout_constraintTop_toBottomOf="@+id/tvDarkMode" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="152dp"
+        android:minHeight="48dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLabelDarkMode"
+        app:layout_constraintStart_toEndOf="@+id/tvDarkMode"
+        app:layout_constraintTop_toTopOf="@+id/tvDarkMode" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_logout_24"
+        android:drawablePadding="8dp"
+        app:icon="@drawable/ic_logout_24"
+        android:text="Logout"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelDarkMode"
+        app:layout_constraintVertical_bias="0.605" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
