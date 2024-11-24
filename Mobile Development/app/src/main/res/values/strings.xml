@@ -3,4 +3,18 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_scan">New Scan</string>
     <string name="title_history">History</string>
+    <string name="slogan">Empowering Waste Management Together!</string>
+    <string name="sign_in_up">SIGN IN</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="or">OR</string>
+    <string name="login_with_google">Sign in with Google</string>
+    <string name="register">Register Here</string>
+    <string name="don_t_have_a_account">Don\'t have an account?</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">Login Here</string>
+    <string name="signup_with_google">Sign up with Google</string>
 </resources>
