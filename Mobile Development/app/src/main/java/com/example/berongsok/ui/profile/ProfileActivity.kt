@@ -1,5 +1,6 @@
 package com.example.berongsok.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.CompoundButton
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.berongsok.R
 import com.example.berongsok.databinding.ActivityProfileBinding
+import com.example.berongsok.ui.login.LoginActivity
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -43,9 +45,13 @@ class ProfileActivity : AppCompatActivity() {
 
 
         binding.btnLogout.setOnClickListener {
-            //logout
+            userLogout()
         }
 
 
+    }
+
+    fun userLogout () {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 }

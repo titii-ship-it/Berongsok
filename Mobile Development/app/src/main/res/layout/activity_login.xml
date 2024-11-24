@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="24dp"
+    android:gravity="center_vertical"
     tools:context=".ui.login.LoginActivity">
 
     <TextView
-        android:layout_marginTop="48dp"
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,7 +119,7 @@
         android:textColor="@color/md_theme_primary"
         android:layout_marginTop="12dp"
         android:textSize="12sp"
-        android:backgroundTint="@color/md_theme_surfaceContainerHighest"
+        android:backgroundTint="@color/md_theme_background"
         android:drawableLeft="@drawable/ic_google"
         android:text="@string/login_with_google"
         android:textStyle="bold"
@@ -162,4 +163,4 @@
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
