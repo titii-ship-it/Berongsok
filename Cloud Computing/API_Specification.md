@@ -44,7 +44,7 @@ Respone:
     "message": "success",
     "loginResult": {
         "tpsId": "user-yj5pc_LARC_AgK61",
-        "name": "NAMA TPS",
+        "name": "TPS name",
         "token": "token_user"
     }
 }
@@ -83,11 +83,11 @@ if successful :
 	"error": false,
 	"message": "success",
 	"data": {
-		"transactionId": "id unik pas predict gambar",
-		"result": "hasil_prediksi -> label",
-		"confidenceScore": " " ,
+		"transactionId": "<id> as string",
+		"result": "<Class Model> as string ",
+		"confidenceScore": "<score> as float " ,
 		"price": "harga_berdasarkan_label (perKG)",
-		"CreateAt": "" ,
+		"CreateAt": "<timestamp> as datetime" ,
 	}
 }
 ```
@@ -119,15 +119,15 @@ Endpoint to store data in the database
     
 Request body: 
 - nasabahName  -> name of the person who brought the trash
-- wasteType
+- wasteType 
 - price  -> waste price per kg
-- weight
+- weight 
 - totalPrice  -> price * weight 
 
 Data to save to the database
-- transactionId -> id obtained when making an image prediction
-- tpsId-> id TPS nya
-- nasabahName
+- transactionId -> id generated during prediction
+- tpsId-> id of the TPS where the waste was sold
+- nasabahName 
 - wasteType 
 - price 
 - weight
@@ -139,8 +139,8 @@ Data to save to the database
 if successful : 
 ```json
 { 
-	"status": true,
-	"error": false, 
+	"status": true, // Indicates the server successfully saved the data
+	"error": false, // Indicates the user is logged in
 	"message": "success" 
 }
 ```
@@ -150,22 +150,23 @@ if fail :
 - Some required fields are empty
 ```json
 {
-	"status": false,
+	"status": false, 
 	"error": false,  
-	"message": "error.message" 
+	"message": "An error occurred while saving to the database" 
 }
 ```
 
 if fail - User not logged in:
 ```json
 { 
-	"status": false,   // jika gagal di backend
-	"error": true,  // error karena security
-	"message": "error.message" 
+	"status": false,   // Indicates the server failed to save the data
+	"error": true,     // Indicates the user is logged in
+	"message": "User not logged in" 
 }
 ```
 
 # 5. getHistory
+Endpoint to retrieve prediction history
 - URL
     - `/predictHistory`
 
@@ -175,15 +176,15 @@ if fail - User not logged in:
 - request body
 	- tpsId
 
-response : 
+response (Status Code: 200): 
 ```json
 {
    "status": "success",
    "data": [
        {
-           "idTransaksi": "13e907b3-4213-42ad-b12b-b9b7e12eb90e", // id pas predict
+           "idTransaksi": "13e907b3-4213-42ad-b12b-b9b7e12eb90e", // id generated during prediction type of waste
            "data": {
-				"tpsId": "" , // id tps dimana sampah di jual
+				"tpsId": "" , //  id of the TPS where the waste was sold
 				"tpsId": "",
 				"nasabahName": "" ,
 				"wasteType": "" ,
@@ -191,7 +192,7 @@ response :
 				"weight": "" ,
 				"totalPrice": "" ,
 				"imgUrl": "",
-				"createAt": "" ,
+				"createAt": "<timestamp> as datetime" ,
 	        }
        },
        
@@ -205,7 +206,7 @@ response :
 				"weight": "" ,
 				"totalPrice": "" ,
 				"imgUrl": "",
-				"createAt": "" ,
+				"createAt": "<timestamp> as datetime" ,
 	        }
        },
    ]
@@ -217,12 +218,13 @@ if fail :
 {
    "status": "fail",
    "data": [],
-   "message": error.message
+   "message": "No history found"
 }
 ```
 
 
 ## 6. get transaksi tertentu
+Endpoint to retrieve prediction history by transaction ID
 - URL
     - `/predictHistory/{transactionid}`
 
@@ -254,13 +256,21 @@ response :
 }
 ```
 
-if fail  :
+if fail - no transaction (Status code : 404):
 ```json
 {
    "status": "fail",
    "data": [],
-   "message": error.message
+   "message": "Transaction not found",
 }
 ```
 
+if fail - internal server error (Status code : 500)  :
+```json
+{
+   "status": "fail",
+   "data": [],
+   "message": "An internal server error occurred, please try again later",
+}
+```
 
