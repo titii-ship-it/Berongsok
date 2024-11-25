@@ -45,7 +45,7 @@ Respone:
     "loginResult": {
         "tpsId": "user-yj5pc_LARC_AgK61",
         "name": "TPS name",
-        "token": "token_user"
+        "token": "generated_user_token"
     }
 }
 ```
@@ -71,8 +71,9 @@ if fail - due to account was not found
     - `/predict`
 - Method
     - POST
-    
-- Content-Type: `multipart/form-data`
+- Header
+    - Content-Type: `multipart/form-data`
+    - Authorization: Bearer <token>
 
 - Request body:
     - image as file
@@ -114,6 +115,10 @@ Endpoint to store data in the database
 
 - URL
     - `/waste/transactions`
+
+- Header
+    - Authorization: Bearer <token>
+
 - Method
     - POST
     

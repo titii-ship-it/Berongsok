@@ -26,6 +26,10 @@
     "@google-cloud/firestore": "^7.10.0",
     "@google-cloud/storage": "^7.14.0",
     "@hapi/hapi": "^21.3.12",
-    "dotenv": "^16.4.5"
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "bcrypt": "^5.1.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2"
   }
 }
