@@ -73,7 +73,7 @@ if fail - due to account was not found
     - POST
 - Header
     - Content-Type: `multipart/form-data`
-    - Authorization: Bearer <token>
+    - Authorization: Bearer \<token>
 
 - Request body:
     - image as file
@@ -117,7 +117,7 @@ Endpoint to store data in the database
     - `/waste/transactions`
 
 - Header
-    - Authorization: Bearer <token>
+    - Authorization: Bearer \<token>
 
 - Method
     - POST
