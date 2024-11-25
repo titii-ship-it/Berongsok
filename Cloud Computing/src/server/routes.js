@@ -11,6 +11,16 @@ const routes = [
       path: '/login',
       handler: handlers.loginHandler,
     },
+    {
+      method: 'POST',
+      path: '/predict',
+      handler: handlers.testHandler,
+    },
+    {
+      method: 'GET',
+      path: '/predicthistory',
+      handler: handlers.getHistoryHandler,
+    }
 ]
 
 

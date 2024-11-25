@@ -86,10 +86,71 @@ const predictHandler = async (request, h) => {
     }
 };
 
+const testHandler = async (request, h) => {
+    try {
+        const authorization = request.headers.authorization;
+        const decoded = await AuthService.verifyToken(authorization);
 
-// const getHistoryHandler = async (request, h) => {
-//     // Get History logic
-//   };
+        const response = h.response({
+            status: 'success',
+            message: 'Token is valid',
+            decoded
+        });
+        response.code(200);
+        return response;
+        
+    } catch (error) {  // ambil error dari verifyToken
+        const response = h.response({
+            status: 'fail',
+            message: error.message
+        });
+        response.code(401);
+        return response;
+    }
+}
+
+const getHistoryHandler = async (request, h) => { //by id tps
+    
+    const { tpsId } = request.query;
+    
+    if (!tpsId) {
+      const response = h.response({
+          status: 'fail',
+          message: 'tpsId is required'
+      });
+      response.code(400);
+      return response;
+  }
+
+    try {
+        const historyData = await FirebaseService.getWasteHistory(tpsId);
+
+        // jika data kosong
+        if (historyData.length === 0) {
+            const response = h.response({
+                status: 'success',
+                data: historyData,
+                message: 'No history found'
+            });
+            response.code(204);
+            return response;
+        }
+
+        const response = h.response({
+            status: 'success',
+            data: historyData
+        });
+        response.code(200);
+        return response;
+    } catch (error) {
+        const response = h.response({
+            status: 'fail',
+            message: error.message
+        });
+        response.code(500);
+        return response;
+    }
+  };
   
 
 // const getTransactionHandler = async (request, h) => {
@@ -100,6 +161,7 @@ module.exports = {
     registerHandler,
     loginHandler,
     // predictHandler,
-    // getHistoryHandler,
+    getHistoryHandler,
     // getTransactionHandler,
+    testHandler
 };

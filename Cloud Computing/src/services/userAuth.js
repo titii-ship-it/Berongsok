@@ -24,14 +24,14 @@ const registerUser = async (username, email, password) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 8);
-  const userId = crypto.randomBytes(16).toString('hex');
+  const tpsId = crypto.randomBytes(16).toString('hex');
   const createdAt = new Date().toISOString();
 
   await usersCollection.doc(email).set({
     username,
     email,
     password: hashedPassword,
-    userId,
+    tpsId,
     createdAt,
   });
 };
@@ -50,16 +50,34 @@ const loginUser = async (email, password) => {
     throw new Error('The email or password you entered is incorrect.');
   }
   console.log('JWT_SECRET:', process.env.JWT_SECRET);
-  const token = jwt.sign({ userId: userData.userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ tpsId: userData.tpsId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
   return {
-    tpsId: userData.userId,
+    tpsId: userData.tpsId,
     name: userData.username,
     token,
   };
 };
 
+const verifyToken = async (authorizationHeader) => {
+  if (!authorizationHeader) {
+      throw new Error('Authorization header is required');
+  }
+  const token = authorizationHeader.split(' ')[1];
+
+  if (!token) {
+      throw new Error('Bearer token is required');
+  }
+  try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      return decoded;
+  } catch (error) {
+      throw new Error('Invalid token');
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  verifyToken,
 };
