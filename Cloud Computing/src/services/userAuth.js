@@ -24,7 +24,7 @@ const registerUser = async (username, email, password) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 8);
-  const userId = crypto.randomUUID();
+  const userId = crypto.randomBytes(16).toString('hex');
   const createdAt = new Date().toISOString();
 
   await usersCollection.doc(email).set({

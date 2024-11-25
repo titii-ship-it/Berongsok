@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server/server.js",
-    "dev": "nodemon ./src/server/server.js"
+    "dev": "nodemon --legacy-watch ./src/server/server.js"
   },
   "keywords": [],
   "author": "Muhammad Abian Abdi Pratama, Cornelius Yuli Rosdianto",
@@ -26,7 +26,9 @@
     "@google-cloud/firestore": "^7.10.0",
     "@google-cloud/storage": "^7.14.0",
     "@hapi/hapi": "^21.3.12",
+    "@tensorflow/tfjs-converter": "^4.22.0",
     "@tensorflow/tfjs-node": "^4.22.0",
+    "@tensorflow/tfjs-tflite": "^0.0.1-alpha.10",
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",

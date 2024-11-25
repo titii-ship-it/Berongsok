@@ -11,6 +11,7 @@ async function storeData(id, data) {
 }
 
 
+
 async function getWastePrice(wasteType){
     const db = new Firestore({
         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,

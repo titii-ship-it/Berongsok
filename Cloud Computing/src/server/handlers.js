@@ -9,15 +9,20 @@ const registerHandler = async (request, h) => {
 
   try {
     await AuthService.registerUser(username, email, password);
-    return h.response({
+    const respone = h.response({
       error: false,
       message: 'Your account has been successfully created.',
-    }).code(200);
+    })
+    respone.code(200);
+    return respone;
+
   } catch (error) {
-    return h.response({
+    const respone = h.response({
       error: true,
       message: error.message,
-    }).code(400);
+    })
+    respone.code(400);
+    return respone;
   }
 };
 
@@ -26,16 +31,21 @@ const loginHandler = async (request, h) => {
 
   try {
     const loginResult = await AuthService.loginUser(email, password);
-    return h.response({
+    const respone = h.response({
       error: false,
       message: 'success',
       loginResult,
-    }).code(200);
+    })
+    respone.code(200);
+    return respone;
+
   } catch (error) {
-    return h.response({
+    const respone = h.response({
       error: true,
       message: error.message,
-    }).code(400);
+    })
+    respone.code(400);
+    return respone;
   }
 };
 

@@ -9,8 +9,8 @@ const init = async () => {
     host: 'localhost',
   });
 
-  // const model = await loadModel();
-  // server.app.model = model;
+  const model = await loadModel();
+  server.app.model = model;
   console.log('JWT_SECRET:', process.env.JWT_SECRET);
   console.log('GOOGLE_APPLICATION_CREDENTIALS:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
   server.route(routes);
