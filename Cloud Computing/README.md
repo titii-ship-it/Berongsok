@@ -31,3 +31,15 @@
 - [ ] Clean up your team's git repository and its documentation to make your project understandable by judges and audience.
 - [ ] If necessary, use a custom Compute Engine VM on Colab via GCP Marketplace as Colab runtime.
 - [ ] Implement Memorystore for caching method and Pub/Sub as message broker for your application.
+
+
+# Run Server (development)
+1. Install dependencies:
+    ```sh
+    npm install
+    ```
+
+2. Start the server using `nodemon` :
+    ```sh
+    npm run dev
+    ```
