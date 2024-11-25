@@ -1,0 +1,22 @@
+runtime: nodejs18
+
+env_variables:
+  GCLOUD_PROJECT: 'berongsok-capstone'
+  STORAGE_BUCKET: 'berongsok-bucket'
+  GOOGLE_APPLICATION_CREDENTIALS: './service_account.json'
+  MODEL_PATH: './src/model/model.h5'
+  JWT_SECRET: 'secret'
+
+handlers:
+  - url: /.* 
+    script: auto
+
+entrypoint: npm install --legacy-peer-deps && npm start
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 5
+
+service: default
+

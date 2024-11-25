@@ -34,6 +34,8 @@
 
 
 # Run Server (development)
+> You need to download `.env` and `service_account.json` [here](https://drive.google.com/drive/folders/1M5mHLb-UF2ShhJjfODTZ12g5V51w_MvO?usp=sharing).
+
 1. Install dependencies:
     ```sh
     npm install

@@ -6,7 +6,7 @@ async function loadModel() {
         const model = await tf.loadLayersModel(`file://${process.env.MODEL_PATH}`);
         return model;
     } catch (error) {
-        console.log(`error when loading model : ${error.message}`);
+        console.error(`error when loading model : ${error.message}!`);
     }
 }
 

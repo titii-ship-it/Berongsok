@@ -10,7 +10,7 @@ const db = new Firestore({
   projectId: process.env.GCLOUD_PROJECT,
 });
 
-const usersCollection = db.collection('userCollection');
+const usersCollection = db.collection('userProfile');
 
 const registerUser = async (username, email, password) => {
   const userDoc = await usersCollection.doc(email).get();
