@@ -17,4 +17,13 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login">Login Here</string>
     <string name="signup_with_google">Sign up with Google</string>
+    <string name="waste_recap">Waste Recap</string>
+    <string name="plastic_bottle">Plastic Bottle</string>
+    <string name="can">Can</string>
+    <string name="glass_bottle">Glass Bottle</string>
+    <string name="cardboard">Cardboard</string>
+    <string name="paper">Paper</string>
+    <string name="open_gallery">Open Gallery</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="start_scan">Start Scan</string>
 </resources>

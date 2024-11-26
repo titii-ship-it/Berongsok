@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="?attr/actionBarSize"
     android:padding="12dp"
+    android:scrollbars="none"
     tools:context=".ui.dashboard.DashboardFragment">
 
     <LinearLayout
@@ -41,7 +42,59 @@
                 android:src="@drawable/round_account_circle_24"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginVertical="8dp"
+            android:baselineAligned="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="5dp"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/md_theme_surfaceContainerHighest"
+                app:cardElevation="2dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Balance"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="24sp"
+                        />
+
+                    <ImageView
+                        android:minWidth="500dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:src="@drawable/fluent_emoji__money_bag"/>
+
+                    <TextView
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 27.000.000"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="24sp"
+                        />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/recap"
@@ -49,7 +102,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
             android:layout_margin="8dp"
-            app:cardElevation="5dp"
+            app:cardElevation="2dp"
             app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh">
 
             <LinearLayout
@@ -61,7 +114,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Waste Recap"
+                    android:text="@string/waste_recap"
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/md_theme_primary"
@@ -79,6 +132,7 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:minWidth="500dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -87,8 +141,7 @@
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="5dp"
-                            app:cardBackgroundColor="@color/md_theme_surfaceContainerHighest">
+                            app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -100,16 +153,16 @@
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Plastic"
+                                    android:text="Plastic Cup"
                                     android:fontFamily="@font/poppins_regular"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="24sp"
+                                    android:textSize="16sp"
                                     />
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/plastic_icon"/>
+                                    android:src="@drawable/fluent_emoji__cup_with_straw"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -139,29 +192,29 @@
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="5dp"
-                            app:cardBackgroundColor="@color/md_theme_surfaceContainerHighest">
+                            app:cardElevation="2dp"
+                            >
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:minWidth="500dp"
                                 android:padding="12dp"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Plastic"
                                     android:fontFamily="@font/poppins_regular"
+                                    android:text="@string/plastic_bottle"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="24sp"
-                                    />
+                                    android:textSize="16sp" />
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/plastic_icon"/>
+                                    android:src="@drawable/openmoji__plastic_bottle"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -200,8 +253,8 @@
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="5dp"
-                            app:cardBackgroundColor="@color/md_theme_surfaceContainerHighest">
+                            app:cardElevation="2dp"
+                            >
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -213,16 +266,16 @@
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Plastic"
+                                    android:text="@string/can"
                                     android:fontFamily="@font/poppins_regular"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="24sp"
+                                    android:textSize="16sp"
                                     />
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/plastic_icon"/>
+                                    android:src="@drawable/noto__canned_food"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -252,8 +305,70 @@
                             android:layout_height="wrap_content"
                             app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="5dp"
-                            app:cardBackgroundColor="@color/md_theme_surfaceContainerHighest">
+                            app:cardElevation="2dp"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="12dp"
+                                android:minWidth="500dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:textAlignment="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/glass_bottle"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="@color/md_theme_primary"
+                                    android:textSize="16sp"
+                                    />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="72dp"
+                                    android:src="@drawable/openmoji__glass_bottle"/>
+
+                                <TextView
+                                    android:textAlignment="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="24 Kg"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:textColor="@color/md_theme_primary"
+                                    android:textSize="24sp"
+                                    />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginVertical="8dp"
+                    android:baselineAligned="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="5dp"
+                            android:layout_margin="8dp"
+                            app:cardElevation="2dp"
+                            >
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -262,19 +377,71 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:text="@string/cardboard"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/md_theme_primary"
+                                    android:textSize="16sp" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="72dp"
+                                    android:src="@drawable/noto_v1__card_file_box"/>
+
+                                <TextView
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Plastic"
-                                    android:fontFamily="@font/poppins_regular"
+                                    android:text="24 Kg"
+                                    android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
+                                    />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        app:cornerRadius="5dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="5dp"
+                            android:layout_margin="8dp"
+                            app:cardElevation="2dp"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="12dp"
+                                android:minWidth="500dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:textAlignment="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/paper"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="@color/md_theme_primary"
+                                    android:textSize="16sp"
                                     />
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/plastic_icon"/>
+                                    android:src="@drawable/noto__rolled_up_newspaper"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -296,65 +463,9 @@
 
             </LinearLayout>
 
-
         </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_marginVertical="8dp"
-            android:baselineAligned="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="5dp"
-                android:layout_margin="8dp"
-                app:cardElevation="5dp"
-                app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Balance"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textColor="@color/md_theme_primary"
-                        android:textSize="24sp"
-                        />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp"
-                        android:src="@drawable/plastic_icon"/>
-
-                    <TextView
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Rp. 27.000.000"
-                        android:fontFamily="@font/roboto_bold"
-                        android:textColor="@color/md_theme_primary"
-                        android:textSize="24sp"
-                        />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-
     </LinearLayout>
-
-
 
 
 </ScrollView>
