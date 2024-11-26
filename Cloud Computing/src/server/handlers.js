@@ -161,7 +161,59 @@ const getHistoryHandler = async (request, h) => {
     return response;
   }
 };
-  
+
+const getHistoryByIdHandler = async (request, h) => {
+  const { transactionId } = request.query;
+
+  if (!transactionId) {
+    const response = h.response({
+      status: 'fail',
+      message: 'transactionId is required',
+    });
+    response.code(400);
+    return response;
+  }
+
+  try {
+    const db = new Firestore();
+    const historyCollection = db.collection("transactionHistory").where("transactionId", "==", transactionId);
+    const historySnapshot = await historyCollection.get();
+
+    const data = [];
+
+    historySnapshot.forEach((doc) => {
+      const history = {
+        id: doc.id,
+        history: doc.data(),
+      };
+      data.push(history);
+    });
+
+    if (data.length === 0) {
+      const response = h.response({
+        status: 'success',
+        data: data,
+        message: 'No history found',
+      });
+      response.code(204);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'success',
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'error',
+      message: 'Failed to retrieve history',
+    });
+    response.code(500);
+    return response;
+  }
+};
 
 // const getTransactionHandler = async (request, h) => {
 //     // Get Specific Transaction logic
@@ -172,6 +224,7 @@ module.exports = {
     loginHandler,
     // predictHandler,
     getHistoryHandler,
+    getHistoryByIdHandler,
     // getTransactionHandler,
     testHandler
 };

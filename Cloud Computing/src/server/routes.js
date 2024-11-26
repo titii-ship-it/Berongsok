@@ -20,6 +20,11 @@ const routes = [
       method: 'GET',
       path: '/transactionhistory',
       handler: handlers.getHistoryHandler,
+    },
+    {
+      method: 'GET',
+      path: '/transactionbyid',
+      handler: handlers.getHistoryByIdHandler,
     }
 ]
 
