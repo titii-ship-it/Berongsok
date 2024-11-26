@@ -1,4 +1,4 @@
-const FirebaseService = require('../services/firebase');
+const FirebaseService = require('../services/firestore');
 const predictWaste = require('../services/predict');
 const AuthService = require('../services/userAuth');
 const { Firestore } = require('@google-cloud/firestore');
@@ -50,11 +50,9 @@ const loginHandler = async (request, h) => {
   }
 };
 
-
 const predictHandler = async (request, h) => {
-    
   // ambil model dan image dari request.payload
-  const { image } = request.payload;
+  const { image } = request.payload.image;
   const { model } = request.server.app;  
   
   if (!image) {
@@ -71,17 +69,18 @@ const predictHandler = async (request, h) => {
         
         const { wasteType, confidenceScore } = await predictWaste(model, image);
         const price = await FirebaseService.getWastePrice(wasteType);
+        const createAt = new Date().toISOString();
 
         const data = {
-            tpsId: decoded.tpsId,
+            tpsId: decoded.tpsId, 
             result,
             confidenceScore,
             price,
-            gambar,
+            createAt,
         };
         
-        // Simpan data prediksi sementara di server
-        request.server.app.predictionData = data;
+        // // Simpan data prediksi sementara di server
+        // request.server.app.predictionData = data;
         
         const response = h.response ({
             status: "success",
@@ -102,44 +101,127 @@ const saveTransaction = async (request, h) => {
   try { 
     const authorizationToken = request.headers["authorization"];
     const decoded = await AuthService.verifyToken(authorizationToken);
+
+    const { image } = request.payload ;
+    if (!image) {
+      return h.response({
+          status: 'fail',  
+          error : false,
+          message: 'Image is required'
+      }).code(400);
+    }
     
     const { nasabahName, wasteType, weight, price, totalPrice } = request.payload;
     
+    // <-- validation>
+    const requiredFields = { nasabahName, wasteType, weight, price, totalPrice };
+    const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
+
+    if (missingFields.length > 0) {
+      return h.response({
+        status: 'fail',
+        message: `Fields are required: ${missingFields.join(', ')}`
+      }).code(400);
+    }
+    // <-- end of validation>
+
+    const imageUrl = await storeImage(image, wasteType);
     const transactionId = crypto.randomUUID();
     const createAt = new Date().toISOString();
-  
-    const predictionData = request.server.app.predictionData;
-
-    if (!predictionData || !predictionData.image) {
-        return h.response({
-            status: 'fail',
-            message: 'Prediction data or image not found'
-        }).code(400);
-    }
-    const imageBuffer = Buffer.from(predictionData.image, 'base64');
-    const imageUrl = await storeImage(imageBuffer, `${transactionId}.jpg`);
 
     await FirebaseService.storeData(transactionId, {
-      createAt,
-      imageUrl,
+      transactionId,
+      tpsId:decoded.tpsId,
       nasabahName,
       price,
-      totalPrice,
-      tpsId,
-      transactionId,
       wasteType,
       weight,
+      totalPrice,
+      imageUrl,
+      createAt,
     });
+    
+    const responese = h.response({
+      status: 'success',
+      error: false,
+      message: 'Data has been saved successfully',
+      url: imageUrl,
+    })
+    responese.code(201);
+    return responese;
+
 
   } catch (error) {
     const respone = h.response({
       status: 'fail',
-      message: error.message
+      message: `An error occurred while saving to the database, ${error.message}`
     })
     respone.code(401);
     return respone;
   }
 
+};
+
+const testSaveHandler = async (request, h) => {
+  try { 
+    const authorizationToken = request.headers["authorization"];
+    const decoded = await AuthService.verifyToken(authorizationToken);
+
+    const { image } = request.payload ;
+    if (!image) {
+      return h.response({
+          status: 'fail',  
+          error : false,
+          message: 'Image is required'
+      }).code(400);
+    }
+
+    const { nasabahName, wasteType, totalPrice } = request.payload;
+
+    const requiredFields = { nasabahName, wasteType, totalPrice, image };
+    const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
+  
+    if (missingFields.length > 0) {
+      return h.response({
+        status: 'fail',
+        message: `Fields are required: ${missingFields.join(', ')}`
+      }).code(400);
+    }
+
+    const imageUrl = await storeImage(image, wasteType);
+    const transactionId = crypto.randomUUID();
+
+    const wastePrice = await FirebaseService.getWastePrice(wasteType);
+    // const wastePrice = price.wastePrice;
+
+
+    await FirebaseService.storeData(transactionId, {
+      imageUrl,
+      nasabahName,
+      totalPrice,
+      tpsId:decoded.tpsId,
+      transactionId,
+      wasteType,
+      wastePrice,
+    });
+
+    const responese = h.response({
+      status: 'success',
+      error: false,
+      message: 'Data has been saved successfully',
+      url: imageUrl,
+    })
+    responese.code(201);
+    return responese;
+
+  } catch (error) {
+    const respone = h.response({
+      status: 'fail',
+      message: `Terjadi kesalahan saat menyimpan data, ${error.message}`
+    })
+    respone.code(401);
+    return respone;
+  }
 };
 
 const testHandler = async (request, h) => {
@@ -278,5 +360,6 @@ module.exports = {
     saveTransaction,
     getHistoryHandler,
     getHistoryByIdHandler,
-    testHandler
+    testHandler,
+    testSaveHandler,
 };

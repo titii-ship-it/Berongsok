@@ -59,7 +59,7 @@ const loginUser = async (email, password) => {
   return {
     tpsId: userData.tpsId,
     email: userData.email,
-    name: userData.username,
+    username: userData.username,
     token,
   };
 };

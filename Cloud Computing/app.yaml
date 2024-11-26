@@ -5,7 +5,6 @@ env_variables:
   STORAGE_BUCKET: 'berongsok-bucket'
   GOOGLE_APPLICATION_CREDENTIALS: './service_account.json'
   MODEL_PATH: './src/model/model.h5'
-  JWT_SECRET: 'secret'
 
 handlers:
   - url: /.* 

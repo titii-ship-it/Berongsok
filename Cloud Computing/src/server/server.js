@@ -9,8 +9,10 @@ const init = async () => {
     host: '0.0.0.0',
   });
 
-  const model = await loadModel();
-  server.app.model = model;
+  
+  // const model = await loadModel();
+  // server.app.model = model;
+
   console.log('JWT_SECRET:', process.env.JWT_SECRET);
   console.log('GOOGLE_APPLICATION_CREDENTIALS:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
   server.route(routes);
@@ -18,6 +20,7 @@ const init = async () => {
   server.ext('onPreResponse', function (request, h) {
     const response = request.response;
     if (response.isBoom) {
+      console.log("ini error di file server")
         const newResponse = h.response({
             status: 'fail',
             message: response.message

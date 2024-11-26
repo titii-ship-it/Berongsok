@@ -5,7 +5,7 @@ async function predictWaste(model, image){
             .expandDims()
             .toFloat()
 
-        const wasteLabel = [ "Can", "Cardboard", "Glass Bottle", "Paper", "Plastic Bottle", "Plastic_cup"];
+        const wasteLabel = [ "Can", "Cardboard", "Glass Bottle", "Paper", "Plastic Bottle", "Plastic Cup"];
 
         const prediction = model.predict(tensor);
         const score = await prediction.data();

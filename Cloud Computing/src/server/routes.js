@@ -30,6 +30,36 @@ const routes = [
       handler: handlers.testHandler,
     },
     {
+      method: 'POST',
+      path: `/saveTransaction`,
+      handler: handlers.testSaveHandler,
+      // handler: handlers.saveTransaction,
+      options: {
+        payload: {
+          maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
+          output: 'stream',
+          parse: true,
+          allow: 'multipart/form-data',
+          multipart: true,
+        }
+      }
+    },
+    {
+      method: 'POST',
+      path: `/waste/transactions`,
+      handler: handlers.testSaveHandler,
+      // handler: handlers.saveTransaction,
+      options: {
+        payload: {
+          maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
+          output: 'stream',
+          parse: true,
+          allow: 'multipart/form-data',
+          multipart: true,
+        }
+      }
+    },
+    {
       method: 'GET',
       path: '/transactionhistory',
       handler: handlers.getHistoryHandler,
