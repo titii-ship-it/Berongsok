@@ -159,49 +159,111 @@ const testHandler = async (request, h) => {
     }
 }
 
-const getHistoryHandler = async (request, h) => { //by id tps
-    
-    const { tpsId } = request.query;
-    
-    if (!tpsId) {
-      const response = h.response({
-          status: 'fail',
-          message: 'tpsId is required'
-      });
-      response.code(400);
-      return response;
+const getHistoryHandler = async (request, h) => {
+  const { tpsId } = request.query;
+
+  if (!tpsId) {
+    const response = h.response({
+      status: 'fail',
+      message: 'tpsId is required'
+    });
+    response.code(400);
+    return response;
   }
 
-    try {
-        const historyData = await FirebaseService.getWasteHistory(tpsId);
+  try {
+    const db = new Firestore();
+    const historyCollection = db.collection("transactionHistory").where("tpsId", "==", tpsId);
+    const historySnapshot = await historyCollection.get();
 
-        // jika data kosong
-        if (historyData.length === 0) {
-            const response = h.response({
-                status: 'success',
-                data: historyData,
-                message: 'No history found'
-            });
-            response.code(204);
-            return response;
-        }
+    const data = [];
 
-        const response = h.response({
-            status: 'success',
-            data: historyData
-        });
-        response.code(200);
-        return response;
-    } catch (error) {
-        const response = h.response({
-            status: 'fail',
-            message: error.message
-        });
-        response.code(500);
-        return response;
+    historySnapshot.forEach((doc) => {
+      const history = {
+        id: doc.id,
+        history: doc.data(),
+      };
+      data.push(history);
+    });
+
+    if (data.length === 0) {
+      const response = h.response({
+        status: 'success',
+        data: data,
+        message: 'No history found'
+      });
+      response.code(204);
+      return response;
     }
-  };
-  
+
+    const response = h.response({
+      status: 'success',
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'error',
+      message: 'Failed to retrieve history',
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getHistoryByIdHandler = async (request, h) => {
+  const { transactionId } = request.query;
+
+  if (!transactionId) {
+    const response = h.response({
+      status: 'fail',
+      message: 'transactionId is required',
+    });
+    response.code(400);
+    return response;
+  }
+
+  try {
+    const db = new Firestore();
+    const historyCollection = db.collection("transactionHistory").where("transactionId", "==", transactionId);
+    const historySnapshot = await historyCollection.get();
+
+    const data = [];
+
+    historySnapshot.forEach((doc) => {
+      const history = {
+        id: doc.id,
+        history: doc.data(),
+      };
+      data.push(history);
+    });
+
+    if (data.length === 0) {
+      const response = h.response({
+        status: 'success',
+        data: data,
+        message: 'No history found',
+      });
+      response.code(204);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'success',
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'error',
+      message: 'Failed to retrieve history',
+    });
+    response.code(500);
+    return response;
+  }
+};
 
 // const getTransactionHandler = async (request, h) => {
 //     // Get Specific Transaction logic
@@ -213,5 +275,6 @@ module.exports = {
     predictHandler,
     saveTransaction,
     getHistoryHandler,
+    getHistoryByIdHandler,
     testHandler
 };
