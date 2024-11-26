@@ -181,7 +181,7 @@ if fail - User not logged in:
 # 5. getHistory
 Endpoint to retrieve prediction history
 - URL
-  - `/predictHistory`
+  - `/transactionhistory?tpsId=param`
 
 - Method
   - GET
@@ -192,36 +192,65 @@ Endpoint to retrieve prediction history
 response (Status Code: 200):
 ```json
 {
-  "status": "success",
-  "data": [
-    {
-      "idTransaksi": "13e907b3-4213-42ad-b12b-b9b7e12eb90e", // id generated during prediction type of waste
-      "data": {
-        "tpsId": "", //  id of the TPS where the waste was sold
-        "nasabahName": "",
-        "wasteType": "",
-        "price": "",
-        "weight": "",
-        "totalPrice": "",
-        "imgUrl": "",
-        "createAt": "<timestamp> as datetime"
-      }
-    },
-
-    {
-      "idTransaksi": "13e907b3-4232-42ad-b12b-b9b7e12eb90e",
-      "data": {
-        "tpsId": "",
-        "nasabahName": "",
-        "wasteType": "",
-        "price": "",
-        "weight": "",
-        "totalPrice": "",
-        "imgUrl": "",
-        "createAt": "<timestamp> as datetime"
-      }
-    }
-  ]
+    "status": "success",
+    "data": [
+        {
+            "id": "0MfHPiPGV4hQxCHFzPV7",
+            "history": {
+                "transactionId": "89f91a62-4d3b-4c76-b123-7fc298b0c752",
+                "weight": 2,
+                "price": 15000,
+                "imgUrl": "youtube.comfegew",
+                "wasteType": "paper",
+                "tpsId": "b8b9a25c870730804699c39069dc6924",
+                "createAt": "2024-11-26T14:30:00Z",
+                "nasabahName": "TPS Mutiara Ibu Siapa Ya",
+                "totalPrice": 300000
+            }
+        },
+        {
+            "id": "3JRntWq0a2a9kJg1cfxd",
+            "history": {
+                "transactionId": "b8b9a25c870730804699c39069dc6924",
+                "weight": 2,
+                "price": 15000,
+                "imgUrl": "youtube.comfegew",
+                "wasteType": "paper",
+                "tpsId": "b8b9a25c870730804699c39069dc6924",
+                "createAt": "2024-11-26T14:30:00Z",
+                "nasabahName": "TPS Mutiara Ibu Siapa",
+                "totalPrice": 300000
+            }
+        },
+        {
+            "id": "7qekF6NHv5f7oC1K33lv",
+            "history": {
+                "nasabahName": "TPS Mutiara Ibu",
+                "wasteType": "paper",
+                "price": 15000,
+                "weight": 2,
+                "totalPrice": 30000,
+                "imgUrl": "youtube.com",
+                "createAt": "2024-11-26T14:30:00Z",
+                "transactionId": "13e907b3-4213-42ad-b12b-b9b7e12eb90e",
+                "tpsId": "b8b9a25c870730804699c39069dc6924"
+            }
+        },
+        {
+            "id": "KRvbohCtv7oQsCTyJnEd",
+            "history": {
+                "createAt": "2024-11-26T14:30:00Z",
+                "totalPrice": 300000,
+                "imgUrl": "youtube.comfegew",
+                "weight": 2,
+                "nasabahName": "TPS Mutiara Ibu Siapa",
+                "wasteType": "paper",
+                "price": 15000,
+                "transactionId": "30877736-3219-4cac-a0b1-346cd8f03524",
+                "tpsId": "b8b9a25c870730804699c39069dc6924"
+            }
+        }
+    ]
 }
 ```
 
@@ -237,33 +266,35 @@ if fail :
 ## 6. get transaksi tertentu
 Endpoint to retrieve prediction history by transaction ID
 - URL
-  - `/transactionbyid?=param`
+  - `/transactionhistory/detail?tpsId=param&transactionId=param`
 
 - Method
   - GET
 
 - request parameter
-  - tpsId 
+  - tpsId
+  - transactionId
 
 response :
 ```json
 {
-  "status": "success",
-  "data": [
-    {
-      "idTransaksi": "13e907b3-4213-42ad-b12b-b9b7e12eb90e",
-      "data": {
-        "tpsId": "",
-        "nasabahName": "",
-        "wasteType": "",
-        "price": "",
-        "weight": "",
-        "totalPrice": "",
-        "imgUrl": "",
-        "createAt": ""
-      }
-    }
-  ]
+    "status": "success",
+    "data": [
+        {
+            "id": "KRvbohCtv7oQsCTyJnEd",
+            "history": {
+                "createAt": "2024-11-26T14:30:00Z",
+                "totalPrice": 300000,
+                "imgUrl": "youtube.comfegew",
+                "weight": 2,
+                "nasabahName": "TPS Mutiara Ibu Siapa",
+                "wasteType": "paper",
+                "price": 15000,
+                "transactionId": "30877736-3219-4cac-a0b1-346cd8f03524",
+                "tpsId": "b8b9a25c870730804699c39069dc6924"
+            }
+        }
+    ]
 }
 ```
 

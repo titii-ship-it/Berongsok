@@ -4,6 +4,7 @@ const AuthService = require('../services/userAuth');
 const { Firestore } = require('@google-cloud/firestore');
 const storeImage = require('../services/storeImage');
 const crypto = require('crypto');
+const { get } = require('https');
 
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
@@ -300,7 +301,7 @@ const getHistoryHandler = async (request, h) => {
   }
 };
 
-const getHistoryByIdHandler = async (request, h) => {
+const getTransactionDetailHandler = async (request, h) => {
   const { transactionId } = request.query;
 
   if (!transactionId) {
@@ -359,7 +360,7 @@ module.exports = {
     predictHandler,
     saveTransaction,
     getHistoryHandler,
-    getHistoryByIdHandler,
+    getTransactionDetailHandler,
     testHandler,
     testSaveHandler,
 };

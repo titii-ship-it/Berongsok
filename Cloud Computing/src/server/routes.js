@@ -66,8 +66,8 @@ const routes = [
     },
     {
       method: 'GET',
-      path: '/transactionbyid',
-      handler: handlers.getHistoryByIdHandler,
+      path: '/transactionhistory/detail',
+      handler: handlers.getTransactionDetailHandler,
     }
 ]
 
