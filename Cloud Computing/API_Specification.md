@@ -89,7 +89,6 @@ if successful :
 
 ```json
 {
-<<<<<<< HEAD
 	"error": false,
 	"message": "success",
 	"data": {
@@ -98,17 +97,6 @@ if successful :
 		"price": "harga_berdasarkan_label (perKG)",
 		"CreateAt": "<timestamp> as datetime" ,
 	}
-=======
-  "error": false,
-  "message": "success",
-  "data": {
-    "transactionId": "<id> as string",
-    "result": "<Class Model> as string ",
-    "confidenceScore": "<score> as float ",
-    "price": "harga_berdasarkan_label (perKG)",
-    "CreateAt": "<timestamp> as datetime"
-  }
->>>>>>> e3f2f72062c2e2d3fdb14c5ef7aa71a1ab6890b9
 }
 ```
 
@@ -131,22 +119,18 @@ If it fails - due to an error in the backend or the model :
 ```
 
 ## 4. addList
-
 Endpoint to store data in the database
 
 - URL
-
   - `/waste/transactions`
 
 - Header
-
   - Authorization: Bearer \<token>
 
 - Method
   - POST
 
 Request body:
-
 - nasabahName -> name of the person who brought the trash
 - wasteType
 - price -> waste price per kg
@@ -154,7 +138,6 @@ Request body:
 - totalPrice -> price \* weight
 
 Data to save to the database
-
 - transactionId -> id generated during prediction
 - tpsId-> id of the TPS where the waste was sold
 - nasabahName
@@ -166,7 +149,6 @@ Data to save to the database
 - createAt
 
 if successful :
-
 ```json
 {
   "status": true, // Indicates the server successfully saved the data
@@ -176,7 +158,6 @@ if successful :
 ```
 
 if fail :
-
 - An error occurred while saving to the database
 - Some required fields are empty
 
@@ -189,7 +170,6 @@ if fail :
 ```
 
 if fail - User not logged in:
-
 ```json
 {
   "status": false, // Indicates the server failed to save the data
@@ -199,22 +179,17 @@ if fail - User not logged in:
 ```
 
 # 5. getHistory
-
 Endpoint to retrieve prediction history
-
 - URL
-
   - `/predictHistory`
 
 - Method
-
   - GET
 
-- request body
+- request params
   - tpsId
 
 response (Status Code: 200):
-
 ```json
 {
   "status": "success",
@@ -251,7 +226,6 @@ response (Status Code: 200):
 ```
 
 if fail :
-
 ```json
 {
   "status": "fail",
@@ -261,22 +235,17 @@ if fail :
 ```
 
 ## 6. get transaksi tertentu
-
 Endpoint to retrieve prediction history by transaction ID
-
 - URL
-
-  - `/predictHistory/{transactionid}`
+  - `/transactionbyid?=param`
 
 - Method
-
   - GET
 
 - request parameter
-  - tpsId
+  - tpsId 
 
 response :
-
 ```json
 {
   "status": "success",
@@ -299,7 +268,6 @@ response :
 ```
 
 if fail - no transaction (Status code : 404):
-
 ```json
 {
   "status": "fail",
@@ -309,7 +277,6 @@ if fail - no transaction (Status code : 404):
 ```
 
 if fail - internal server error (Status code : 500) :
-
 ```json
 {
   "status": "fail",

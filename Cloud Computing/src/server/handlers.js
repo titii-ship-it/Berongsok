@@ -57,6 +57,13 @@ const predictHandler = async (request, h) => {
   const { image } = request.payload;
   const { model } = request.server.app;  
   
+  if (!image) {
+    return h.response({
+        status: 'fail',
+        message: 'Image is required'
+    }).code(400);
+  }
+
   try {
         // CEK user login 
         const authorizationToken = request.headers["authorization"];
@@ -64,10 +71,9 @@ const predictHandler = async (request, h) => {
         
         const { wasteType, confidenceScore } = await predictWaste(model, image);
         const price = await FirebaseService.getWastePrice(wasteType);
-        const tpsId = decoded.tpsId;
 
         const data = {
-            tpsId,
+            tpsId: decoded.tpsId,
             result,
             confidenceScore,
             price,
@@ -264,10 +270,6 @@ const getHistoryByIdHandler = async (request, h) => {
     return response;
   }
 };
-
-// const getTransactionHandler = async (request, h) => {
-//     // Get Specific Transaction logic
-// };
 
 module.exports = {
     registerHandler,

@@ -2,9 +2,22 @@ const handlers = require('./handlers');
 
 const routes = [
     {
-        method: 'POST',
-        path: '/register',
-        handler: handlers.registerHandler,
+      //menangani semua tipe request
+      method: '*', 
+      path: '/',
+      handler: (request,h) => {
+        const responese = h.response({
+          status: 'success',
+          message: 'Welcome to Berongsok Backend Server',
+        })
+        responese.code(200);
+        return responese;
+      },
+    },
+    {
+      method: 'POST',
+      path: '/register',
+      handler: handlers.registerHandler,
     },
     {
       method: 'POST',
