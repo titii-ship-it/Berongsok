@@ -84,7 +84,6 @@ if successful :
 	"error": false,
 	"message": "success",
 	"data": {
-		"transactionId": "<id> as string",
 		"result": "<Class Model> as string ",
 		"confidenceScore": "<score> as float " ,
 		"price": "harga_berdasarkan_label (perKG)",

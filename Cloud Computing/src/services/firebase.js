@@ -7,7 +7,7 @@ async function storeData(id, data) {
         projectId: process.env.GCLOUD_PROJECT,
     });
    
-    const predictCollection = db.collection('wasteCollection');
+    const predictCollection = db.collection('transactionHistory');
     return predictCollection.doc(id).set(data);
     // .set digunakan untuk menyimpan data ke firestore
 }

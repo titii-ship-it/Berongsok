@@ -50,7 +50,11 @@ const loginUser = async (email, password) => {
     throw new Error('The email or password you entered is incorrect.');
   }
   console.log('JWT_SECRET:', process.env.JWT_SECRET);
-  const token = jwt.sign({ tpsId: userData.tpsId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign(
+      { tpsId: userData.tpsId }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
 
   return {
     tpsId: userData.tpsId,
@@ -59,11 +63,12 @@ const loginUser = async (email, password) => {
   };
 };
 
-const verifyToken = async (authorizationHeader) => {
-  if (!authorizationHeader) {
-      throw new Error('Authorization header is required');
+const verifyToken = async (authorizationToken) => {
+  // lempar error jika -> tidak ada header, tidak ada token, token tidak valid
+  if (!authorizationToken) {
+      throw new Error('Authorization header is required : please login first');
   }
-  const token = authorizationHeader.split(' ')[1];
+  const token = authorizationToken.split(' ')[1];
 
   if (!token) {
       throw new Error('Bearer token is required');
@@ -72,12 +77,14 @@ const verifyToken = async (authorizationHeader) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       return decoded;
   } catch (error) {
-      throw new Error('Invalid token');
+      throw new Error('Invalid token : Youre not authenticated, please login first');
   }
 };
+
 
 module.exports = {
   registerUser,
   loginUser,
   verifyToken,
+  // logoutUser
 };

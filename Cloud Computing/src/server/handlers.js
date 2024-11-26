@@ -2,6 +2,7 @@ const FirebaseService = require('../services/firebase');
 const predictWaste = require('../services/predict');
 const AuthService = require('../services/userAuth');
 const { Firestore } = require('@google-cloud/firestore');
+const storeImage = require('../services/storeImage');
 const crypto = require('crypto');
 
 const registerHandler = async (request, h) => {
@@ -51,26 +52,31 @@ const loginHandler = async (request, h) => {
 
 
 const predictHandler = async (request, h) => {
-    const { image } = request.payload;
-    const { model } = request.server.app;
-
-    // Jika user belum login/tidak mengirimkan token
-    //if 
-
-    try {
+    
+  // ambil model dan image dari request.payload
+  const { image } = request.payload;
+  const { model } = request.server.app;  
+  
+  try {
+        // CEK user login 
+        const authorizationToken = request.headers["authorization"];
+        const decoded = await AuthService.verifyToken(authorizationToken);
+        
         const { wasteType, confidenceScore } = await predictWaste(model, image);
         const price = await FirebaseService.getWastePrice(wasteType);
-        
-        const transactionId = crypto.randomUUID();
-        const createAt = new Date().toISOString();
+        const tpsId = decoded.tpsId;
 
         const data = {
-            transactionId,
-            createAt,
+            tpsId,
             result,
             confidenceScore,
-            price
+            price,
+            gambar,
         };
+        
+        // Simpan data prediksi sementara di server
+        request.server.app.predictionData = data;
+        
         const response = h.response ({
             status: "success",
             data
@@ -86,10 +92,54 @@ const predictHandler = async (request, h) => {
     }
 };
 
+const saveTransaction = async (request, h) => {
+  try { 
+    const authorizationToken = request.headers["authorization"];
+    const decoded = await AuthService.verifyToken(authorizationToken);
+    
+    const { nasabahName, wasteType, weight, price, totalPrice } = request.payload;
+    
+    const transactionId = crypto.randomUUID();
+    const createAt = new Date().toISOString();
+  
+    const predictionData = request.server.app.predictionData;
+
+    if (!predictionData || !predictionData.image) {
+        return h.response({
+            status: 'fail',
+            message: 'Prediction data or image not found'
+        }).code(400);
+    }
+    const imageBuffer = Buffer.from(predictionData.image, 'base64');
+    const imageUrl = await storeImage(imageBuffer, `${transactionId}.jpg`);
+
+    await FirebaseService.storeData(transactionId, {
+      createAt,
+      imageUrl,
+      nasabahName,
+      price,
+      totalPrice,
+      tpsId,
+      transactionId,
+      wasteType,
+      weight,
+    });
+
+  } catch (error) {
+    const respone = h.response({
+      status: 'fail',
+      message: error.message
+    })
+    respone.code(401);
+    return respone;
+  }
+
+};
+
 const testHandler = async (request, h) => {
     try {
-        const authorization = request.headers.authorization;
-        const decoded = await AuthService.verifyToken(authorization);
+        const authorizationToken = request.headers["authorization"];
+        const decoded = await AuthService.verifyToken(authorizationToken);
 
         const response = h.response({
             status: 'success',
@@ -160,8 +210,8 @@ const getHistoryHandler = async (request, h) => { //by id tps
 module.exports = {
     registerHandler,
     loginHandler,
-    // predictHandler,
+    predictHandler,
+    saveTransaction,
     getHistoryHandler,
-    // getTransactionHandler,
     testHandler
 };
