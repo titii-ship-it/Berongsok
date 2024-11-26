@@ -18,7 +18,7 @@ const routes = [
     },
     {
       method: 'GET',
-      path: '/predicthistory',
+      path: '/transactionhistory',
       handler: handlers.getHistoryHandler,
     }
 ]
