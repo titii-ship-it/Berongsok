@@ -17,9 +17,9 @@ async function getWastePrice(wasteType){
         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
         projectId: process.env.GCLOUD_PROJECT,
     });
-
+    const normalizeWasteType  = wasteType.toLowerCase().replace(/\s+/g, "-")
     const priceCollection = db.collection('wastePricing');
-    const priceData = await priceCollection.doc(wasteType).get(); 
+    const priceData = await priceCollection.doc(normalizeWasteType).get(); 
     const price = priceData.data();
     return price.wastePrice
     

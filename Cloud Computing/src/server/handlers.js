@@ -52,18 +52,19 @@ const loginHandler = async (request, h) => {
 };
 
 const predictHandler = async (request, h) => {
-  // ambil model dan image dari request.payload
-  const { image } = request.payload.image;
-  const { model } = request.server.app;  
-  
-  if (!image) {
-    return h.response({
-        status: 'fail',
-        message: 'Image is required'
-    }).code(400);
-  }
 
   try {
+      // ambil model dan image dari request.payload
+      const { model } = request.server.app;  
+      const { image } = request.payload ;
+        if (!image) {
+          return h.response({
+              status: 'fail',  
+              error : false,
+              message: 'Image is required'
+          }).code(400);
+        }
+        
         // CEK user login 
         const authorizationToken = request.headers["authorization"];
         const decoded = await AuthService.verifyToken(authorizationToken);

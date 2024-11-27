@@ -31,6 +31,20 @@ const routes = [
     },
     {
       method: 'POST',
+      path: '/realpredict',
+      handler: handlers.predictHandler,
+      options: {
+        payload: {
+          maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
+          output: 'stream',
+          parse: true,
+          allow: 'multipart/form-data',
+          multipart: true,
+        }
+      }
+    },
+    {
+      method: 'POST',
       path: `/saveTransaction`,
       handler: handlers.testSaveHandler,
       // handler: handlers.saveTransaction,
@@ -47,8 +61,8 @@ const routes = [
     {
       method: 'POST',
       path: `/waste/transactions`,
-      handler: handlers.testSaveHandler,
-      // handler: handlers.saveTransaction,
+      // handler: handlers.testSaveHandler,
+      handler: handlers.saveTransaction,
       options: {
         payload: {
           maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
