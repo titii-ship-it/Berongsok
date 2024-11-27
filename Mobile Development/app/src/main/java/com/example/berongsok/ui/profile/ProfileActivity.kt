@@ -2,16 +2,17 @@ package com.example.berongsok.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.CompoundButton
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.berongsok.R
+import androidx.lifecycle.lifecycleScope
+import com.example.berongsok.data.local.SettingPreferences
+import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivityProfileBinding
 import com.example.berongsok.ui.login.LoginActivity
+import kotlinx.coroutines.launch
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -39,19 +40,38 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
 
+        lifecycleScope.launch {
+            pref.tpsName.collect {
+                binding.tvUsername.text = it
+                Log.d("PREF TPS NAME", "tpsName: $it")
+            }
+        }
+
+        lifecycleScope.launch {
+            pref.tpsEmail.collect {
+                binding.tvEmail.text = it
+                Log.d("PREF TPS EMAIL", "tpsEmail: $it")
+            }
+        }
+
         switchTheme.setOnCheckedChangeListener { _:CompoundButton, isChecked: Boolean ->
             profileViewModel.saveThemeSetting(isChecked)
         }
 
 
         binding.btnLogout.setOnClickListener {
-            userLogout()
+            lifecycleScope.launch {
+                userLogout()
+            }
         }
 
 
     }
 
-    fun userLogout () {
+    private suspend fun userLogout () {
+        val pref = SettingPreferences.getInstance(application.dataStore)
+        pref.clearUser()
         startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }

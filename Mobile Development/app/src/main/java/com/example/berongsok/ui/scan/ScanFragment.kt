@@ -1,6 +1,7 @@
 package com.example.berongsok.ui.scan
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.berongsok.databinding.FragmentScanBinding
+import com.example.berongsok.ui.transaction.TransactionFormActivity
 import com.example.berongsok.utils.getImageUri
 
 class ScanFragment : Fragment() {
@@ -62,7 +64,15 @@ class ScanFragment : Fragment() {
             textView.text = it
         }
 
-        binding.uploadBtn.setOnClickListener{ }
+        if (!allPermissionsGranted()) {
+            requestPermissionLauncher.launch(REQUIRED_PERMISSION)
+        }
+
+        binding.uploadBtn.setOnClickListener{
+            val intent = Intent(requireActivity(), TransactionFormActivity::class.java)
+            intent.putExtra(TransactionFormActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+            startActivity(intent)
+        }
 
         binding.openCameraBtn.setOnClickListener { openCamera() }
 

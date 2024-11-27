@@ -68,7 +68,7 @@
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Balance"
+                        android:text="@string/balance"
                         android:fontFamily="@font/roboto_bold"
                         android:textColor="@color/md_theme_primary"
                         android:textSize="24sp"
@@ -78,13 +78,14 @@
                         android:minWidth="500dp"
                         android:layout_width="match_parent"
                         android:layout_height="72dp"
-                        android:src="@drawable/fluent_emoji__money_bag"/>
+                        android:layout_marginVertical="8dp"
+                        android:src="@drawable/balance"/>
 
                     <TextView
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Rp. 27.000.000"
+                        android:text="@string/total_balance"
                         android:fontFamily="@font/roboto_bold"
                         android:textColor="@color/md_theme_primary"
                         android:textSize="24sp"
@@ -160,9 +161,10 @@
                                     />
 
                                 <ImageView
+                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/fluent_emoji__cup_with_straw"/>
+                                    android:src="@drawable/plastic_cup"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -212,9 +214,10 @@
                                     android:textSize="16sp" />
 
                                 <ImageView
+                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/openmoji__plastic_bottle"/>
+                                    android:src="@drawable/plastic_bottle"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -273,9 +276,10 @@
                                     />
 
                                 <ImageView
+                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/noto__canned_food"/>
+                                    android:src="@drawable/can"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -326,9 +330,10 @@
                                     />
 
                                 <ImageView
+                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/openmoji__glass_bottle"/>
+                                    android:src="@drawable/glass_bottle"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -386,9 +391,10 @@
                                     android:textSize="16sp" />
 
                                 <ImageView
+                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/noto_v1__card_file_box"/>
+                                    android:src="@drawable/cardboard"/>
 
                                 <TextView
                                     android:textAlignment="center"
@@ -439,9 +445,10 @@
                                     />
 
                                 <ImageView
+                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/noto__rolled_up_newspaper"/>
+                                    android:src="@drawable/paper"/>
 
                                 <TextView
                                     android:textAlignment="center"

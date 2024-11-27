@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
     android:gravity="center_vertical"
@@ -50,27 +50,19 @@
             android:padding="24dp"
             app:cornerRadius="5dp">
 
-            <EditText
+            <com.example.berongsok.ui.component.EmailEditTex
+                android:id="@+id/ed_login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:autofillHints="emailAddress"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/md_theme_primary"
-                android:textColorHint="@color/md_theme_primary" />
+                android:layout_marginTop="8dp"
+                />
 
-            <EditText
+            <com.example.berongsok.ui.component.PasswordEditText
+                android:id="@+id/ed_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:autofillHints="emailAddress"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColor="@color/md_theme_primary"
-                android:textColorHint="@color/md_theme_primary" />
+                android:layout_marginTop="8dp"
+                />
 
             <Button
                 android:id="@+id/btnSignIn"
@@ -93,6 +85,15 @@
             android:textColor="@color/md_theme_primary"
             android:textSize="36sp"
             android:text="@string/sign_in_up"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone"
+            />
 
     </FrameLayout>
 

@@ -12,7 +12,7 @@
     <string name="register">Register Here</string>
     <string name="don_t_have_a_account">Don\'t have an account?</string>
     <string name="sign_up">SIGN UP</string>
-    <string name="username">Username</string>
+    <string name="username">TPS Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login">Login Here</string>
@@ -35,4 +35,23 @@
     <string name="total_price">Total Price</string>
     <string name="create_at">Create At</string>
     <string name="transaction_id">Transaction ID</string>
+    <string name="password_invalid">Password must have at least 8 characters</string>
+    <string name="email_invalid">Email format is invalid</string>
+    <string name="email_valid">Email is valid</string>
+    <string name="password_mismatch">Password doesn\'t match</string>
+    <string name="succes_regist">User Registration Success</string>
+    <string name="continue_login">Continue to Login</string>
+    <string name="failed_regist">User Registration failed</string>
+    <string name="retry">Retry</string>
+    <string name="fields_required">All fields are required</string>
+    <string name="no_transaction_history">No transaction history</string>
+    <string name="balance">Balance</string>
+    <string name="total_balance">Rp. 27.000.000</string>
+    <string name="profile">Profile</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="enable_dark_mode">Enable Dark Mode</string>
+    <string name="logout">Logout</string>
+    <string name="submit">Submit</string>
+    <string name="transaction_form">Transaction Form</string>
+    <string name="waste_price">Waste Price</string>
 </resources>

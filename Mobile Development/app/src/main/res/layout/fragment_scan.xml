@@ -46,7 +46,7 @@
             android:id="@+id/openGaleryBtn"
             app:cornerRadius="5dp"
             android:layout_height="wrap_content"
-            android:minWidth="200dp"
+            android:minWidth="120dp"
             android:drawableStart="@drawable/solar__gallery_bold"
             app:icon="@drawable/solar__gallery_bold"
             android:layout_row="0"
@@ -60,7 +60,7 @@
             android:drawableStart="@drawable/solar__gallery_bold"
             app:icon="@drawable/solar__object_scan_bold"
             android:layout_height="48dp"
-            android:minWidth="200dp"
+            android:minWidth="120dp"
             android:layout_row="0"
             android:layout_column="2"
             android:text="@string/open_camera" />

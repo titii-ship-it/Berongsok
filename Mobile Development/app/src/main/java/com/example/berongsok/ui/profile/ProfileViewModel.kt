@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.berongsok.data.local.SettingPreferences
 import kotlinx.coroutines.launch
 
 class ProfileViewModel (private val pref: SettingPreferences) : ViewModel() {

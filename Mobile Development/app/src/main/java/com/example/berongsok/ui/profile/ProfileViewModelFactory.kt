@@ -2,6 +2,7 @@ package com.example.berongsok.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.berongsok.data.local.SettingPreferences
 
 class ProfileViewModelFactory(private val pref: SettingPreferences) :
     ViewModelProvider.NewInstanceFactory() {
