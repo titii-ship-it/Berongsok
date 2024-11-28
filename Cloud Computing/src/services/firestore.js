@@ -17,11 +17,17 @@ async function getWastePrice(wasteType){
         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
         projectId: process.env.GCLOUD_PROJECT,
     });
-
+    const normalizeWasteType = wasteType.toLowerCase().replace(/\s+/g, "-");
+    console.log(normalizeWasteType);
     const priceCollection = db.collection('wastePricing');
-    const priceData = await priceCollection.doc(wasteType).get(); 
+    const priceData = await priceCollection.doc(normalizeWasteType).get();
+
+    if (!priceData.exists) {
+        throw new Error(`Price data for waste type "${wasteType}" not found`);
+    }
+
     const price = priceData.data();
-    return price.wastePrice
+    return price.wastePrice;
     
 }
 

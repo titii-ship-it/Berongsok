@@ -4,7 +4,10 @@ const AuthService = require('../services/userAuth');
 const { Firestore } = require('@google-cloud/firestore');
 const storeImage = require('../services/storeImage');
 const crypto = require('crypto');
-const { get } = require('https');
+// const { get } = require('https');
+const jwt = require('jsonwebtoken');
+// const { channel } = require('diagnostics_channel');
+// const predictService = require('../services/newPredictService');
 
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
@@ -44,7 +47,7 @@ const loginHandler = async (request, h) => {
   } catch (error) {
     const respone = h.response({
       error: true,
-      message: error.message,
+      message: `invalid token : ${error.message}`,
     })
     respone.code(400);
     return respone;
@@ -52,24 +55,26 @@ const loginHandler = async (request, h) => {
 };
 
 const predictHandler = async (request, h) => {
-  // ambil model dan image dari request.payload
-  const { image } = request.payload.image;
-  const { model } = request.server.app;  
-  
-  if (!image) {
-    return h.response({
-        status: 'fail',
-        message: 'Image is required'
-    }).code(400);
-  }
-
   try {
+      // ambil model dan image dari request.payload
+      const { model } = request.server.app;  
+      const { image } = request.payload ;
+        if (!image) {
+          return h.response({
+              status: 'fail',  
+              error : false,
+              message: 'Image is required'
+          }).code(400);
+        }
+        
         // CEK user login 
         const authorizationToken = request.headers["authorization"];
         const decoded = await AuthService.verifyToken(authorizationToken);
         
-        const { wasteType, confidenceScore } = await predictWaste(model, image);
+        const { result, confidenceScore } = await predictWaste(model, image);
+        const wasteType = result;
         const price = await FirebaseService.getWastePrice(wasteType);
+        console.log('price:', price);
         const createAt = new Date().toISOString();
 
         const data = {
@@ -80,14 +85,12 @@ const predictHandler = async (request, h) => {
             createAt,
         };
         
-        // // Simpan data prediksi sementara di server
-        // request.server.app.predictionData = data;
-        
         const response = h.response ({
             status: "success",
             data
         });
         response.code(200);
+        return response;  
 
 
     }catch (error) {
@@ -126,7 +129,7 @@ const saveTransaction = async (request, h) => {
     }
     // <-- end of validation>
 
-    const imageUrl = await storeImage(image, wasteType);
+    const imageUrl = await storeImage(image, wasteType); //get url
     const transactionId = crypto.randomUUID();
     const createAt = new Date().toISOString();
 
@@ -162,91 +165,6 @@ const saveTransaction = async (request, h) => {
   }
 
 };
-
-const testSaveHandler = async (request, h) => {
-  try { 
-    const authorizationToken = request.headers["authorization"];
-    const decoded = await AuthService.verifyToken(authorizationToken);
-
-    const { image } = request.payload ;
-    if (!image) {
-      return h.response({
-          status: 'fail',  
-          error : false,
-          message: 'Image is required'
-      }).code(400);
-    }
-
-    const { nasabahName, wasteType, totalPrice } = request.payload;
-
-    const requiredFields = { nasabahName, wasteType, totalPrice, image };
-    const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
-  
-    if (missingFields.length > 0) {
-      return h.response({
-        status: 'fail',
-        message: `Fields are required: ${missingFields.join(', ')}`
-      }).code(400);
-    }
-
-    const imageUrl = await storeImage(image, wasteType);
-    const transactionId = crypto.randomUUID();
-
-    const wastePrice = await FirebaseService.getWastePrice(wasteType);
-    // const wastePrice = price.wastePrice;
-
-
-    await FirebaseService.storeData(transactionId, {
-      imageUrl,
-      nasabahName,
-      totalPrice,
-      tpsId:decoded.tpsId,
-      transactionId,
-      wasteType,
-      wastePrice,
-    });
-
-    const responese = h.response({
-      status: 'success',
-      error: false,
-      message: 'Data has been saved successfully',
-      url: imageUrl,
-    })
-    responese.code(201);
-    return responese;
-
-  } catch (error) {
-    const respone = h.response({
-      status: 'fail',
-      message: `Terjadi kesalahan saat menyimpan data, ${error.message}`
-    })
-    respone.code(401);
-    return respone;
-  }
-};
-
-const testHandler = async (request, h) => {
-    try {
-        const authorizationToken = request.headers["authorization"];
-        const decoded = await AuthService.verifyToken(authorizationToken);
-
-        const response = h.response({
-            status: 'success',
-            message: 'Token is valid',
-            decoded
-        });
-        response.code(200);
-        return response;
-        
-    } catch (error) {  // ambil error dari verifyToken
-        const response = h.response({
-            status: 'fail',
-            message: error.message
-        });
-        response.code(401);
-        return response;
-    }
-}
 
 const getHistoryHandler = async (request, h) => {
   const { tpsId } = request.query;
@@ -354,6 +272,164 @@ const getTransactionDetailHandler = async (request, h) => {
   }
 };
 
+// <---- Kumpulan test handler ---->
+
+// const predict2Handler = async (request, h) => {
+//   try {
+//       const { image } = request.payload;
+//       if (!image) {
+//           return h.response({
+//               status: 'fail',
+//               error: false,
+//               message: 'Image is required'
+//           }).code(400);
+//       }
+
+//       // Call the Python backend for prediction
+//       const prediction = await predictService(image);
+
+//       const response = h.response({
+//           status: 'success',
+//           data: prediction
+//       });
+//       response.code(200);
+//       return response;
+//   } catch (error) {
+//       return h.response({
+//           status: 'fail',
+//           message: error.message
+//       }).code(500);
+//   }
+// };
+
+// const logoutHandler = async (request, h) => {
+//   try {
+//     const authorizationToken = request.headers['authorization'];
+//     if (!authorizationToken) {
+//       return h.response({
+//         status: 'fail',
+//         message: 'Authorization header is required',
+//       }).code(400);
+//     }
+
+//     const token = authorizationToken.split(' ')[1];
+//     if (!token) {
+//       return h.response({
+//         status: 'fail',
+//         message: 'Bearer token is required',
+//       }).code(400);
+//     }
+
+//     await AuthService.logoutUser(token);
+
+//     return h.response({
+//       status: 'success',
+//       message: 'Successfully logged out',
+//     }).code(200);
+//   } catch (error) {
+//     return h.response({
+//       status: 'fail',
+//       message: error.message,
+//     }).code(500);
+//   }
+// };
+
+// const testSaveHandler = async (request, h) => {
+//   try { 
+//     const authorizationToken = request.headers["authorization"];
+//     const decoded = await AuthService.verifyToken(authorizationToken);
+
+//     const { image } = request.payload ;
+//     if (!image) {
+//       return h.response({
+//           status: 'fail',  
+//           error : false,
+//           message: 'Image is required'
+//       }).code(400);
+//     }
+
+//     const { nasabahName, wasteType, totalPrice } = request.payload;
+
+//     // <--- validation>
+//     const requiredFields = { nasabahName, wasteType, totalPrice, image };
+//     const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
+  
+//     if (missingFields.length > 0) {
+//       return h.response({
+//         status: 'fail',
+//         message: `Fields are required: ${missingFields.join(', ')}`
+//       }).code(400);
+//     }
+//     // <--- end of validation>
+
+//     const imageUrl = await storeImage(image, wasteType);
+//     const transactionId = crypto.randomUUID();
+
+//     const wastePrice = await FirebaseService.getWastePrice(wasteType);
+//     // const totalPrice = weight * wastePrice;
+
+
+//     await FirebaseService.storeData(transactionId, {
+//       imageUrl,
+//       nasabahName,
+//       totalPrice,
+//       tpsId:decoded.tpsId,
+//       transactionId,
+//       wasteType,
+//       wastePrice,
+//     });
+
+//     const responese = h.response({
+//       status: 'success',
+//       error: false,
+//       message: 'Data has been saved successfully',
+//       url: imageUrl,
+//     })
+//     responese.code(201);
+//     return responese;
+
+//   } catch (error) {
+//     const respone = h.response({
+//       status: 'fail',
+//       message: `Terjadi kesalahan saat menyimpan data, ${error.message}`
+//     })
+//     respone.code(401);
+//     return respone;
+//   }
+// };
+
+// test handler for token verification
+const testHandler = async (request, h) => {
+  try {
+      const authorizationToken = request.headers["authorization"];
+      const decoded = await AuthService.verifyToken(authorizationToken);
+
+      const userDoc = await usersCollection.doc(decoded.email).get();
+      const userData = userDoc.data();
+
+      const newRefreshToken = jwt.sign(
+        
+      )
+
+      const response = h.response({
+          status: 'success',
+          message: 'Token is valid',
+          decoded
+      });
+      response.code(200);
+      return response;
+      
+  } catch (error) {  // ambil error dari verifyToken
+      const response = h.response({
+          status: 'fail',
+          message: error.message
+      });
+      response.code(401);
+      return response;
+  }
+}
+// <---- Kumpulan test handler ---->
+
 module.exports = {
     registerHandler,
     loginHandler,
@@ -361,6 +437,7 @@ module.exports = {
     saveTransaction,
     getHistoryHandler,
     getTransactionDetailHandler,
+    // logoutHandler,
     testHandler,
-    testSaveHandler,
+    // testSaveHandler,
 };
