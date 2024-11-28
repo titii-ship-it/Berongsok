@@ -33,12 +33,8 @@
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
-<<<<<<< HEAD
     "jsonwebtoken": "^9.0.2",
     "node-addon-api": "^8.2.2",
     "sharp": "^0.33.5"
-=======
-    "jsonwebtoken": "^9.0.2"
->>>>>>> c9ca095c2b0168d27baa65a8a45fee55c6bc4e16
   }
 }
