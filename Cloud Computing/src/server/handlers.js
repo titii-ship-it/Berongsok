@@ -55,6 +55,7 @@ const loginHandler = async (request, h) => {
 };
 
 const predictHandler = async (request, h) => {
+
   try {
       // ambil model dan image dari request.payload
       const { model } = request.server.app;  

@@ -25,8 +25,14 @@ async function predictWaste(model, imageStream) {
             .resizeNearestNeighbor([224, 224])
             .expandDims()
             .toFloat()
+        console.log("mengubah gambar ke tensor")
 
+<<<<<<< HEAD
         // Melakukan prediksi
+=======
+        const wasteLabel = [ "Can", "Cardboard", "Glass Bottle", "Paper", "Plastic Bottle", "Plastic Cup"];
+        console.log("mencoba prediksi gambar")
+>>>>>>> c9ca095c2b0168d27baa65a8a45fee55c6bc4e16
         const prediction = model.predict(tensor);
         const score = await prediction.data();
         const confidenceScore = Math.max(...score) * 100;
