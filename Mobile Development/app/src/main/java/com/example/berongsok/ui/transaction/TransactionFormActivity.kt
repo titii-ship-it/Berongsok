@@ -27,6 +27,7 @@ class TransactionFormActivity : AppCompatActivity() {
             Injection.provideUserRepository()
         )
     }
+    private var totalPrice: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +69,6 @@ class TransactionFormActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             val nasabahName = binding.edNasabahName.text.toString()
             val weight = binding.edWasteWeight.text.toString()
-            val totalPrice = binding.tvTotalPrice.text.toString()
 
             if (imageUri != null) {
                 showLoading(true)
@@ -76,8 +76,8 @@ class TransactionFormActivity : AppCompatActivity() {
                     imageUri,
                     nasabahName,
                     weight,
+                    wastePrice,
                     wasteType,
-                    wastePrice.toString(),
                     totalPrice,
                     this
                 )

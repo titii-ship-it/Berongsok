@@ -44,11 +44,11 @@ interface ApiService {
     @POST("waste/transactions")
     suspend fun addTransaction(
         @Header("Authorization") token: String,
-        @Part("nasabahName") nasabahName: RequestBody,
-        @Part("wasteType") wasteType: RequestBody,
-        @Part("price") price: RequestBody,
-        @Part("weight") weight: RequestBody,
-        @Part("totalPrice") totalPrice: RequestBody,
+        @Part("nasabahName") nasabahName: String,
+        @Part("wasteType") wasteType: String,
+        @Part("price") price: Int,
+        @Part("weight") weight: String,
+        @Part("totalPrice") totalPrice: Int,
         @Part image: MultipartBody.Part,
     ): NewTransactionResponse
 

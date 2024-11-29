@@ -2,7 +2,6 @@ package com.example.berongsok.data.remote
 
 import com.example.berongsok.data.remote.api.ApiService
 import com.example.berongsok.data.remote.response.ErrorResponse
-import com.example.berongsok.data.remote.response.HistoryResponse
 import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.NewTransactionResponse
 import com.example.berongsok.data.remote.response.PredictResponse
@@ -53,11 +52,11 @@ class AuthRepository(private val apiService: ApiService) {
 
     suspend fun addTransaction(
         token: String,
-        nasabahName: RequestBody,
-        wasteType: RequestBody,
-        price: RequestBody,
-        weight: RequestBody,
-        totalPrice: RequestBody,
+        nasabahName: String,
+        wasteType: String,
+        price: Int,
+        weight: String,
+        totalPrice: Int,
         image: MultipartBody.Part
     ): Result<NewTransactionResponse> {
         return try {

@@ -11,14 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.remote.AuthRepository
 import com.example.berongsok.data.remote.response.NewTransactionResponse
-import com.example.berongsok.data.remote.response.PredictResponse
-import com.example.berongsok.ui.scan.ScanViewModel
 import com.example.berongsok.utils.reduceFileImage
 import com.example.berongsok.utils.uriToFile
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -36,9 +33,9 @@ class TransactionViewModel (private val dataStoreManager: SettingPreferences, pr
         imageUri: Uri,
         nasabahName: String,
         wasteType: String,
-        price: String,
+        price: Int,
         weight: String,
-        totalPrice: String,
+        totalPrice: Int,
         context: Context
     ) {
         imageUri.let { uri ->
@@ -51,11 +48,6 @@ class TransactionViewModel (private val dataStoreManager: SettingPreferences, pr
                 requestImageFile
             )
 
-            val nasabahNamePart = nasabahName.toRequestBody("text/plain".toMediaType())
-            val wasteTypePart = wasteType.toRequestBody("text/plain".toMediaType())
-            val pricePart = price.toRequestBody("text/plain".toMediaType())
-            val weightPart = weight.toRequestBody("text/plain".toMediaType())
-            val totalPricePart = totalPrice.toRequestBody("text/plain".toMediaType())
 
             viewModelScope.launch {
                 dataStoreManager.tpsToken.collect { token ->
@@ -64,11 +56,11 @@ class TransactionViewModel (private val dataStoreManager: SettingPreferences, pr
                         try {
                             val response = userRepository.addTransaction(
                                 "Bearer $token",
-                                nasabahNamePart,
-                                wasteTypePart,
-                                pricePart,
-                                weightPart,
-                                totalPricePart,
+                                nasabahName,
+                                wasteType,
+                                price,
+                                weight,
+                                totalPrice,
                                 multipartBody
                             )
                             _addTransaction.postValue(response)
