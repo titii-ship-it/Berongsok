@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -13,7 +15,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        buildConfigField("String", "BASE_URL", "\"https://berongsok-service-346176766742.asia-southeast2.run.app/\"")
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "BASE_URL", "\"${properties.getProperty("BASE_URL")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,7 +26,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"https://berongsok-service-346176766742.asia-southeast2.run.app/\"")
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+
+            buildConfigField("String", "BASE_URL", "\"${properties.getProperty("BASE_URL")}\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

@@ -40,6 +40,7 @@
     <string name="email_valid">Email is valid</string>
     <string name="password_mismatch">Password doesn\'t match</string>
     <string name="succes_regist">User Registration Success</string>
+    <string name="succes_save">Add New Transaction Success</string>
     <string name="continue_login">Continue to Login</string>
     <string name="failed_regist">User Registration failed</string>
     <string name="retry">Retry</string>
@@ -54,4 +55,5 @@
     <string name="submit">Submit</string>
     <string name="transaction_form">Transaction Form</string>
     <string name="waste_price">Waste Price</string>
+    <string name="rp_0">Rp 0</string>
 </resources>

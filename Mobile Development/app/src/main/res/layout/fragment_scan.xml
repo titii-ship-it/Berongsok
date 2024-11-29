@@ -11,7 +11,7 @@
     tools:context=".ui.scan.ScanFragment">
 
     <TextView
-        android:id="@+id/text_dashboard"
+        android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -24,13 +24,28 @@
         android:textColor="@color/md_theme_primary"
         />
 
-    <ImageView
-        android:id="@+id/previewImageView"
-        android:layout_weight="3"
-        android:minHeight="600dp"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:src="@drawable/ic_place_holder"
-        android:layout_height="0dp"/>
+        android:layout_weight="3"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/previewImageView"
+            android:minHeight="600dp"
+            android:layout_width="match_parent"
+            android:src="@drawable/ic_place_holder"
+            android:layout_height="wrap_content"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+    </FrameLayout>
+
+
 
     <GridLayout
         android:layout_weight="0"

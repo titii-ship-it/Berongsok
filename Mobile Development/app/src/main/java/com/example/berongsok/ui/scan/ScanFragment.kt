@@ -13,13 +13,19 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.berongsok.data.local.SettingPreferences
+import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.FragmentScanBinding
 import com.example.berongsok.ui.transaction.TransactionFormActivity
+import com.example.berongsok.utils.Injection
 import com.example.berongsok.utils.getImageUri
+import com.example.berongsok.utils.uriToFile
 
 class ScanFragment : Fragment() {
 
@@ -52,13 +58,17 @@ class ScanFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val scanViewModel =
-            ViewModelProvider(this).get(ScanViewModel::class.java)
+
+        val dataStore = requireContext().applicationContext.dataStore
+
+        val scanViewModel: ScanViewModel by viewModels {
+            ScanViewModelFactory(SettingPreferences.getInstance(dataStore), Injection.provideUserRepository())
+        }
 
         _binding = FragmentScanBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
+        val textView: TextView = binding.textTitle
 
         scanViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
@@ -69,9 +79,45 @@ class ScanFragment : Fragment() {
         }
 
         binding.uploadBtn.setOnClickListener{
-            val intent = Intent(requireActivity(), TransactionFormActivity::class.java)
-            intent.putExtra(TransactionFormActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-            startActivity(intent)
+            val imageUri = currentImageUri
+
+
+            Log.d("Image Post", "imageURI: $currentImageUri")
+
+
+            if (imageUri != null) {
+                showLoading(true)
+                scanViewModel.uploadStory(imageUri, requireActivity())
+                scanViewModel.uploadResult.observe(requireActivity()) { result ->
+                    result.onSuccess { response ->
+                        if (response.status == "success") {
+                            showLoading(false)
+                            Log.d("Predict Response", "Predict Result: ${response.result}")
+                            Log.d("Predict Response", "Confidence Score Result: ${response.result.score}")
+                            val intent = Intent(context, TransactionFormActivity::class.java).apply {
+                                putExtra(TransactionFormActivity.EXTRA_PREDICT_RESULT, response.result.result)
+                                putExtra(TransactionFormActivity.EXTRA_PREDICT_SCORE, response.result.score)
+                                putExtra(TransactionFormActivity.EXTRA_PREDICT_PRICE, response.result.price)
+                                putExtra(TransactionFormActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+                            }
+                            startActivity(intent)
+                        } else {
+                            showLoading(false)
+                            showToast(response.status)
+                        }
+                    }
+                    result.onFailure { throwable ->
+                        throwable.localizedMessage?.let {
+                            showErrorDialog(it)
+                            showLoading(false)
+                        }
+                    }
+                }
+            } else {
+                showToast("All fields are required")
+                showLoading(false)
+            }
+
         }
 
         binding.openCameraBtn.setOnClickListener { openCamera() }
@@ -116,6 +162,10 @@ class ScanFragment : Fragment() {
         } else {
             currentImageUri = null
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showToast(message: String) {
