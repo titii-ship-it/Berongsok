@@ -4,7 +4,6 @@ const { Firestore } = require('@google-cloud/firestore');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-// const redis = require('redis');
 
 
 const db = new Firestore({
@@ -13,8 +12,6 @@ const db = new Firestore({
 });
 const usersCollection = db.collection('userProfile');
 
-// const redisClient = redis.createClient();
-// redisClient.connect();
 
 const registerUser = async (username, email, password) => {
   const userDoc = await usersCollection.doc(email).get();
@@ -32,11 +29,11 @@ const registerUser = async (username, email, password) => {
   const createdAt = new Date().toISOString();
 
   await usersCollection.doc(email).set({
-    username,
-    email,
+    username: username,
+    email: email,
     password: hashedPassword,
-    tpsId,
-    createdAt,
+    tpsId: tpsId,
+    createdAt: createdAt,
   });
 };
 
@@ -60,7 +57,7 @@ const loginUser = async (email, password) => {
       { tpsId: userData.tpsId,
         username: userData.username,}, 
         process.env.JWT_SECRET, 
-      { expiresIn: '1h' }
+      { expiresIn: '30d' }
     );
 
   return {
@@ -70,16 +67,6 @@ const loginUser = async (email, password) => {
     token,
   };
 };
-
-// const logoutUser = async (token) => {
-//   const decoded = jwt.decode(token);
-//   const expiresAt = decoded.exp;
-//   const ttl = expiresAt - Math.floor(Date.now() / 1000);
-
-//   if (ttl > 0) {
-//     await redisClient.setEx(`blacklist_${token}`, ttl, 'blacklisted');
-//   }
-// };
 
 const verifyToken = async (authorizationToken) => {
   // lempar error jika -> tidak ada header, tidak ada token, token tidak valid
@@ -111,6 +98,4 @@ module.exports = {
   registerUser,
   loginUser,
   verifyToken,
-  // generateRefreshToken,
-  // logoutUser
 };

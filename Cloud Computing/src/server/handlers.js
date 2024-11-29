@@ -1,13 +1,11 @@
-const FirebaseService = require('../services/firestore');
+const { Firestore, FieldValue } = require('@google-cloud/firestore');
+const FirebaseService = require('../services/firestoreService');
 const predictWaste = require('../services/predict');
 const AuthService = require('../services/userAuth');
-const { Firestore } = require('@google-cloud/firestore');
+const EmailService = require('../services/emailServices');
 const storeImage = require('../services/storeImage');
 const crypto = require('crypto');
-// const { get } = require('https');
 const jwt = require('jsonwebtoken');
-// const { channel } = require('diagnostics_channel');
-// const predictService = require('../services/newPredictService');
 
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
@@ -47,19 +45,120 @@ const loginHandler = async (request, h) => {
   } catch (error) {
     const respone = h.response({
       error: true,
-      message: `invalid token : ${error.message}`,
+      message: `${error.message}`,
     })
     respone.code(400);
     return respone;
   }
 };
 
-const predictHandler = async (request, h) => {
+// send OTP
+const requestPasswordResetHandler = async (request, h) => {
+  const { email } = request.payload;
 
   try {
+    // Cek apakah user ada
+    const db = new Firestore({
+      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      projectId: process.env.GCLOUD_PROJECT,
+    });
+    const usersCollection = db.collection('userProfile');
+    const userDoc = await usersCollection.doc(email).get();
+    if (!userDoc.exists) {
+      throw new Error("Email tidak terdaftar.");
+    }
+
+    // Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Simpan OTP ker Firebase -> 15 menit kadaluarsa
+    await usersCollection.doc(email).update({
+      otp,
+      otpExpiresAt: new Date(new Date().getTime() + 15 * 60000).toISOString(),
+    });
+
+    // Kirim OTP ke email user
+    await EmailService.sendEmail(email, 'Reset Password OTP', 'resetPasswordEmail', { email, otp});
+    
+    return h.response({
+      status: 'success',
+      message: 'OTP telah dikirim ke email Anda.',
+    }).code(200);
+
+  } catch (error) {
+    return h.response({
+      status: 'fail',
+      message: error.message,
+    }).code(400);
+  }
+};
+
+// reset password
+const resetPasswordHandler = async (request, h) => {
+  const { email, otp, newPassword } = request.payload;
+
+  try {
+    // Cek apakah user ada
+    const db = new Firestore({
+      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      projectId: process.env.GCLOUD_PROJECT,
+    });
+    const usersCollection = db.collection('userProfile');
+    const userDoc = await usersCollection.doc(email).get();
+    if (!userDoc.exists) {
+      throw new Error("Email tidak terdaftar.");
+    }
+
+    const userData = userDoc.data();
+
+    // Verifikasi OTP
+    if (!userData.otp || !userData.otpExpiresAt) {
+      throw new Error('OTP tidak ditemukan. Silakan minta OTP baru.');
+    }
+
+    if (userData.otp !== otp) {
+      throw new Error('OTP salah.');
+    }
+
+    if (new Date() > new Date(userData.otpExpiresAt)) {
+      throw new Error('OTP telah kadaluarsa. Silakan minta OTP baru.');
+    }
+
+    // Update password
+    if (newPassword.length < 8) {
+      throw new Error('Password harus memiliki minimal 8 karakter.');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 8);
+
+    await usersCollection.doc(email).update({
+      password: hashedPassword,
+      otp: FieldValue.delete(),
+      otpExpiresAt: FieldValue.delete(),
+    });
+
+    return h.response({
+      status: 'success',
+      message: 'Password Anda berhasil diubah.',
+    }).code(201);
+
+  } catch (error) {
+    return h.response({
+      status: 'fail',
+      message: error.message,
+    }).code(400);
+  }
+};
+
+const predictHandler = async (request, h) => {
+  try {
+      // CEK user login 
+      const authorizationToken = request.headers["authorization"];
+      const decoded = await AuthService.verifyToken(authorizationToken);
+
       // ambil model dan image dari request.payload
       const { model } = request.server.app;  
-      const { image } = request.payload ;
+      const { image } = request.payload;
         if (!image) {
           return h.response({
               status: 'fail',  
@@ -67,10 +166,6 @@ const predictHandler = async (request, h) => {
               message: 'Image is required'
           }).code(400);
         }
-        
-        // CEK user login 
-        const authorizationToken = request.headers["authorization"];
-        const decoded = await AuthService.verifyToken(authorizationToken);
         
         const { result, confidenceScore } = await predictWaste(model, image);
         const wasteType = result;
@@ -135,15 +230,15 @@ const saveTransaction = async (request, h) => {
     const createAt = new Date().toISOString();
 
     await FirebaseService.storeData(transactionId, {
-      transactionId,
-      tpsId:decoded.tpsId,
-      nasabahName,
-      price,
-      wasteType,
-      weight,
-      totalPrice,
       imageUrl,
       createAt,
+      totalPrice,
+      weight,
+      price,
+      wasteType,
+      tpsId:decoded.tpsId,
+      nasabahName,
+      transactionId,
     });
     
     const responese = h.response({
@@ -400,35 +495,35 @@ const getTransactionDetailHandler = async (request, h) => {
 // };
 
 // test handler for token verification
-const testHandler = async (request, h) => {
-  try {
-      const authorizationToken = request.headers["authorization"];
-      const decoded = await AuthService.verifyToken(authorizationToken);
+// const testHandler = async (request, h) => {
+//   try {
+//       const authorizationToken = request.headers["authorization"];
+//       const decoded = await AuthService.verifyToken(authorizationToken);
 
-      const userDoc = await usersCollection.doc(decoded.email).get();
-      const userData = userDoc.data();
+//       const userDoc = await usersCollection.doc(decoded.email).get();
+//       const userData = userDoc.data();
 
-      const newRefreshToken = jwt.sign(
+//       const newRefreshToken = jwt.sign(
         
-      )
+//       )
 
-      const response = h.response({
-          status: 'success',
-          message: 'Token is valid',
-          decoded
-      });
-      response.code(200);
-      return response;
+//       const response = h.response({
+//           status: 'success',
+//           message: 'Token is valid',
+//           decoded
+//       });
+//       response.code(200);
+//       return response;
       
-  } catch (error) {  // ambil error dari verifyToken
-      const response = h.response({
-          status: 'fail',
-          message: error.message
-      });
-      response.code(401);
-      return response;
-  }
-}
+//   } catch (error) {  // ambil error dari verifyToken
+//       const response = h.response({
+//           status: 'fail',
+//           message: error.message
+//       });
+//       response.code(401);
+//       return response;
+//   }
+// }
 // <---- Kumpulan test handler ---->
 
 module.exports = {
@@ -438,7 +533,8 @@ module.exports = {
     saveTransaction,
     getHistoryHandler,
     getTransactionDetailHandler,
-    // logoutHandler,
-    testHandler,
+    requestPasswordResetHandler,
+    resetPasswordHandler,
+    // testHandler,
     // testSaveHandler,
 };

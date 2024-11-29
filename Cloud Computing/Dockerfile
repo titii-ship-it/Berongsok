@@ -1,23 +1,19 @@
-# Use the official Node.js image as the base image
 FROM node:18
 
-# Create and change to the app directory
 WORKDIR /usr/src/app
-# WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install --legacy-peer-deps
 
-# Copy the rest of the application code
 COPY . .
 
-# Expose the port the app runs on
+ENV PORT=8080
+ENV MODEL_PATH=./src/model/model.json
+ENV GCLOUD_PROJECT=berongsok-capstone
+ENV STORAGE_BUCKET=berongsok-bucket
+ENV GOOGLE_APPLICATION_CREDENTIALS=./service_account.json
+
 EXPOSE 8080
 
-ENV PORT=8080
-
-# Define the command to run the app
 CMD ["npm", "start"]

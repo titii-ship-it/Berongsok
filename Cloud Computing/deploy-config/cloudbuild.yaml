@@ -1,0 +1,39 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build', 
+      '-f', 'Cloud-Computing/Dockerfile',
+      '-t',
+      'asia-southeast2-docker.pkg.dev/$PROJECT_ID/berongsok-capstone/berongsok-backend:latest', 
+      '.'
+    ]
+
+  # Push the Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'asia-southeast2-docker.pkg.dev/$PROJECT_ID/berongsok-capstone/berongsok-backend:latest'
+    ]
+
+  # Deploy the Docker image to Google Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    entrypoint: gcloud
+    args: [
+      'run', 'deploy', 'berongsok-service',
+      '--image',
+      'asia-southeast2-docker.pkg.dev/$PROJECT_ID/berongsok-capstone/berongsok-backend:latest',
+      '--platform', 'managed',
+      '--region', 'asia-southeast2',
+      '--allow-unauthenticated',
+      '--set-env-vars',
+      'GCLOUD_PROJECT=berongsok-capstone,STORAGE_BUCKET=berongsok-capstone,MODEL_PATH=./src/model/model.json'
+    ]
+
+images:
+  - 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/berongsok-capstone/berongsok-backend:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+# gcloud builds submit --config Cloud-Computing/deploy-config/cloudbuild.yaml .

@@ -127,6 +127,9 @@ Endpoint to store data in the database
 - Header
   - Authorization: Bearer \<token>
 
+Request body:
+  - `image` as file
+
 - Method
   - POST
 
@@ -135,7 +138,7 @@ Request body:
 - wasteType
 - price -> waste price per kg
 - weight
-- totalPrice -> price \* weight
+- totalPrice -> price \* weightFieldValue
 
 Data to save to the database
 - transactionId -> id generated during prediction
@@ -263,7 +266,7 @@ if fail :
 }
 ```
 
-## 6. get transaksi tertentu
+# 6. get transaksi tertentu
 Endpoint to retrieve prediction history by transaction ID
 - URL
   - `/transactionhistory/detail?tpsId=param&transactionId=param`
@@ -313,5 +316,122 @@ if fail - internal server error (Status code : 500) :
   "status": "fail",
   "data": [],
   "message": "An internal server error occurred, please try again later"
+}
+```
+
+# 7. Request OTP
+- URL
+  - `/request-password-reset`
+
+- Method
+  - POST
+
+- request body
+  - email
+
+## response :
+
+### Success
+Success  (Status code 200) :
+```json
+{
+    "status": "success",
+    "message": "OTP telah dikirim ke email Anda."
+}
+```
+
+### Fail
+Email not found (Status code : 404):
+```json
+{
+    "status": "fail",
+    "message": "Email tidak terdaftar."
+}
+```
+
+Server error (Status code : 404):
+```json
+{
+    "status": "fail",
+    "message": "Terjadi kesalahan pada server saat mengirim email."
+}
+```
+
+# 8. Reset Pssword
+
+- URL
+  - `/reset-password`
+
+- Method
+  - POST
+
+- request body
+  - email
+  - otp
+  - newPassword
+
+
+## response :
+
+### Success
+Success  (Status code 201) :
+```json
+{
+    "status": "success",
+    "message": "Password Anda berhasil diubah."
+}
+```
+
+### Fail
+Email not found (Status code : 404):
+```json
+{
+    "status": "fail",
+    "message": "Email tidak terdaftar."
+}
+```
+
+
+```json
+{
+    "status": "fail",
+    "message": "OTP tidak ditemukan. Silakan minta OTP baru."
+}
+```
+
+Server Error (Status code : 404):
+```json
+{
+    "status": "fail",
+    "message": "Terjadi kesalahan pada server saat mengirim email."
+}
+```
+OTP code not found or not generated
+```json
+{
+    "status": "fail",
+    "message": "OTP tidak ditemukan. Silakan minta OTP baru."
+}
+```
+Invalid OTP code
+```json
+{
+    "status": "fail",
+    "message": "OTP salah."
+}
+```
+
+OTP code has expired
+```json
+{
+    "status": "fail",
+    "message": "OTP telah kadaluarsa. Silakan minta OTP baru."
+}
+```
+Password less than 8 character
+```json
+{
+    "status": "fail",
+    "message": "Password harus memiliki minimal 8 karakter."
 }
 ```

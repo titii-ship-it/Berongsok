@@ -24,34 +24,6 @@ const routes = [
       path: '/login',
       handler: handlers.loginHandler,
     },
-    // {
-    //   method: 'POST',
-    //   path: '/logout',
-    //   handler: handlers.logoutHandler,
-    // },
-    // -> test untuk fungsi auth 
-    { 
-      method: 'POST',
-      path: '/testauth',
-      handler: handlers.testHandler,
-    },
-
-    // -> test untuk menyimpan data ke firestore + cloud storage
-    // { 
-    //   method: 'POST',
-    //   path: `/saveTransaction`,
-    //   handler: handlers.testSaveHandler,
-    //   // handler: handlers.saveTransaction,
-    //   options: {
-    //     payload: {
-    //       maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
-    //       output: 'stream',
-    //       parse: true,
-    //       allow: 'multipart/form-data',
-    //       multipart: true,
-    //     }
-    //   }
-    // },
     {
       method: 'POST',
       path: '/predict',
@@ -90,7 +62,49 @@ const routes = [
       path: '/transactionhistory/detail',
       handler: handlers.getTransactionDetailHandler,
     },
+    {
+      method: 'POST',
+      path: '/request-password-reset',
+      handler: handlers.requestPasswordResetHandler,
+    },
+    {
+      method: 'POST',
+      path: '/reset-password',
+      handler: handlers.resetPasswordHandler,
+    },
 
+    // <---- Kumpulan test routes ---->
+    
+    // -> test logout
+    // {
+    //   method: 'POST',
+    //   path: '/logout',
+    //   handler: handlers.logoutHandler,
+    // },
+
+    // -> test untuk fungsi auth 
+    // { 
+    //   method: 'POST',
+    //   path: '/testauth',
+    //   handler: handlers.testHandler,
+    // },
+
+    // -> test untuk menyimpan data ke firestore + cloud storage
+    // { 
+    //   method: 'POST',
+    //   path: `/saveTransaction`,
+    //   handler: handlers.testSaveHandler,
+    //   // handler: handlers.saveTransaction,
+    //   options: {
+    //     payload: {
+    //       maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
+    //       output: 'stream',
+    //       parse: true,
+    //       allow: 'multipart/form-data',
+    //       multipart: true,
+    //     }
+    //   }
+    // },
 ]
 
 
