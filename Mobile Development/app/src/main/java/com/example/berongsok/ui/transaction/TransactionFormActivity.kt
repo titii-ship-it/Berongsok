@@ -22,8 +22,12 @@ import com.example.berongsok.utils.TextUtils
 class TransactionFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTransactionFormBinding
     private val transactionViewModel: TransactionViewModel by viewModels {
-        TransactionViewModelFactory(SettingPreferences.getInstance(application.dataStore), Injection.provideUserRepository())
+        TransactionViewModelFactory(
+            SettingPreferences.getInstance(application.dataStore),
+            Injection.provideUserRepository()
+        )
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransactionFormBinding.inflate(layoutInflater)
@@ -32,7 +36,7 @@ class TransactionFormActivity : AppCompatActivity() {
         val imageUri = Uri.parse(intent.getStringExtra(EXTRA_IMAGE_URI))
         val wasteType = intent.getStringExtra(EXTRA_PREDICT_RESULT).toString()
         val wastePrice = intent.getStringExtra(EXTRA_PREDICT_PRICE).toString().toInt()
-        val score = intent.getDoubleExtra(EXTRA_PREDICT_SCORE,0.0)
+        val score = intent.getDoubleExtra(EXTRA_PREDICT_SCORE, 0.0)
         val formattedScore = TextUtils.formatPercentage(score)
 
         binding.tvScore.text = formattedScore
@@ -68,8 +72,15 @@ class TransactionFormActivity : AppCompatActivity() {
 
             if (imageUri != null) {
                 showLoading(true)
-                    transactionViewModel.addTransaction(imageUri, nasabahName, weight, totalPrice, wasteType,
-                        wastePrice.toString(),this)
+                transactionViewModel.addTransaction(
+                    imageUri,
+                    nasabahName,
+                    weight,
+                    wasteType,
+                    wastePrice.toString(),
+                    totalPrice,
+                    this
+                )
                 transactionViewModel.addResult.observe(this) { result ->
                     result.onSuccess { response ->
                         if (response.status == "success") {
@@ -131,7 +142,7 @@ class TransactionFormActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_IMAGE_URI = "extra_image_uri"
         const val EXTRA_PREDICT_RESULT = "extra_predict_result"
-        const val EXTRA_PREDICT_SCORE= "extra_predict_score"
+        const val EXTRA_PREDICT_SCORE = "extra_predict_score"
         const val EXTRA_PREDICT_PRICE = "extra_predict_price"
     }
 }

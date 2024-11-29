@@ -2,6 +2,7 @@ package com.example.berongsok.data.remote
 
 import com.example.berongsok.data.remote.api.ApiService
 import com.example.berongsok.data.remote.response.ErrorResponse
+import com.example.berongsok.data.remote.response.HistoryResponse
 import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.NewTransactionResponse
 import com.example.berongsok.data.remote.response.PredictResponse
@@ -77,4 +78,17 @@ class AuthRepository(private val apiService: ApiService) {
             Result.failure(Exception(errorMessage))
         }
     }
+
+//    suspend fun getHistory(tpsId :String): Result<HistoryResponse> {
+//        return try {
+//            val response = apiService.getHistory(tpsId)
+//            Result.success(response)
+//        } catch (e: HttpException) {
+//            val errorBodyString = e.response()?.errorBody()?.string()
+//            val errorBody = Gson().fromJson(errorBodyString, ErrorResponse::class.java)
+//            val errorMessage = errorBody?.message ?: "An unknown error occurred"
+//            Result.failure(Exception(errorMessage))
+//        }
+//
+//    }
 }
