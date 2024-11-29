@@ -1,13 +1,13 @@
 
 # QUEST for Cloud Computing
 ## Main Quest
-- [ ] **Utilize Google Cloud services to support application needs**, such as:
+- [x] **Utilize Google Cloud services to support application needs**, such as:
     - Compute services for hosting APIs or other web services.
     - Database services for database applications.
     - Storage services for storing data, etc."
 
 
-- [ ] **Utilize Google Cloud services for the machine learning workflow**, including analysis, training, and serving models. For example:
+- [x] **Utilize Google Cloud services for the machine learning workflow**, including analysis, training, and serving models. For example:
     - Use compute services for hosting machine learning deployments.
     - Utilize data services for data solutions, etc.
 
