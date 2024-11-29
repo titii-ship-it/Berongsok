@@ -2,6 +2,7 @@ package com.example.berongsok.ui.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -42,9 +43,13 @@ class RegisterActivity : AppCompatActivity() {
             val confirmPassword = binding.edConfirmPassword.text.toString()
             val tpsName = binding.edRegisterUsername.text.toString()
 
+            Log.d("Akun TPS", "email: $email")
+            Log.d("Akun TPS", "password: $password")
+            Log.d("Akun TPS", "tpsName: $tpsName")
+
             if (email.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank() && tpsName.isNotBlank()) {
                 if (password == confirmPassword) {
-                    registerViewModel.register(email, tpsName, password)
+                    registerViewModel.register(tpsName, email, password)
                 } else {
                     Toast.makeText(this, R.string.password_mismatch, Toast.LENGTH_SHORT).show()
                 }
