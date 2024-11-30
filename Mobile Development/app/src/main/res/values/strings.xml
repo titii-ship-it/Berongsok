@@ -56,4 +56,10 @@
     <string name="transaction_form">Transaction Form</string>
     <string name="waste_price">Waste Price</string>
     <string name="rp_0">Rp 0</string>
+    <string name="invalid_otp">Input 6 number OTP Code</string>
+    <string name="verify">Verify</string>
+    <string name="verify_your_account">Verify your Account</string>
+    <string name="check_your_mail">OTP has been sent to your email. Please check your email inbox.</string>
+    <string name="otp_code">OTP CODE</string>
+    <string name="check_your_otp_code">You have already requested an OTP. Please check your email or try again in 5 minutes</string>
 </resources>

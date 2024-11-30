@@ -21,7 +21,7 @@ data class PredictResult (
     val score: Double,
 
     @field:SerializedName("price")
-    val price: String,
+    val price: Int,
 
     @field:SerializedName("createAt")
     val createAt: String,

@@ -27,7 +27,7 @@ class TransactionFormActivity : AppCompatActivity() {
             Injection.provideUserRepository()
         )
     }
-    private var totalPrice: Int = 0
+    private var totalPrice: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class TransactionFormActivity : AppCompatActivity() {
 
         val imageUri = Uri.parse(intent.getStringExtra(EXTRA_IMAGE_URI))
         val wasteType = intent.getStringExtra(EXTRA_PREDICT_RESULT).toString()
-        val wastePrice = intent.getStringExtra(EXTRA_PREDICT_PRICE).toString().toInt()
+        val wastePrice = intent.getIntExtra(EXTRA_PREDICT_PRICE, 0)
         val score = intent.getDoubleExtra(EXTRA_PREDICT_SCORE, 0.0)
         val formattedScore = TextUtils.formatPercentage(score)
 
@@ -52,7 +52,7 @@ class TransactionFormActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val weight = s.toString().toDoubleOrNull() ?: 0.0
-                val totalPrice = weight * wastePrice
+                totalPrice = weight * wastePrice
                 val formattedPrice = TextUtils.formatRupiah(totalPrice)
 
                 binding.tvTotalPrice.text = formattedPrice
@@ -68,16 +68,16 @@ class TransactionFormActivity : AppCompatActivity() {
 
         binding.btnSubmit.setOnClickListener {
             val nasabahName = binding.edNasabahName.text.toString()
-            val weight = binding.edWasteWeight.text.toString()
+            val weight = binding.edWasteWeight.text.toString().toDouble()
 
             if (imageUri != null) {
                 showLoading(true)
                 transactionViewModel.addTransaction(
                     imageUri,
                     nasabahName,
-                    weight,
-                    wastePrice,
                     wasteType,
+                    wastePrice,
+                    weight,
                     totalPrice,
                     this
                 )
@@ -117,7 +117,7 @@ class TransactionFormActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.succes_save)
             .setMessage(message)
-            .setPositiveButton("Okay") { dialog, _ ->
+            .setPositiveButton("Okay") { _, _ ->
                 gotoMain()
             }
             .show()

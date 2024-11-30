@@ -18,6 +18,7 @@ import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivityLoginBinding
 import com.example.berongsok.databinding.ActivityRegisterBinding
+import com.example.berongsok.ui.component.OTPEditText
 import com.example.berongsok.ui.login.LoginActivity
 import com.example.berongsok.utils.Injection
 import kotlinx.coroutines.launch
@@ -53,7 +54,6 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, R.string.password_mismatch, Toast.LENGTH_SHORT).show()
                 }
-
             } else {
                 Toast.makeText(this, R.string.fields_required, Toast.LENGTH_SHORT).show()
             }
@@ -65,38 +65,39 @@ class RegisterActivity : AppCompatActivity() {
 
         registerViewModel.registerResult.observe(this) { result ->
             result.onSuccess { response ->
+                val email = binding.edRegisterEmail.getEmail()
                 if (!response.error) {
-                    showRegistrationDialog(response.message)
+                    val intent = Intent(this, VerifyOTPActivity::class.java)
+                    intent.putExtra(VerifyOTPActivity.EXTRA_EMAIL, email)
+                    startActivity(intent)
+                    showToast(response.message)
                 } else {
                     showErrorDialog(response.message)
                 }
             }
             result.onFailure { throwable ->
                 throwable.localizedMessage?.let {
-                    showErrorDialog(it)
+                    val email = binding.edRegisterEmail.getEmail()
+                    if (it == this.getString(R.string.check_your_otp_code)) {
+                        showToast(it)
+                        intent.putExtra(VerifyOTPActivity.EXTRA_EMAIL, email)
+                        startActivity(intent)
+                    } else {
+                        showErrorDialog(it)
+                    }
+
                     showLoading(false)
                 }
             }
         }
     }
 
-    private fun gotoMain() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun gotoLogin() {
         startActivity(Intent(this, LoginActivity::class.java))
-    }
-
-    private fun showRegistrationDialog(message: String) {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.succes_regist)
-            .setMessage(message)
-            .setPositiveButton(R.string.continue_login) { dialog, _ ->
-                goToLogin()
-            }
-            .show()
     }
 
     private fun showErrorDialog(message: String) {

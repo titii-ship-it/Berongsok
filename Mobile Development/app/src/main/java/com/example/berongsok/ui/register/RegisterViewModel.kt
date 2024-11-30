@@ -31,6 +31,20 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
             }
         }
     }
+
+    fun verify(email: String, otp: Int) {
+        viewModelScope.launch {
+            _loading.postValue(true)
+            try {
+                val response = authRepository.verifyAccount(email, otp)
+                _registerResult.postValue(response)
+            } catch (e: Exception) {
+                _registerResult.postValue(Result.failure(e))
+            } finally {
+                _loading.postValue(false)
+            }
+        }
+    }
 }
 
 class RegisterViewModelFactory(private val authRepository: AuthRepository) : ViewModelProvider.Factory {

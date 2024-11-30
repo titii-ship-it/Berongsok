@@ -6,6 +6,7 @@ import com.example.berongsok.data.remote.response.NewTransactionResponse
 import com.example.berongsok.data.remote.response.PredictResponse
 import com.example.berongsok.data.remote.response.RegisterResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -26,6 +27,13 @@ interface ApiService {
     ): RegisterResponse
 
     @FormUrlEncoded
+    @POST("verify-registration")
+    suspend fun verifyAccount(
+        @Field("email") email: String,
+        @Field("otp") otp: Int
+    ): RegisterResponse
+
+    @FormUrlEncoded
     @POST("login")
     suspend fun login(
         @Field("email") email: String,
@@ -43,11 +51,11 @@ interface ApiService {
     @POST("waste/transactions")
     suspend fun addTransaction(
         @Header("Authorization") token: String,
-        @Part("nasabahName") nasabahName: String,
-        @Part("wasteType") wasteType: String,
+        @Part("nasabahName") nasabahName: RequestBody,
+        @Part("wasteType") wasteType: RequestBody,
         @Part("price") price: Int,
-        @Part("weight") weight: String,
-        @Part("totalPrice") totalPrice: Int,
+        @Part("weight") weight: Double,
+        @Part("totalPrice") totalPrice: Double,
         @Part image: MultipartBody.Part,
     ): NewTransactionResponse
 

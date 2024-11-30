@@ -24,6 +24,18 @@ class AuthRepository(private val apiService: ApiService) {
             Result.failure(Exception(errorMessage))
         }
     }
+    suspend fun verifyAccount(email: String, otp: Int): Result<RegisterResponse> {
+        return try {
+            val response = apiService.verifyAccount(email, otp)
+            Result.success(response)
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message ?: "An unknown error occurred"
+
+            Result.failure(Exception(errorMessage))
+        }
+    }
 
     suspend fun login(email: String, password: String): Result<LoginResponse> {
         return try {
@@ -52,11 +64,11 @@ class AuthRepository(private val apiService: ApiService) {
 
     suspend fun addTransaction(
         token: String,
-        nasabahName: String,
-        wasteType: String,
+        nasabahName: RequestBody,
+        wasteType: RequestBody,
         price: Int,
-        weight: String,
-        totalPrice: Int,
+        weight: Double,
+        totalPrice: Double,
         image: MultipartBody.Part
     ): Result<NewTransactionResponse> {
         return try {
@@ -77,17 +89,4 @@ class AuthRepository(private val apiService: ApiService) {
             Result.failure(Exception(errorMessage))
         }
     }
-
-//    suspend fun getHistory(tpsId :String): Result<HistoryResponse> {
-//        return try {
-//            val response = apiService.getHistory(tpsId)
-//            Result.success(response)
-//        } catch (e: HttpException) {
-//            val errorBodyString = e.response()?.errorBody()?.string()
-//            val errorBody = Gson().fromJson(errorBodyString, ErrorResponse::class.java)
-//            val errorMessage = errorBody?.message ?: "An unknown error occurred"
-//            Result.failure(Exception(errorMessage))
-//        }
-//
-//    }
 }

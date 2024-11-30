@@ -94,6 +94,7 @@ class ScanFragment : Fragment() {
                             showLoading(false)
                             Log.d("Predict Response", "Predict Result: ${response.result}")
                             Log.d("Predict Response", "Confidence Score Result: ${response.result.score}")
+                            Log.d("Predict Response", "Price: ${response.result.score}")
                             val intent = Intent(context, TransactionFormActivity::class.java).apply {
                                 putExtra(TransactionFormActivity.EXTRA_PREDICT_RESULT, response.result.result)
                                 putExtra(TransactionFormActivity.EXTRA_PREDICT_SCORE, response.result.score)

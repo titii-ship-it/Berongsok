@@ -34,20 +34,21 @@ class TransactionViewModel (private val dataStoreManager: SettingPreferences, pr
         nasabahName: String,
         wasteType: String,
         price: Int,
-        weight: String,
-        totalPrice: Int,
+        weight: Double,
+        totalPrice: Double,
         context: Context
     ) {
         imageUri.let { uri ->
             val imageFile = uriToFile(uri, context).reduceFileImage()
             Log.d("Image File", "Path: ${imageFile.path}")
+            val nasabahNameBody = nasabahName.toRequestBody("text/plain".toMediaType())
+            val wasteTypeBody = wasteType.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/png".toMediaType())
             val multipartBody = MultipartBody.Part.createFormData(
                 "image",
                 imageFile.name,
                 requestImageFile
             )
-
 
             viewModelScope.launch {
                 dataStoreManager.tpsToken.collect { token ->
@@ -56,13 +57,15 @@ class TransactionViewModel (private val dataStoreManager: SettingPreferences, pr
                         try {
                             val response = userRepository.addTransaction(
                                 "Bearer $token",
-                                nasabahName,
-                                wasteType,
+                                nasabahNameBody,
+                                wasteTypeBody,
                                 price,
                                 weight,
                                 totalPrice,
                                 multipartBody
                             )
+                            Log.d("Transaction", "nasabahName: $nasabahName")
+                            Log.d("Transaction", "wasteType: $wasteType")
                             _addTransaction.postValue(response)
                         } catch (e: Exception) {
                             Log.e("Add Transaction Error", e.message ?: "Unknown error")
