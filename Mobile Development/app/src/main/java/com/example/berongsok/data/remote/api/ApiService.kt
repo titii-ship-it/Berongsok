@@ -6,7 +6,6 @@ import com.example.berongsok.data.remote.response.NewTransactionResponse
 import com.example.berongsok.data.remote.response.PredictResponse
 import com.example.berongsok.data.remote.response.RegisterResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -55,5 +54,13 @@ interface ApiService {
     @GET("transactionhistory")
     fun getHistory(
         @Query("tpsId") tpsId: String
-    ):Call<HistoryResponse>
+    ): Call<HistoryResponse>
+
+    @GET("transactionhistory")
+    fun getDetailHistory(
+        @Query("tpsId") tpsId: String,
+        @Query("transactionId") transactionId: String
+    ): Call<HistoryResponse>
+
+
 }

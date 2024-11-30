@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize"
     android:orientation="vertical"
     android:padding="12dp"
-    android:layout_marginBottom="?attr/actionBarSize"
     tools:context=".ui.history.HistoryFragment">
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,8 +24,7 @@
         android:text="@string/title_dashboard"
         android:textAlignment="textStart"
         android:textColor="@color/md_theme_primary"
-        android:textSize="36sp"
-        />
+        android:textSize="36sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -38,23 +37,6 @@
             android:layout_marginTop="4dp"
             tools:listitem="@layout/item_history" />
 
-        <TextView
-            android:id="@+id/tvHistory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:visibility="gone"
-            android:textSize="16sp"
-            android:textColor="@color/md_theme_primary"
-            android:fontFamily="@font/roboto_regular"
-            android:text="@string/no_transaction_history"
-            />
-
-
     </FrameLayout>
-
-
-
 
 </LinearLayout>

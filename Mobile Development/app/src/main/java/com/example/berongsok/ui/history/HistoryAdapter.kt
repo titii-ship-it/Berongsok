@@ -1,17 +1,23 @@
 package com.example.berongsok.ui.history
 
+import android.content.ContentValues
 import android.content.Intent
-import android.provider.ContactsContract.Data
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.berongsok.R
 import com.example.berongsok.data.remote.response.DataItem
 import com.example.berongsok.databinding.ItemHistoryBinding
+import com.example.berongsok.ui.historydetail.HistoryDetailActivity
+import com.example.berongsok.ui.historydetail.HistoryDetailActivity.Companion.EXTRA_HISTORY
+import com.example.berongsok.ui.historydetail.HistoryDetailActivity.Companion.EXTRA_TPS
+import com.example.berongsok.utils.TextUtils.formatRupiah
 
-class HistoryAdapter: ListAdapter<DataItem, HistoryAdapter.HistoryViewHolder>(DIFF_CALLBACK) {
+class HistoryAdapter : ListAdapter<DataItem, HistoryAdapter.HistoryViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -22,26 +28,38 @@ class HistoryAdapter: ListAdapter<DataItem, HistoryAdapter.HistoryViewHolder>(DI
         return HistoryViewHolder(binding)
     }
 
-    class HistoryViewHolder(private val binding: ItemHistoryBinding): RecyclerView.ViewHolder(binding.root) {
+    class HistoryViewHolder(private val binding: ItemHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(history: DataItem) {
+            Log.d("HistoryAdapter", "Data binding: $history")
 
-            val history = history.history
-            if (history != null) {
-                binding.tvItemNasabah.text = history.nasabahName
-                binding.tvItemWasteType.text = history.wasteType
-                binding.tvItemTotalPrice.text = history.totalPrice.toString()
+            binding.tvItemNasabah.text = history.nasabahName ?: "unknown name"
+            binding.tvItemWasteType.text = history.wasteType ?: "Unknown type"
+            binding.tvItemTotalPrice.text = formatRupiah((history.totalPrice ?: 0).toDouble())
 
+
+            val imgUrl = history.imgUrl
+            Log.d("HistoryAdapter", "Image URL: $imgUrl") // Add this log to see the actual URL
+
+            if (imgUrl.isNullOrEmpty()) {
                 Glide.with(itemView.context)
-                    .load(history.imgUrl)
+                    .load(R.drawable.ic_place_holder)
                     .into(binding.imgPredicted)
-//
-//                itemView.setOnClickListener {
-//                    val intent = Intent(itemView.context, DetailHistoryActivity::classjava)
-//                }
-
-
+            } else {
+                Glide.with(itemView.context)
+                    .load(imgUrl)
+                    .into(binding.imgPredicted)
             }
 
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, HistoryDetailActivity::class.java)
+                intent.putExtra(EXTRA_HISTORY, history.transactionId)
+                intent.putExtra(EXTRA_TPS, history.tpsId)
+                Log.d(ContentValues.TAG, "trasactiondetail: ${history.transactionId} ")
+                Log.d(ContentValues.TAG, "tps id detail: ${history.tpsId} ")
+
+                itemView.context.startActivity(intent)
+            }
         }
     }
 
