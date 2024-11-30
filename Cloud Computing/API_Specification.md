@@ -1,7 +1,8 @@
 This document provides the specifications for the API endpoints of our application. Each endpoint is described with its URL, HTTP method, request parameters, and possible responses. The API is designed to be RESTful and follows standard conventions for request and response formats.
 
-## 1. Register
+# 1. Register Process
 
+## a. Register
 - URL
   - `/register`
 - Method
@@ -12,6 +13,40 @@ This document provides the specifications for the API endpoints of our applicati
   - `password` as `string`, must be at least 8 characters
 
 if successful:
+```json
+{
+  "error": false,
+  "message": "OTP has been sent to your email. Please verify to complete registration."
+}
+```
+
+if fail - email already taken:
+```json
+{
+  "error": true,
+  "message": "This email is already registered"
+}
+```
+
+if fail - tried registering less than 5 minutes ago:
+```json
+{
+  "error": true,
+  "message": "You have already tried registering less than 5 minutes ago. Please wait before trying again."
+}
+```
+
+
+
+## b. register verification
+- URL
+  - `/verify-registration`
+- Method
+  - POST
+- Request Body :
+  - `email` as `string`
+  - `otp` as `int`
+if successful:
 
 ```json
 {
@@ -20,16 +55,24 @@ if successful:
 }
 ```
 
-if fail - email already taken:
-
+if fail - no pending registration:
 ```json
 {
-  "error": true,
-  "message": "This email is already registered"
+  "error": true, 
+  "message": "No pending registration found for this email."
 }
 ```
 
-## 2. Login
+if fail - no pending registration:
+```json
+{
+  "error": true, 
+  "message": "OTP has expired. Please register again."
+}
+```
+
+
+# 2. Login
 
 - URL
   - `/login`

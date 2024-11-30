@@ -4,6 +4,7 @@ const { Firestore } = require('@google-cloud/firestore');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const EmailService = require('./emailServices');
 
 
 const db = new Firestore({
@@ -11,30 +12,52 @@ const db = new Firestore({
   projectId: process.env.GCLOUD_PROJECT,
 });
 const usersCollection = db.collection('userProfile');
+const pendingUsersCollection = db.collection('pendingUsers');
 
 
 const registerUser = async (username, email, password) => {
-  const userDoc = await usersCollection.doc(email).get();
+    const userDoc = await usersCollection.doc(email).get();
+    const pendingUserDoc = await pendingUsersCollection.doc(email).get();
 
-  if (userDoc.exists) {
-    throw new Error('This email is already registered');
-  }
+    if (userDoc.exists) {
+      throw new Error('This email is already registered');
+    }
 
-  if (password.length < 8) {
-    throw new Error('Password must be at least 8 characters');
-  }
+    if (password.length < 8) {
+      throw new Error('Password must be at least 8 characters');
+    }
+  
+    const hashedPassword = await bcrypt.hash(password, 8);
+    const tpsId = crypto.randomBytes(16).toString('hex');
+    const createdAt = new Date().toISOString();
 
-  const hashedPassword = await bcrypt.hash(password, 8);
-  const tpsId = crypto.randomBytes(16).toString('hex');
-  const createdAt = new Date().toISOString();
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiresAt = new Date(new Date().getTime() + 15 * 60000).toISOString();
 
-  await usersCollection.doc(email).set({
-    username: username,
-    email: email,
-    password: hashedPassword,
-    tpsId: tpsId,
-    createdAt: createdAt,
-  });
+    // jika sudah pernah mencoba registrasi kurang dari 5 menit lalu
+    if (pendingUserDoc.exists) {
+      const data = pendingUserDoc.data();
+      const lastAttempt = new Date(data.createdAt);
+      const now = new Date();
+      const diff = Math.abs(now - lastAttempt) / 60000;
+
+      if (diff < 5) {
+        throw new Error('You have already requested an OTP. Please check your email or try again in 5 minutes');
+      }
+    }
+    // save ke collection pendingUsers
+    await pendingUsersCollection.doc(email).set({
+      username: username,
+      email: email,
+      password: hashedPassword,
+      tpsId: tpsId,
+      otp,
+      otpExpiresAt,
+      createdAt: createdAt,
+    });
+                                            // judul         // template       // data
+    await EmailService.sendEmail(email, 'Registration OTP', 'registerOTPEmail', { email, otp });
+
 };
 
 const loginUser = async (email, password) => {

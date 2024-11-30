@@ -21,6 +21,11 @@ const routes = [
     },
     {
       method: 'POST',
+      path: '/verify-registration',
+      handler: handlers.verifyRegistrationHandler,
+    },
+    {
+      method: 'POST',
       path: '/login',
       handler: handlers.loginHandler,
     },

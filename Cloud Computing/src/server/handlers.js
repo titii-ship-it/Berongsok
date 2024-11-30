@@ -8,25 +8,87 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { create } = require('domain');
 
+// File: src/server/handlers.js
+const db = new Firestore({
+  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  projectId: process.env.GCLOUD_PROJECT,
+});
+const usersCollection = db.collection('userProfile');
+const pendingUsersCollection = db.collection('pendingUsers');
+
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
 
   try {
     await AuthService.registerUser(username, email, password);
-    const respone = h.response({
+    const responese = h.response({
       error: false,
-      message: 'Your account has been successfully created.',
+      message: 'OTP has been sent to your email. Please verify to complete registration.',
     })
-    respone.code(200);
-    return respone;
+    responese.code(200);
+    return responese;
 
   } catch (error) {
-    const respone = h.response({
+    const responese = h.response({
       error: true,
       message: error.message,
     })
-    respone.code(400);
-    return respone;
+    responese.code(400);
+    return responese;
+  }
+};
+
+const verifyRegistrationHandler = async (request, h) => {
+  const { email, otp } = request.payload;
+
+  try {
+    // Get user from pendingUsers collection
+    const pendingUserDoc = await pendingUsersCollection.doc(email).get();
+    if (!pendingUserDoc.exists) {
+      throw new Error('No pending registration found for this email.');
+    }
+
+    const pendingUserData = pendingUserDoc.data();
+
+    // Verify OTP
+    if (!pendingUserData.otp || !pendingUserData.otpExpiresAt) {
+      throw new Error('OTP not found or expired. Please register again.');
+    }
+
+    if (pendingUserData.otp !== otp) {
+      throw new Error('Invalid OTP.');
+    }
+
+    if (new Date() > new Date(pendingUserData.otpExpiresAt)) {
+      throw new Error('OTP has expired. Please register again.');
+    }
+
+    // Move user data to userProfile collection
+    await usersCollection.doc(email).set({
+      username: pendingUserData.username,
+      email: pendingUserData.email,
+      password: pendingUserData.password,
+      tpsId: crypto.randomBytes(16).toString('hex'),
+      createdAt: new Date().toISOString(),
+    });
+
+    // Delete pendingUsers 
+    await pendingUsersCollection.doc(email).delete();
+
+    const response = h.response({
+      error: false,
+      message: 'Your account has been successfully created.',
+    });
+    response.code(201);
+    return response;
+
+  } catch (error) {
+    const response = h.response({
+      error: true,
+      message: error.message,
+    });
+    response.code(400);
+    return response;
   }
 };
 
@@ -63,7 +125,6 @@ const requestPasswordResetHandler = async (request, h) => {
       keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       projectId: process.env.GCLOUD_PROJECT,
     });
-    const usersCollection = db.collection('userProfile');
     const userDoc = await usersCollection.doc(email).get();
     if (!userDoc.exists) {
       throw new Error("Email tidak terdaftar.");
@@ -99,12 +160,6 @@ const resetPasswordHandler = async (request, h) => {
   const { email, otp, newPassword } = request.payload;
 
   try {
-    // Cek apakah user ada
-    const db = new Firestore({
-      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-      projectId: process.env.GCLOUD_PROJECT,
-    });
-    const usersCollection = db.collection('userProfile');
     const userDoc = await usersCollection.doc(email).get();
     if (!userDoc.exists) {
       throw new Error("Email tidak terdaftar.");
@@ -548,6 +603,7 @@ const getTransactionDetailHandler = async (request, h) => {
 
 module.exports = {
     registerHandler,
+    verifyRegistrationHandler,
     loginHandler,
     predictHandler,
     saveTransaction,

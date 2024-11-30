@@ -4,9 +4,9 @@ This document provides instructions on how to build and push the Docker image fo
 ## Build Docker Image
 To build the Docker image, run the following command in your terminal:
 ```sh
-docker build berongsok-backend .
+docker build -t berongsok-backend -f Cloud-Computing/Dockerfile .
 #                                                                project-id        repo-name        image-name
-docker -t berongsok-backend asia-southeast2-docker.pkg.dev/berongsok-capstone/berongsok-capstone/berongsok-backend 
+docker build -t asia-southeast2-docker.pkg.dev/berongsok-capstone/berongsok-capstone/berongsok-backend .
 ```
 
 ## Push Docker Image to Artifact Registry
