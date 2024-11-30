@@ -24,7 +24,8 @@ const init = async () => {
       console.log("ini error di file server")
         const newResponse = h.response({
             status: 'fail',
-            message: response.message
+            message: response.message,
+            message2: "Tolong cek kembali request method anda"
         })
         newResponse.code(response.output.statusCode)
         return newResponse;

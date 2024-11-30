@@ -6,6 +6,7 @@ const EmailService = require('../services/emailServices');
 const storeImage = require('../services/storeImage');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const { create } = require('domain');
 
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
@@ -175,14 +176,15 @@ const predictHandler = async (request, h) => {
 
         const data = {
             tpsId: decoded.tpsId, 
-            result,
-            confidenceScore,
-            price,
-            createAt,
+            result: wasteType,
+            confidenceScore: confidenceScore,
+            price: Number(price),
+            createAt: createAt,
         };
         
         const response = h.response ({
             status: "success",
+            error: false,
             data
         });
         response.code(200);
@@ -202,7 +204,7 @@ const saveTransaction = async (request, h) => {
     const authorizationToken = request.headers["authorization"];
     const decoded = await AuthService.verifyToken(authorizationToken);
 
-    const { image } = request.payload ;
+    const { image } = request.payload;
     if (!image) {
       return h.response({
           status: 'fail',  
@@ -232,9 +234,9 @@ const saveTransaction = async (request, h) => {
     await FirebaseService.storeData(transactionId, {
       imageUrl,
       createAt,
-      totalPrice,
-      weight,
-      price,
+      totalPrice: Number(totalPrice),
+      weight: Number(weight),
+      price: Number(price),
       wasteType,
       tpsId:decoded.tpsId,
       nasabahName,
@@ -282,11 +284,19 @@ const getHistoryHandler = async (request, h) => {
     const data = [];
 
     historySnapshot.forEach((doc) => {
-      const history = {
+      const history = doc.data();
+      data.push({
         id: doc.id,
-        history: doc.data(),
-      };
-      data.push(history);
+        createAt: history.createAt,
+        totalPrice: history.totalPrice,
+        imgUrl: history.imgUrl,
+        weight: history.weight,
+        nasabahName: history.nasabahName,
+        wasteType: history.wasteType,
+        price: history.price,
+        transactionId: history.transactionId,
+        tpsId: history.tpsId
+      });
     });
 
     if (data.length === 0) {
@@ -305,6 +315,8 @@ const getHistoryHandler = async (request, h) => {
     });
     response.code(200);
     return response;
+
+
   } catch (error) {
     const response = h.response({
       status: 'error',
@@ -335,11 +347,19 @@ const getTransactionDetailHandler = async (request, h) => {
     const data = [];
 
     historySnapshot.forEach((doc) => {
-      const history = {
+      const history = doc.data();
+      data.push({
         id: doc.id,
-        history: doc.data(),
-      };
-      data.push(history);
+        createAt: history.createAt,
+        totalPrice: history.totalPrice,
+        imgUrl: history.imgUrl,
+        weight: history.weight,
+        nasabahName: history.nasabahName,
+        wasteType: history.wasteType,
+        price: history.price,
+        transactionId: history.transactionId,
+        tpsId: history.tpsId
+      });
     });
 
     if (data.length === 0) {

@@ -8,8 +8,8 @@ This document provides the specifications for the API endpoints of our applicati
   - POST
 - Request Body :
   - `username` as `string`
-  - `email` as string, must be `unique`
-  - `password` as string, must be at least 8 characters
+  - `email` as `string`, must be `unique`
+  - `password` as `string`, must be at least 8 characters
 
 if successful:
 
@@ -77,34 +77,41 @@ if fail - due to account was not found
   - `/predict`
 - Method
   - POST
-- Header
 
+- Header
   - Content-Type: `multipart/form-data`
   - Authorization: Bearer \<token>
 
 - Request body:
-  - image as file
+  - image as `file`, must be a valid image file, max size 5MB
 
 if successful :
 
 ```json
 {
-	"error": false,
-	"message": "success",
+	"error": false, // bool
+	"message": "success", //string 
 	"data": {
-		"result": "<Class Model> as string ",
-		"confidenceScore": "<score> as float " ,
-		"price": "harga_berdasarkan_label (perKG)",
-		"CreateAt": "<timestamp> as datetime" ,
-	}
+    "tpsId": "848d872c4c712741c1d86131a5925273", //string -> tempat dilakukan prediksi
+    "result": "Plastic Cup", //string
+    "confidenceScore": 89.78, //float
+    "price": 5000, // int
+    "createAt": "2024-11-30T04:42:41.094Z" //string
+}
+```
+
+if it fails
+```json
+{
+    "status": "fail",
+    "message": "An error occurred during prediction: Expected image (BMP, JPEG, PNG, or GIF), but got unsupported image type"
 }
 ```
 
 If it fails - due to the photo being larger than 5 MB :
-
 ```json
 {
-  "status": false,
+  "status": "fail",
   "message": "Payload content length greater than maximum allowed: 5000000"
 }
 ```
@@ -118,6 +125,8 @@ If it fails - due to an error in the backend or the model :
 }
 ```
 
+
+
 ## 4. addList
 Endpoint to store data in the database
 
@@ -128,28 +137,28 @@ Endpoint to store data in the database
   - Authorization: Bearer \<token>
 
 Request body:
-  - `image` as file
+  - `image` as `file`, must be a valid image file, max size 5MB
 
 - Method
   - POST
 
 Request body:
-- nasabahName -> name of the person who brought the trash
-- wasteType
-- price -> waste price per kg
-- weight
-- totalPrice -> price \* weightFieldValue
+- nasabahName -> `(string)`, name of the person who brought the trash 
+- wasteType -> `(string)`
+- price -> `(int)`, waste price per kg 
+- weight -> `(int)`
+- totalPrice -> price \* weightFieldValue -> `(int)`
 
 Data to save to the database
-- transactionId -> id generated during prediction
-- tpsId-> id of the TPS where the waste was sold
-- nasabahName
-- wasteType
-- price
-- weight
-- totalPrice
-- imgUrl
-- createAt
+- transactionId as`string`, id generated during prediction 
+- tpsId as`string`, id of the TPS where the waste was sold 
+- nasabahName as `string`
+- wasteType as `string`
+- price as `int`
+- weight as `int` or `float` (same in firestore)
+- totalPrice as `int`
+- imgUrl as `string`
+- createAt as `string`
 
 if successful :
 ```json
@@ -175,7 +184,7 @@ if fail :
 if fail - User not logged in:
 ```json
 {
-  "status": false, // Indicates the server failed to save the data
+  "status": "fail", // string, Indicates the server failed to save the data
   "error": true, // Indicates the user is logged in
   "message": "User not logged in"
 }
@@ -187,10 +196,10 @@ Endpoint to retrieve prediction history
   - `/transactionhistory?tpsId=param`
 
 - Method
-  - GET
+  - GET 
 
 - request params
-  - tpsId
+  - tpsId as `string`
 
 response (Status Code: 200):
 ```json
@@ -198,60 +207,28 @@ response (Status Code: 200):
     "status": "success",
     "data": [
         {
-            "id": "0MfHPiPGV4hQxCHFzPV7",
-            "history": {
-                "transactionId": "89f91a62-4d3b-4c76-b123-7fc298b0c752",
-                "weight": 2,
-                "price": 15000,
-                "imgUrl": "youtube.comfegew",
-                "wasteType": "paper",
-                "tpsId": "b8b9a25c870730804699c39069dc6924",
-                "createAt": "2024-11-26T14:30:00Z",
-                "nasabahName": "TPS Mutiara Ibu Siapa Ya",
-                "totalPrice": 300000
-            }
+            "id": "0MfHPiPGV4hQxCHFzPV7", //string
+            "transactionId": "89f91a62-4d3b-4c76-b123-7fc298b0c752", // string 
+            "weight": 2, // int
+            "price": 15000, // int
+            "imgUrl": "youtube.comfegew",// string
+            "wasteType": "paper",// string
+            "tpsId": "b8b9a25c870730804699c39069dc6924",// string
+            "createAt": "2024-11-26T14:30:00Z",// string
+            "nasabahName": "TPS Mutiara Ibu Siapa Ya",// string
+            "totalPrice": 300000 //int
         },
         {
-            "id": "3JRntWq0a2a9kJg1cfxd",
-            "history": {
-                "transactionId": "b8b9a25c870730804699c39069dc6924",
-                "weight": 2,
-                "price": 15000,
-                "imgUrl": "youtube.comfegew",
-                "wasteType": "paper",
-                "tpsId": "b8b9a25c870730804699c39069dc6924",
-                "createAt": "2024-11-26T14:30:00Z",
-                "nasabahName": "TPS Mutiara Ibu Siapa",
-                "totalPrice": 300000
-            }
-        },
-        {
-            "id": "7qekF6NHv5f7oC1K33lv",
-            "history": {
-                "nasabahName": "TPS Mutiara Ibu",
-                "wasteType": "paper",
-                "price": 15000,
-                "weight": 2,
-                "totalPrice": 30000,
-                "imgUrl": "youtube.com",
-                "createAt": "2024-11-26T14:30:00Z",
-                "transactionId": "13e907b3-4213-42ad-b12b-b9b7e12eb90e",
-                "tpsId": "b8b9a25c870730804699c39069dc6924"
-            }
-        },
-        {
-            "id": "KRvbohCtv7oQsCTyJnEd",
-            "history": {
-                "createAt": "2024-11-26T14:30:00Z",
-                "totalPrice": 300000,
-                "imgUrl": "youtube.comfegew",
-                "weight": 2,
-                "nasabahName": "TPS Mutiara Ibu Siapa",
-                "wasteType": "paper",
-                "price": 15000,
-                "transactionId": "30877736-3219-4cac-a0b1-346cd8f03524",
-                "tpsId": "b8b9a25c870730804699c39069dc6924"
-            }
+            "id": "3JRntWq0a2a9kJg1cfxd", // string
+            "transactionId": "b8b9a25c870730804699c39069dc6924", // string
+            "weight": 2, // int
+            "price": 15000, // int
+            "imgUrl": "youtube.comfegew", // string
+            "wasteType": "paper", // string
+            "tpsId": "b8b9a25c870730804699c39069dc6924", // string
+            "createAt": "2024-11-26T14:30:00Z", // string
+            "nasabahName": "TPS Mutiara Ibu Siapa", // string
+            "totalPrice": 300000 // int
         }
     ]
 }
@@ -260,11 +237,20 @@ response (Status Code: 200):
 if fail :
 ```json
 {
-  "status": "fail",
-  "data": [],
-  "message": "No history found"
+  "status": "success", // string
+  "data": [], // array
+  "message": "No history found" // string
 }
 ```
+
+if fail - internal server error (Status code: 500):
+```json
+{
+  "status": "error", // string
+  "message": "Failed to retrieve history" // string
+}
+```
+
 
 # 6. get transaksi tertentu
 Endpoint to retrieve prediction history by transaction ID
@@ -275,8 +261,8 @@ Endpoint to retrieve prediction history by transaction ID
   - GET
 
 - request parameter
-  - tpsId
-  - transactionId
+  - tpsId -> `string`
+  - transactionId -> `string`
 
 response :
 ```json
@@ -284,18 +270,16 @@ response :
     "status": "success",
     "data": [
         {
-            "id": "KRvbohCtv7oQsCTyJnEd",
-            "history": {
-                "createAt": "2024-11-26T14:30:00Z",
-                "totalPrice": 300000,
-                "imgUrl": "youtube.comfegew",
-                "weight": 2,
-                "nasabahName": "TPS Mutiara Ibu Siapa",
-                "wasteType": "paper",
-                "price": 15000,
-                "transactionId": "30877736-3219-4cac-a0b1-346cd8f03524",
-                "tpsId": "b8b9a25c870730804699c39069dc6924"
-            }
+            "id": "KRvbohCtv7oQsCTyJnEd", //string
+            "createAt": "2024-11-26T14:30:00Z",// string
+            "totalPrice": 300000, // int
+            "imgUrl": "youtube.comfegew",// string
+            "weight": 2, // int
+            "nasabahName": "TPS Mutiara Ibu Siapa",// string
+            "wasteType": "paper",// string
+            "price": 15000, // int
+            "transactionId": "30877736-3219-4cac-a0b1-346cd8f03524", // string
+            "tpsId": "b8b9a25c870730804699c39069dc6924" // string
         }
     ]
 }
@@ -304,18 +288,17 @@ response :
 if fail - no transaction (Status code : 404):
 ```json
 {
-  "status": "fail",
-  "data": [],
-  "message": "Transaction not found"
+  "status": "fail", // string
+  "data": [], // array
+  "message": "Transaction not found" // string
 }
 ```
 
 if fail - internal server error (Status code : 500) :
 ```json
 {
-  "status": "fail",
-  "data": [],
-  "message": "An internal server error occurred, please try again later"
+  "status": "error", // string
+  "message": "Failed to retrieve history" // string
 }
 ```
 
@@ -327,7 +310,7 @@ if fail - internal server error (Status code : 500) :
   - POST
 
 - request body
-  - email
+  - email as `string`
 
 ## response :
 
@@ -335,8 +318,8 @@ if fail - internal server error (Status code : 500) :
 Success  (Status code 200) :
 ```json
 {
-    "status": "success",
-    "message": "OTP telah dikirim ke email Anda."
+    "status": "success", //string
+    "message": "OTP telah dikirim ke email Anda." //string
 }
 ```
 
@@ -344,16 +327,16 @@ Success  (Status code 200) :
 Email not found (Status code : 404):
 ```json
 {
-    "status": "fail",
-    "message": "Email tidak terdaftar."
+    "status": "fail", //string
+    "message": "Email tidak terdaftar." //string
 }
 ```
 
 Server error (Status code : 404):
 ```json
 {
-    "status": "fail",
-    "message": "Terjadi kesalahan pada server saat mengirim email."
+    "status": "fail", //string
+    "message": "Terjadi kesalahan pada server saat mengirim email." //string
 }
 ```
 
@@ -366,9 +349,9 @@ Server error (Status code : 404):
   - POST
 
 - request body
-  - email
-  - otp
-  - newPassword
+  - email -> `string`
+  - otp -> `int`
+  - newPassword -> `string` min 8 character
 
 
 ## response :
@@ -377,61 +360,61 @@ Server error (Status code : 404):
 Success  (Status code 201) :
 ```json
 {
-    "status": "success",
-    "message": "Password Anda berhasil diubah."
+    "status": "success", //string
+    "message": "Password Anda berhasil diubah." //string
 }
 ```
 
-### Fail
+### Fail 
 Email not found (Status code : 404):
 ```json
 {
-    "status": "fail",
-    "message": "Email tidak terdaftar."
+    "status": "fail", //string
+    "message": "Email tidak terdaftar." //string
 }
 ```
 
 
 ```json
 {
-    "status": "fail",
-    "message": "OTP tidak ditemukan. Silakan minta OTP baru."
+    "status": "fail", //string
+    "message": "OTP tidak ditemukan. Silakan minta OTP baru." //string
 }
 ```
 
 Server Error (Status code : 404):
 ```json
 {
-    "status": "fail",
-    "message": "Terjadi kesalahan pada server saat mengirim email."
+    "status": "fail", //string
+    "message": "Terjadi kesalahan pada server saat mengirim email." //string
 }
 ```
 OTP code not found or not generated
 ```json
 {
-    "status": "fail",
-    "message": "OTP tidak ditemukan. Silakan minta OTP baru."
+    "status": "fail", //string
+    "message": "OTP tidak ditemukan. Silakan minta OTP baru." //string
 }
 ```
 Invalid OTP code
 ```json
 {
-    "status": "fail",
-    "message": "OTP salah."
+    "status": "fail", //string
+    "message": "OTP salah." //string
 }
 ```
 
 OTP code has expired
 ```json
 {
-    "status": "fail",
-    "message": "OTP telah kadaluarsa. Silakan minta OTP baru."
+    "status": "fail", //string
+    "message": "OTP telah kadaluarsa. Silakan minta OTP baru." //string
 }
 ```
 Password less than 8 character
 ```json
 {
-    "status": "fail",
-    "message": "Password harus memiliki minimal 8 karakter."
+    "status": "fail", //string
+    "message": "Password harus memiliki minimal 8 karakter." //string
 }
 ```
