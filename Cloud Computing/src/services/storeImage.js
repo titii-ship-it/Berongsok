@@ -15,7 +15,7 @@ async function storeImage(image,wasteType) {
     console.log(`mencoba menyimpan gambar ke bucket: ${bucketName}`);
     // const filename = `${wasteType}-${Date.now()}-${image.hapi.filename}`
     const formattedDate = new Date().toISOString().replace(/[:.]/g, '-');
-    const normalizeWasteType = wasteType.toLowerCase().replace(/\s+/g, "-");
+    const normalizeWasteType = wasteType.trim().toLowerCase().replace(/\s+/g, "-");
     const filename = `${normalizeWasteType}-${formattedDate}-${image.hapi.filename}`;
 
     const destination = `predict_folder/${normalizeWasteType}/${filename}`;

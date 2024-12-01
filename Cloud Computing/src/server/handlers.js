@@ -10,12 +10,22 @@ const db = require('../services/firestore');
 
 const usersCollection = db.collection('userProfile');
 
+function normalizeEmail(email) {
+  return email.trim().toLowerCase();
+}
+
+function normalizeUsername(username) {
+  return username.trim();
+}
+
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
 
   try {
     // <-- validation>
-    const requiredFields = { username, email, password };
+    const normalizedEmail = normalizeEmail(email);
+    const normalizedUsername = normalizeUsername(username);
+    const requiredFields = { username:normalizedUsername, email:normalizedEmail, password };
     const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
 
     if (missingFields.length > 0) {
@@ -25,7 +35,7 @@ const registerHandler = async (request, h) => {
       }).code(400);
     }
     // <-- end of validation>
-    await AuthService.registerUser(username, email, password);
+    await AuthService.registerUser(normalizedUsername, normalizedEmail, password);
     const response = h.response({
       error: false,
       message: 'OTP has been sent to your email. Please verify to complete registration.',
@@ -45,7 +55,7 @@ const registerHandler = async (request, h) => {
 
 const verifyRegistrationHandler = async (request, h) => {
   const { email, otp } = request.payload;
-
+  
   try {
     if (!email || !otp) {
       return h.response({
@@ -54,8 +64,9 @@ const verifyRegistrationHandler = async (request, h) => {
       }).code(400);
     }
     // Get user from pendingUsers collection
+    const normalizedEmail = normalizeEmail(email);
     const pendingUsersCollection = db.collection('pendingUsers');
-    const pendingUserDoc = await pendingUsersCollection.doc(email).get();
+    const pendingUserDoc = await pendingUsersCollection.doc(normalizedEmail).get();
     if (!pendingUserDoc.exists) {
       throw new Error('No pending registration found for this email.');
     }
@@ -76,7 +87,7 @@ const verifyRegistrationHandler = async (request, h) => {
     }
 
     // Move user data to userProfile collection
-    await usersCollection.doc(email).set({
+    await usersCollection.doc(normalizedEmail).set({
       username: pendingUserData.username,
       email: pendingUserData.email,
       password: pendingUserData.password,
@@ -85,7 +96,7 @@ const verifyRegistrationHandler = async (request, h) => {
     });
 
     // Delete pendingUsers 
-    await pendingUsersCollection.doc(email).delete();
+    await pendingUsersCollection.doc(normalizedEmail).delete();
 
     const response = h.response({
       error: false,
@@ -113,8 +124,8 @@ const loginHandler = async (request, h) => {
         message: 'Email and password are required'
       }).code(400);
     }
-    
-    const loginResult = await AuthService.loginUser(email, password);
+    const normalizedEmail = normalizeEmail(email);
+    const loginResult = await AuthService.loginUser(normalizedEmail, password);
     const respone = h.response({
       error: false,
       message: 'success',
@@ -139,8 +150,9 @@ const requestPasswordResetHandler = async (request, h) => {
 
   try {
     // Cek apakah user ada
+    const normalizedEmail = normalizeEmail(email);
     const usersCollection = db.collection('userProfile');
-    const userDoc = await usersCollection.doc(email).get();
+    const userDoc = await usersCollection.doc(normalizedEmail).get();
     if (!userDoc.exists) {
       throw new Error("Email tidak terdaftar.");
     }
@@ -149,13 +161,13 @@ const requestPasswordResetHandler = async (request, h) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     // Simpan OTP ker firestore -> 15 menit kadaluarsa
-    await usersCollection.doc(email).update({
+    await usersCollection.doc(normalizedEmail).update({
       otp,
       otpExpiresAt: new Date(new Date().getTime() + 15 * 60000).toISOString(),
     });
 
     // Kirim OTP ke email user
-    await EmailService.sendEmail(email, 'Reset Password OTP', 'resetPasswordEmail', { email, otp});
+    await EmailService.sendEmail(normalizedEmail, 'Reset Password OTP', 'resetPasswordEmail', { email, otp});
     
     return h.response({
       status: 'success',
@@ -175,8 +187,9 @@ const resetPasswordHandler = async (request, h) => {
   const { email, otp, newPassword } = request.payload;
 
   try {
+    const normalizedEmail = normalizeEmail(email);
     const usersCollection = db.collection('userProfile');
-    const userDoc = await usersCollection.doc(email).get();
+    const userDoc = await usersCollection.doc(normalizedEmail).get();
     if (!userDoc.exists) {
       throw new Error("Email tidak terdaftar.");
     }
@@ -203,7 +216,7 @@ const resetPasswordHandler = async (request, h) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 8);
 
-    await usersCollection.doc(email).update({
+    await usersCollection.doc(normalizedEmail).update({
       password: hashedPassword,
       otp: FieldValue.delete(),
       otpExpiresAt: FieldValue.delete(),
@@ -221,6 +234,36 @@ const resetPasswordHandler = async (request, h) => {
     }).code(400);
   }
 };
+
+
+function normalizeWasteType(wasteType) {
+// Contoh Input dan Hasil Normalisasi
+// Input: "plastic bottle"
+//  Output: "Plastic Bottle"
+// Input: " cardboard box "
+//  Output: "Cardboard Box"
+// Input: "GLASS jar"
+//  Output: "Glass Jar"
+// Input: "metal can"
+//  Output: "Metal Can"
+// Input: " paper "
+//  Output: "Paper"
+// Input: "plastic bag"
+//  Output: "Plastic Bag"
+// Input: " aluminum foil "
+//  Output: "Aluminum Foil"
+// Input: "styrofoam cup"
+//  Output: "Styrofoam Cup"
+// Input: " glass bottle "
+//  Output: "Glass Bottle"
+// Input: "tin can"
+//  Output: "Tin Can"
+  return wasteType
+    .trim()
+    .split(' ') 
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) 
+    .join(' ');
+}
 
 const predictHandler = async (request, h) => {
   try {
@@ -241,13 +284,14 @@ const predictHandler = async (request, h) => {
         
         const { result, confidenceScore } = await predictWaste(model, image);
         const wasteType = result;
+        const normalizedWasteType = normalizeWasteType(wasteType);
         const price = await FirestoreService.getWastePrice(wasteType);
         console.log('price:', price);
         const createAt = new Date().toISOString();
 
         const data = {
             tpsId: decoded.tpsId, 
-            result: wasteType,
+            result: normalizedWasteType,
             confidenceScore: confidenceScore,
             price: Number(price),
             createAt: createAt,
@@ -275,7 +319,7 @@ const saveTransaction = async (request, h) => {
     const authorizationToken = request.headers["authorization"];
     const decoded = await AuthService.verifyToken(authorizationToken);
 
-    const { image } = request.payload.image; //jangan di ganti
+    const { image } = request.payload; //jangan di ganti
     if (!image ) {
       return h.response({
           status: 'fail',  
@@ -297,10 +341,12 @@ const saveTransaction = async (request, h) => {
       }).code(400);
     }
     // <-- end of validation>
-
+    const normalizedWasteType = normalizeWasteType(wasteType);
     const imageUrl = await storeImage(image, wasteType); //get url
     const transactionId = crypto.randomUUID();
     const createAt = new Date().toISOString();
+
+    
 
     await FirestoreService.storeData(transactionId, {
       transactionId,
@@ -308,7 +354,7 @@ const saveTransaction = async (request, h) => {
       nasabahName,
       weight: Number(weight),
       price: Number(price),
-      wasteType,
+      wasteType: normalizedWasteType,
       totalPrice: Number(totalPrice),
       createAt,
       imageUrl,

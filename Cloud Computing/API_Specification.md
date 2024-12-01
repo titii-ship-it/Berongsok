@@ -524,3 +524,34 @@ if fail
   "message": "Failed to get dashboard data."
 }
 ```
+
+## About Normalize Waste Type
+Input: "plastic bottle"
+Output: "Plastic Bottle"
+
+Input: " cardboard box "
+Output: "Cardboard Box"
+
+Input: "GLASS jar"
+Output: "Glass Jar"
+
+Input: "metal can"
+Output: "Metal Can"
+
+Input: " paper "
+Output: "Paper"
+
+Input: "plastic bag"
+Output: "Plastic Bag"
+
+Input: " aluminum foil "
+Output: "Aluminum Foil"
+
+Input: "styrofoam cup"
+Output: "Styrofoam Cup"
+
+Input: " glass bottle "
+Output: "Glass Bottle"
+
+Input: "tin can"
+Output: "Tin Can"
