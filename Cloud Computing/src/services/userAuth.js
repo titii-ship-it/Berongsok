@@ -1,22 +1,18 @@
 require('dotenv').config();
 
-const { Firestore } = require('@google-cloud/firestore');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const EmailService = require('./emailServices');
+const FirestoreService = require('./firestoreService');
+const db = require('./firestore'); 
 
-
-const db = new Firestore({
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  projectId: process.env.GCLOUD_PROJECT,
-});
 const usersCollection = db.collection('userProfile');
-const pendingUsersCollection = db.collection('pendingUsers');
-
 
 const registerUser = async (username, email, password) => {
+    const usersCollection = db.collection('userProfile');
     const userDoc = await usersCollection.doc(email).get();
+    const pendingUsersCollection = db.collection('pendingUsers');
     const pendingUserDoc = await pendingUsersCollection.doc(email).get();
 
     if (userDoc.exists) {
@@ -61,6 +57,8 @@ const registerUser = async (username, email, password) => {
 };
 
 const loginUser = async (email, password) => {
+  console.log('db:', db);
+  const usersCollection = db.collection('userProfile');
   const userDoc = await usersCollection.doc(email).get();
 
   if (!userDoc.exists) {
@@ -78,7 +76,8 @@ const loginUser = async (email, password) => {
   // token = jwt.sign(data, jwtSecretKey)
   const token = jwt.sign(
       { tpsId: userData.tpsId,
-        username: userData.username,}, 
+        username: userData.username,
+        email: userData.email,}, 
         process.env.JWT_SECRET, 
       { expiresIn: '30d' }
     );

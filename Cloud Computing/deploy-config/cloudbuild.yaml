@@ -8,6 +8,7 @@ steps:
       'asia-southeast2-docker.pkg.dev/$PROJECT_ID/berongsok-capstone/berongsok-backend:latest', 
       '.'
     ]
+    asia-southeast2-docker.pkg.dev/berongsok-capstone/berongsok-capstone/berongsok-backend . 
 
   # Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'

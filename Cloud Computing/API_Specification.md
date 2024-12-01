@@ -140,7 +140,8 @@ if successful :
     "confidenceScore": 89.78, //float
     "price": 5000, // int
     "createAt": "2024-11-30T04:42:41.094Z" //string
-}
+  }
+} 
 ```
 
 if it fails
@@ -459,5 +460,67 @@ Password less than 8 character
 {
     "status": "fail", //string
     "message": "Password harus memiliki minimal 8 karakter." //string
+}
+```
+
+
+# 9. Dashboard
+- URL
+  - `/reset-password`
+
+- Method
+  - POST
+
+- header
+  - Authorization: Bearer \<token>
+
+respone 
+```json
+{
+  "status": "success",      // string
+  "username" : "username", // string
+  "tpsId": "tpsId", // string
+  "totalWeight": 200,  //int
+  "totalPrice": 200000,  //int
+  "data": [
+    {
+      "wasteType": "Can", // string
+      "totalWeight": 100, // int
+      "totalPrice": 100000 //int
+    },
+    {
+      "wasteType": "cardboard", // string
+      "totalWeight": 50, //int
+      "totalPrice": 50000 //int
+    },
+    {
+      "wasteType": "Plastic Bottle", // string
+      "totalWeight": 20, //int
+      "totalPrice": 20000 //int
+    },
+    {
+      "wasteType": "Plastic Cup", // string
+      "totalWeight": 10, //int
+      "totalPrice": 10000 //int
+    },
+    {
+      "wasteType": "Glass Bottle", // string
+      "totalWeight": 5, //int
+      "totalPrice": 5000 //int
+    },
+    {
+      "wasteType": "Paper", // string
+      "totalWeight": 15, //int
+      "totalPrice": 15000 //int
+    }
+  ]
+}
+```
+
+if fail
+```json
+{
+  "status": "fail",
+  "message": "Failed to get dashboard data."
 }
 ```

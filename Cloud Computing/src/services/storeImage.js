@@ -4,12 +4,12 @@ function normalizeInput(input, separator = '-') {
     return input.toLowerCase().replace(/\s+/g, separator);
 }
 
-async function storeImage(image,wasteType) {
-    const storage = new Storage({
-        keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-        projectId: process.env.GCLOUD_PROJECT,
-    });
+const storage = new Storage({
+    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    projectId: process.env.GCLOUD_PROJECT,
+});
 
+async function storeImage(image,wasteType) {
     const bucketName = process.env.STORAGE_BUCKET;
     const bucket = storage.bucket(bucketName);
     console.log(`mencoba menyimpan gambar ke bucket: ${bucketName}`);
@@ -40,16 +40,6 @@ async function storeImage(image,wasteType) {
         });
         blobStream.end(imageBuffer);
     });
-
-
-    // await file.save(imageBuffer, {
-    //     metadata: { contentType: 'image/jpeg' },
-    //     public: true,
-    //     validation: 'md5'
-    // });
-
-    // const imageUrl = `https://storage.googleapis.com/${bucketName}/${destination}`;
-    // return imageUrl;
 }
 
 

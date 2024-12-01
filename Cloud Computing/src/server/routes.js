@@ -77,6 +77,11 @@ const routes = [
       path: '/reset-password',
       handler: handlers.resetPasswordHandler,
     },
+    {
+      method: 'GET',
+      path: `/dashboard`,
+      handler: handlers.getDashboardHandler,
+    }
 
     // <---- Kumpulan test routes ---->
     

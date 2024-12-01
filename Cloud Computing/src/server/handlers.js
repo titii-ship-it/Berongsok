@@ -1,40 +1,45 @@
 const { Firestore, FieldValue } = require('@google-cloud/firestore');
-const FirebaseService = require('../services/firestoreService');
+const FirestoreService = require('../services/firestoreService');
 const predictWaste = require('../services/predict');
 const AuthService = require('../services/userAuth');
 const EmailService = require('../services/emailServices');
 const storeImage = require('../services/storeImage');
 const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const { create } = require('domain');
+const db = require('../services/firestore');
 
-// File: src/server/handlers.js
-const db = new Firestore({
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  projectId: process.env.GCLOUD_PROJECT,
-});
+
 const usersCollection = db.collection('userProfile');
-const pendingUsersCollection = db.collection('pendingUsers');
 
 const registerHandler = async (request, h) => {
   const { username, email, password } = request.payload;
 
   try {
+    // <-- validation>
+    const requiredFields = { username, email, password };
+    const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
+
+    if (missingFields.length > 0) {
+      return h.response({
+        status: 'fail',
+        message: `Fields are required: ${missingFields.join(', ')}`
+      }).code(400);
+    }
+    // <-- end of validation>
     await AuthService.registerUser(username, email, password);
-    const responese = h.response({
+    const response = h.response({
       error: false,
       message: 'OTP has been sent to your email. Please verify to complete registration.',
     })
-    responese.code(200);
-    return responese;
+    response.code(200);
+    return response;
 
   } catch (error) {
-    const responese = h.response({
+    const response = h.response({
       error: true,
       message: error.message,
     })
-    responese.code(400);
-    return responese;
+    response.code(400);
+    return response;
   }
 };
 
@@ -42,7 +47,14 @@ const verifyRegistrationHandler = async (request, h) => {
   const { email, otp } = request.payload;
 
   try {
+    if (!email || !otp) {
+      return h.response({
+        error: true,
+        message: 'Email and OTP are required.',
+      }).code(400);
+    }
     // Get user from pendingUsers collection
+    const pendingUsersCollection = db.collection('pendingUsers');
     const pendingUserDoc = await pendingUsersCollection.doc(email).get();
     if (!pendingUserDoc.exists) {
       throw new Error('No pending registration found for this email.');
@@ -93,9 +105,15 @@ const verifyRegistrationHandler = async (request, h) => {
 };
 
 const loginHandler = async (request, h) => {
-  const { email, password } = request.payload;
-
   try {
+    const { email, password } = request.payload;
+    if (!email || !password) {
+      return h.response({
+        status: 'fail',
+        message: 'Email and password are required'
+      }).code(400);
+    }
+    
     const loginResult = await AuthService.loginUser(email, password);
     const respone = h.response({
       error: false,
@@ -121,10 +139,7 @@ const requestPasswordResetHandler = async (request, h) => {
 
   try {
     // Cek apakah user ada
-    const db = new Firestore({
-      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-      projectId: process.env.GCLOUD_PROJECT,
-    });
+    const usersCollection = db.collection('userProfile');
     const userDoc = await usersCollection.doc(email).get();
     if (!userDoc.exists) {
       throw new Error("Email tidak terdaftar.");
@@ -133,7 +148,7 @@ const requestPasswordResetHandler = async (request, h) => {
     // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Simpan OTP ker Firebase -> 15 menit kadaluarsa
+    // Simpan OTP ker firestore -> 15 menit kadaluarsa
     await usersCollection.doc(email).update({
       otp,
       otpExpiresAt: new Date(new Date().getTime() + 15 * 60000).toISOString(),
@@ -160,6 +175,7 @@ const resetPasswordHandler = async (request, h) => {
   const { email, otp, newPassword } = request.payload;
 
   try {
+    const usersCollection = db.collection('userProfile');
     const userDoc = await usersCollection.doc(email).get();
     if (!userDoc.exists) {
       throw new Error("Email tidak terdaftar.");
@@ -214,7 +230,7 @@ const predictHandler = async (request, h) => {
 
       // ambil model dan image dari request.payload
       const { model } = request.server.app;  
-      const { image } = request.payload;
+      const { image } = request.payload; //jangan di ganti
         if (!image) {
           return h.response({
               status: 'fail',  
@@ -225,7 +241,7 @@ const predictHandler = async (request, h) => {
         
         const { result, confidenceScore } = await predictWaste(model, image);
         const wasteType = result;
-        const price = await FirebaseService.getWastePrice(wasteType);
+        const price = await FirestoreService.getWastePrice(wasteType);
         console.log('price:', price);
         const createAt = new Date().toISOString();
 
@@ -259,8 +275,8 @@ const saveTransaction = async (request, h) => {
     const authorizationToken = request.headers["authorization"];
     const decoded = await AuthService.verifyToken(authorizationToken);
 
-    const { image } = request.payload;
-    if (!image) {
+    const { image } = request.payload.image; //jangan di ganti
+    if (!image ) {
       return h.response({
           status: 'fail',  
           error : false,
@@ -286,26 +302,26 @@ const saveTransaction = async (request, h) => {
     const transactionId = crypto.randomUUID();
     const createAt = new Date().toISOString();
 
-    await FirebaseService.storeData(transactionId, {
-      imageUrl,
-      createAt,
-      totalPrice: Number(totalPrice),
+    await FirestoreService.storeData(transactionId, {
+      transactionId,
+      tpsId:decoded.tpsId,
+      nasabahName,
       weight: Number(weight),
       price: Number(price),
       wasteType,
-      tpsId:decoded.tpsId,
-      nasabahName,
-      transactionId,
+      totalPrice: Number(totalPrice),
+      createAt,
+      imageUrl,
     });
     
-    const responese = h.response({
+    const response = h.response({
       status: 'success',
       error: false,
       message: 'Data has been saved successfully',
       url: imageUrl,
     })
-    responese.code(201);
-    return responese;
+    response.code(201);
+    return response;
 
 
   } catch (error) {
@@ -332,7 +348,6 @@ const getHistoryHandler = async (request, h) => {
   }
 
   try {
-    const db = new Firestore();
     const historyCollection = db.collection("transactionHistory").where("tpsId", "==", tpsId);
     const historySnapshot = await historyCollection.get();
 
@@ -344,7 +359,7 @@ const getHistoryHandler = async (request, h) => {
         id: doc.id,
         createAt: history.createAt,
         totalPrice: history.totalPrice,
-        imgUrl: history.imgUrl,
+        imgUrl: history.imageUrl,
         weight: history.weight,
         nasabahName: history.nasabahName,
         wasteType: history.wasteType,
@@ -380,7 +395,7 @@ const getHistoryHandler = async (request, h) => {
     response.code(500);
     return response;
   }
-};
+  };
 
 const getTransactionDetailHandler = async (request, h) => {
   const { transactionId } = request.query;
@@ -395,7 +410,6 @@ const getTransactionDetailHandler = async (request, h) => {
   }
 
   try {
-    const db = new Firestore();
     const historyCollection = db.collection("transactionHistory").where("transactionId", "==", transactionId);
     const historySnapshot = await historyCollection.get();
 
@@ -407,7 +421,7 @@ const getTransactionDetailHandler = async (request, h) => {
         id: doc.id,
         createAt: history.createAt,
         totalPrice: history.totalPrice,
-        imgUrl: history.imgUrl,
+        imgUrl: history.imageUrl,
         weight: history.weight,
         nasabahName: history.nasabahName,
         wasteType: history.wasteType,
@@ -440,6 +454,30 @@ const getTransactionDetailHandler = async (request, h) => {
     });
     response.code(500);
     return response;
+  }
+};
+
+const getDashboardHandler = async (request, h) => {
+  try {
+    const authorizationToken = request.headers["authorization"];
+    const data = await FirestoreService.getDataDashboard(authorizationToken);
+
+    const response = h.response({
+      status: 'success',
+      username: data.username,
+      tpsId: data.tpsId,
+      totalWeight: data.totalWeight,
+      totalPrice: data.totalPrice,
+      data: data.mainData,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.log(error.message)
+    return h.response({
+      status: 'fail',
+      message: "Failed to get dashboard data",
+    }).code(500);
   }
 };
 
@@ -536,11 +574,11 @@ const getTransactionDetailHandler = async (request, h) => {
 //     const imageUrl = await storeImage(image, wasteType);
 //     const transactionId = crypto.randomUUID();
 
-//     const wastePrice = await FirebaseService.getWastePrice(wasteType);
+//     const wastePrice = await FirestoreService.getWastePrice(wasteType);
 //     // const totalPrice = weight * wastePrice;
 
 
-//     await FirebaseService.storeData(transactionId, {
+//     await FirestoreService.storeData(transactionId, {
 //       imageUrl,
 //       nasabahName,
 //       totalPrice,
@@ -550,14 +588,14 @@ const getTransactionDetailHandler = async (request, h) => {
 //       wastePrice,
 //     });
 
-//     const responese = h.response({
+//     const response = h.response({
 //       status: 'success',
 //       error: false,
 //       message: 'Data has been saved successfully',
 //       url: imageUrl,
 //     })
-//     responese.code(201);
-//     return responese;
+//     response.code(201);
+//     return response;
 
 //   } catch (error) {
 //     const respone = h.response({
@@ -611,6 +649,7 @@ module.exports = {
     getTransactionDetailHandler,
     requestPasswordResetHandler,
     resetPasswordHandler,
+    getDashboardHandler,
     // testHandler,
     // testSaveHandler,
 };

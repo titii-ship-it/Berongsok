@@ -4,7 +4,7 @@
   "description": "- [ ] **Utilize Google Cloud services to support application needs**, such as:\r     - Compute services for hosting APIs or other web services.\r     - Database services for database applications.\r     - Storage services for storing data, etc.\"",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node ./src/server/server.js",
     "dev": "nodemon --legacy-watch ./src/server/server.js"
   },
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/titii-ship-it/Berongsok/tree/cloud_team/Cloud%20Computing#readme",
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "^3.1.7"
   },
   "dependencies": {
