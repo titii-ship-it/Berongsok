@@ -525,33 +525,33 @@ if fail
 }
 ```
 
-## About Normalize Waste Type
-Input: "plastic bottle"
-Output: "Plastic Bottle"
+### About Normalize Waste Type
+1. Input: `"plastic bottle"`
+    - Output: `"Plastic Bottle"`
 
-Input: " cardboard box "
-Output: "Cardboard Box"
+2. Input: `" cardboard box "`
+    - Output: `"Cardboard Box"`
 
-Input: "GLASS jar"
-Output: "Glass Jar"
+3. Input: `"GLASS jar"`
+Output: `"Glass Jar"`
 
-Input: "metal can"
-Output: "Metal Can"
+4. Input: `"metal can"`
+    - Output: `"Metal Can"`
 
-Input: " paper "
-Output: "Paper"
+5. Input: `" paper "`
+    - Output: `"Paper"`
 
-Input: "plastic bag"
-Output: "Plastic Bag"
+6. Input: `"plastic bag"`
+    - Output: `"Plastic Bag"`
 
-Input: " aluminum foil "
-Output: "Aluminum Foil"
+7. Input: `" aluminum foil "`
+    - Output: `"Aluminum Foil"`
 
-Input: "styrofoam cup"
-Output: "Styrofoam Cup"
+8. Input: `"styrofoam cup"`
+    - Output: `"Styrofoam Cup"`
 
-Input: " glass bottle "
-Output: "Glass Bottle"
+9. Input: `" glass bottle "`
+    - Output: `"Glass Bottle"`
 
-Input: "tin can"
-Output: "Tin Can"
+10. Input: `"tin can"`
+    - Output: `"Tin Can"`
