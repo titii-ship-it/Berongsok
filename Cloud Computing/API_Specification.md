@@ -466,7 +466,7 @@ Password less than 8 character
 
 # 9. Dashboard
 - URL
-  - `/reset-password`
+  - `/dashboard`
 
 - Method
   - POST
