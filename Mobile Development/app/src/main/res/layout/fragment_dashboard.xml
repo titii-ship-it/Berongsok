@@ -20,77 +20,74 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:layout_weight="1"
                 android:id="@+id/text_dashboard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                android:textAlignment="textStart"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/title_dashboard"
-                android:textSize="36sp"
+                android:textAlignment="textStart"
                 android:textColor="@color/md_theme_primary"
-                />
+                android:textSize="36sp" />
 
             <ImageView
                 android:id="@+id/profileBtn"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/round_account_circle_24"/>
+                android:src="@drawable/round_account_circle_24" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginVertical="8dp"
-            android:baselineAligned="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="5dp"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="@color/md_theme_surfaceContainerHighest"
-                app:cardElevation="2dp"
-                >
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="12dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="12dp">
 
                     <TextView
-                        android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/balance"
                         android:fontFamily="@font/roboto_bold"
+                        android:text="@string/balance"
+                        android:textAlignment="center"
                         android:textColor="@color/md_theme_primary"
-                        android:textSize="24sp"
-                        />
+                        android:textSize="24sp" />
 
                     <ImageView
-                        android:minWidth="500dp"
                         android:layout_width="match_parent"
                         android:layout_height="72dp"
                         android:layout_marginVertical="8dp"
-                        android:src="@drawable/balance"/>
+                        android:minWidth="500dp"
+                        android:src="@drawable/balance" />
 
                     <TextView
                         android:id="@+id/tvTotalBalance"
-                        android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/total_balance"
                         android:fontFamily="@font/roboto_bold"
+                        android:text="@string/total_balance"
+                        android:textAlignment="center"
                         android:textColor="@color/md_theme_primary"
                         android:textSize="24sp"
-                        />
+                        tools:text="@string/rp_0" />
 
                 </LinearLayout>
 
@@ -102,10 +99,10 @@
             android:id="@+id/recap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
             android:layout_margin="8dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh">
+            app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,67 +113,64 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="@string/waste_recap"
                     android:textAlignment="center"
-                    android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/md_theme_primary"
-                    android:textSize="24sp"
-                    />
+                    android:textSize="24sp" />
 
                 <LinearLayout
-                    android:layout_marginVertical="8dp"
-                    android:baselineAligned="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:minWidth="500dp"
+                        android:layout_weight="1"
                         android:gravity="center"
+                        android:minWidth="500dp"
                         android:orientation="vertical">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
+                            app:cardCornerRadius="5dp"
                             app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="12dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
                                 <TextView
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Plastic Cup"
                                     android:fontFamily="@font/poppins_regular"
+                                    android:text="@string/plastic_cup"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="16sp"
-                                    />
+                                    android:textSize="16sp" />
 
                                 <ImageView
-                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/plastic_cup"/>
+                                    android:layout_marginVertical="8dp"
+                                    android:src="@drawable/plastic_cup" />
 
                                 <TextView
                                     android:id="@+id/tvPlasticCup"
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
-                                    />
+                                    tools:text="0 Kg" />
 
                             </LinearLayout>
 
@@ -185,26 +179,25 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        app:cornerRadius="5dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        app:cornerRadius="5dp">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="2dp"
-                            >
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:minWidth="500dp"
-                                android:padding="12dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -216,21 +209,20 @@
                                     android:textSize="16sp" />
 
                                 <ImageView
-                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/plastic_bottle"/>
+                                    android:layout_marginVertical="8dp"
+                                    android:src="@drawable/plastic_bottle" />
 
                                 <TextView
                                     android:id="@+id/tvPlasticBottle"
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
-                                    />
+                                    tools:text="0 Kg"  />
 
                             </LinearLayout>
 
@@ -241,59 +233,56 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginVertical="8dp"
-                    android:baselineAligned="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="2dp"
-                            >
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="12dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
                                 <TextView
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/can"
                                     android:fontFamily="@font/poppins_regular"
+                                    android:text="@string/can"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="16sp"
-                                    />
+                                    android:textSize="16sp" />
 
                                 <ImageView
-                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/can"/>
+                                    android:layout_marginVertical="8dp"
+                                    android:src="@drawable/can" />
 
                                 <TextView
                                     android:id="@+id/tvCan"
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
-                                    />
+                                    tools:text="0 Kg"  />
 
                             </LinearLayout>
 
@@ -302,53 +291,50 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        app:cornerRadius="5dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        app:cornerRadius="5dp">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="2dp"
-                            >
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="12dp"
                                 android:minWidth="500dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
                                 <TextView
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/glass_bottle"
                                     android:fontFamily="@font/poppins_regular"
+                                    android:text="@string/glass_bottle"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="16sp"
-                                    />
+                                    android:textSize="16sp" />
 
                                 <ImageView
-                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/glass_bottle"/>
+                                    android:layout_marginVertical="8dp"
+                                    android:src="@drawable/glass_bottle" />
 
                                 <TextView
                                     android:id="@+id/tvGlassBottle"
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
-                                    />
+                                    tools:text="0 Kg"  />
 
                             </LinearLayout>
 
@@ -359,32 +345,31 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginVertical="8dp"
-                    android:baselineAligned="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="2dp"
-                            >
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="12dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -396,21 +381,20 @@
                                     android:textSize="16sp" />
 
                                 <ImageView
-                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/cardboard"/>
+                                    android:layout_marginVertical="8dp"
+                                    android:src="@drawable/cardboard" />
 
                                 <TextView
                                     android:id="@+id/tvCardboard"
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
-                                    />
+                                    tools:text="0 Kg"  />
 
                             </LinearLayout>
 
@@ -419,53 +403,50 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
-                        app:cornerRadius="5dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        app:cornerRadius="5dp">
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="5dp"
                             android:layout_margin="8dp"
-                            app:cardElevation="2dp"
-                            >
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="2dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:padding="12dp"
                                 android:minWidth="500dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
                                 <TextView
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/paper"
                                     android:fontFamily="@font/poppins_regular"
+                                    android:text="@string/paper"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
-                                    android:textSize="16sp"
-                                    />
+                                    android:textSize="16sp" />
 
                                 <ImageView
-                                    android:layout_marginVertical="8dp"
                                     android:layout_width="match_parent"
                                     android:layout_height="72dp"
-                                    android:src="@drawable/paper"/>
+                                    android:layout_marginVertical="8dp"
+                                    android:src="@drawable/paper" />
 
                                 <TextView
                                     android:id="@+id/tvPaper"
-                                    android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
+                                    android:textAlignment="center"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
-                                    />
+                                    tools:text="0 Kg"  />
 
                             </LinearLayout>
 

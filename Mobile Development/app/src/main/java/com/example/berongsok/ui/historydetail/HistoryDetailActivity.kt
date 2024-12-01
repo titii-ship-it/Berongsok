@@ -11,7 +11,9 @@ import com.example.berongsok.R
 import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivityHistoryDetailBinding
+import com.example.berongsok.utils.TextUtils.formatDate
 import com.example.berongsok.utils.TextUtils.formatRupiah
+import com.example.berongsok.utils.TextUtils.formatWeight
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -61,9 +63,10 @@ class HistoryDetailActivity : AppCompatActivity() {
                 binding.tvNasabahName.text = detail.nasabahName ?: "Unknown Name"
                 binding.tvWasteType.text = detail.wasteType ?: "Unknown Type"
                 binding.tvTotalPrice.text = formatRupiah((detail.totalPrice ?: 0).toDouble())
-                binding.tvCreateAt.text = detail.createAt
-                binding.tvWeight.text = detail.weight.toString()
-                binding.tvTransactionId.text = detail.transactionId
+                binding.tvCreateAt.text = detail.createAt?.let { formatDate(it) } ?: "Unknown date"
+                binding.tvWeight.text =
+                    detail.weight?.let { formatWeight(it.toDouble()) } ?: "Unknown weight"
+                binding.tvTransactionId.text = detail.transactionId ?: "Unknown transaction id"
                 binding.tvWastePrice.text = formatRupiah((detail.price ?: 0).toDouble())
 
                 Glide.with(this)

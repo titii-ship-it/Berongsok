@@ -12,7 +12,10 @@ import com.example.berongsok.data.remote.response.DashboardResponse
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-class DashboardViewModel (private val dataStoreManager: SettingPreferences, private val userRepository: AuthRepository): ViewModel() {
+class DashboardViewModel(
+    private val dataStoreManager: SettingPreferences,
+    private val userRepository: AuthRepository
+) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -20,16 +23,6 @@ class DashboardViewModel (private val dataStoreManager: SettingPreferences, priv
     private val _dashboardResult = MutableLiveData<Result<DashboardResponse>>()
     val dashboardResult: LiveData<Result<DashboardResponse>> = _dashboardResult
 
-//    private val _plastikTotalWeight = MutableLiveData<Int>()
-//    val plastikTotalWeight: LiveData<Int> = _plastikTotalWeight
-//
-//    private val _kacaTotalWeight = MutableLiveData<Int>()
-//    val kacaTotalWeight: LiveData<Int> = _kacaTotalWeight
-//
-//    private val _totalIncome = MutableLiveData<Int>()
-//    val totalIncome: LiveData<Int> = _totalIncome
-
-    // Fungsi untuk menghitung total berdasarkan transaksi
     fun getDashboardData() {
 
         viewModelScope.launch {
@@ -42,25 +35,21 @@ class DashboardViewModel (private val dataStoreManager: SettingPreferences, priv
                     Log.d("cek token dashboard", "getDashboardData token: $token")
                     _dashboardResult.value = response
                     Log.d("dashboardviewmodel", "getDashboardData: $response")
-                    // Proses response seperti di atas
                 } catch (e: Exception) {
                     Log.e("Fetch Dashboard Data", e.message ?: "Unknown error")
-                    _dashboardResult.value =Result.failure(e)
+                    _dashboardResult.value = Result.failure(e)
                 }
             } else {
                 Log.e("Token Error", "Authorization token is missing or empty.")
             }
         }
-
-
-
-
     }
-
-
 }
 
-class DashboardViewModelFactory(private val dataStoreManager: SettingPreferences, private val userRepository: AuthRepository) : ViewModelProvider.Factory {
+class DashboardViewModelFactory(
+    private val dataStoreManager: SettingPreferences,
+    private val userRepository: AuthRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DashboardViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

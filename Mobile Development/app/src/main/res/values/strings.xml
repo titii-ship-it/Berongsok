@@ -31,9 +31,10 @@
     <string name="value">Value</string>
     <string name="nasabah_name">Nasabah Name</string>
     <string name="waste_type">Waste Type</string>
-    <string name="weight_kg">Weight (Kg)</string>
+    <string name="weight">Weight</string>
+    <string name="weight_kg">Weight Kg</string>
     <string name="total_price">Total Price</string>
-    <string name="create_at">Create At</string>
+    <string name="create_at">Date</string>
     <string name="transaction_id">Transaction ID</string>
     <string name="password_invalid">Password must have at least 8 characters</string>
     <string name="email_invalid">Email format is invalid</string>
@@ -55,11 +56,13 @@
     <string name="submit">Submit</string>
     <string name="transaction_form">Transaction Form</string>
     <string name="waste_price">Waste Price</string>
-    <string name="rp_0">Rp 0</string>
+    <string name="rp_0">Rp0</string>
     <string name="invalid_otp">Input 6 number OTP Code</string>
     <string name="verify">Verify</string>
     <string name="verify_your_account">Verify your Account</string>
     <string name="check_your_mail">OTP has been sent to your email. Please check your email inbox.</string>
     <string name="otp_code">OTP CODE</string>
     <string name="check_your_otp_code">You have already requested an OTP. Please check your email or try again in 5 minutes</string>
+    <string name="transaction_detail">Transaction Detail</string>
+    <string name="plastic_cup">Plastic Cup</string>
 </resources>
