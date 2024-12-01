@@ -1,5 +1,6 @@
 package com.example.berongsok.data.remote.api
 
+import com.example.berongsok.data.remote.response.DashboardResponse
 import com.example.berongsok.data.remote.response.HistoryResponse
 import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.NewTransactionResponse
@@ -69,6 +70,11 @@ interface ApiService {
         @Query("tpsId") tpsId: String,
         @Query("transactionId") transactionId: String
     ): Call<HistoryResponse>
+
+    @GET("dashboard")
+    suspend fun getDashboardData(
+        @Header("Authorization") token: String
+    ): DashboardResponse
 
 
 }

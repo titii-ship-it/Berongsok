@@ -82,6 +82,7 @@
                         android:src="@drawable/balance"/>
 
                     <TextView
+                        android:id="@+id/tvTotalBalance"
                         android:textAlignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -167,10 +168,11 @@
                                     android:src="@drawable/plastic_cup"/>
 
                                 <TextView
+                                    android:id="@+id/tvPlasticCup"
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="24 Kg"
+                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
@@ -220,10 +222,11 @@
                                     android:src="@drawable/plastic_bottle"/>
 
                                 <TextView
+                                    android:id="@+id/tvPlasticBottle"
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="24 Kg"
+                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
@@ -282,10 +285,11 @@
                                     android:src="@drawable/can"/>
 
                                 <TextView
+                                    android:id="@+id/tvCan"
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="24 Kg"
+                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
@@ -336,10 +340,11 @@
                                     android:src="@drawable/glass_bottle"/>
 
                                 <TextView
+                                    android:id="@+id/tvGlassBottle"
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="24 Kg"
+                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
@@ -397,10 +402,11 @@
                                     android:src="@drawable/cardboard"/>
 
                                 <TextView
+                                    android:id="@+id/tvCardboard"
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="24 Kg"
+                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"
@@ -451,10 +457,11 @@
                                     android:src="@drawable/paper"/>
 
                                 <TextView
+                                    android:id="@+id/tvPaper"
                                     android:textAlignment="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="24 Kg"
+                                    tools:text="0 kg"
                                     android:fontFamily="@font/roboto_bold"
                                     android:textColor="@color/md_theme_primary"
                                     android:textSize="24sp"

@@ -12,6 +12,10 @@ object TextUtils {
         return numberFormat.format(amount).replace(",00", "")
     }
 
+    fun formatWeight(weight: Double): String {
+        return "%.2f kg".format(weight).replace(".00","")
+    }
+
     fun formatPercentage(value: Double): String {
         val percentage = BigDecimal(value).setScale(2, RoundingMode.HALF_UP).toDouble()
         return String.format("%.3f%%", percentage)

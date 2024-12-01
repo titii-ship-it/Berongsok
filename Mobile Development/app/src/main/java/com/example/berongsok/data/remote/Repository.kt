@@ -1,6 +1,7 @@
 package com.example.berongsok.data.remote
 
 import com.example.berongsok.data.remote.api.ApiService
+import com.example.berongsok.data.remote.response.DashboardResponse
 import com.example.berongsok.data.remote.response.ErrorResponse
 import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.NewTransactionResponse
@@ -81,6 +82,18 @@ class AuthRepository(private val apiService: ApiService) {
                 totalPrice,
                 image
             )
+            Result.success(response)
+        } catch (e: HttpException) {
+            val errorBodyString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(errorBodyString, ErrorResponse::class.java)
+            val errorMessage = errorBody?.message ?: "An unknown error occurred"
+            Result.failure(Exception(errorMessage))
+        }
+    }
+
+    suspend fun getDashboardData(token: String): Result<DashboardResponse> {
+        return try {
+            val response = apiService.getDashboardData(token)
             Result.success(response)
         } catch (e: HttpException) {
             val errorBodyString = e.response()?.errorBody()?.string()
