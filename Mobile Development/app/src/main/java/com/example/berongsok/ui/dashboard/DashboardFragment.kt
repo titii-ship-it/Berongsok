@@ -42,7 +42,6 @@ class DashboardFragment : Fragment() {
 
         val textView: TextView = binding.textDashboard
 
-        dashboardViewModel.getDashboardData()
         dashboardViewModel.dashboardResult.observe(viewLifecycleOwner) { result ->
             result.onSuccess { response ->
                 binding.tvTotalBalance.text = formatRupiah((response.totalPrice ?: 0).toDouble())

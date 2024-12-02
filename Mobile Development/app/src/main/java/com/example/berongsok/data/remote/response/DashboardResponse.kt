@@ -14,7 +14,7 @@ data class DashboardResponse(
 	val totalPrice: Int? = null,
 
 	@field:SerializedName("totalWeight")
-	val totalWeight: Int? = null,
+	val totalWeight: Double? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null,
@@ -32,5 +32,5 @@ data class DashboardDataItem(
 	val totalPrice: Int? = null,
 
 	@field:SerializedName("totalWeight")
-	val totalWeight: Int? = null
+	val totalWeight: Double? = null
 )

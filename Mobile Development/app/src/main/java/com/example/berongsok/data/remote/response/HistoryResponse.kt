@@ -29,7 +29,7 @@ data class DataItem(
     val price: Int? = null,
 
     @field:SerializedName("weight")
-    val weight: Int? = null,
+    val weight: Double? = null,
 
     @field:SerializedName("id")
     val id: String? = null,

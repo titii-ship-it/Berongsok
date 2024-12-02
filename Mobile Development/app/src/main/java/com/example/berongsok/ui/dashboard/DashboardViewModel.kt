@@ -23,6 +23,10 @@ class DashboardViewModel(
     private val _dashboardResult = MutableLiveData<Result<DashboardResponse>>()
     val dashboardResult: LiveData<Result<DashboardResponse>> = _dashboardResult
 
+    init {
+        getDashboardData()
+    }
+
     fun getDashboardData() {
 
         viewModelScope.launch {
