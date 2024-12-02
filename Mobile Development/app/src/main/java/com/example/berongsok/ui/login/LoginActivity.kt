@@ -69,6 +69,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.register.setOnClickListener { gotoRegister() }
+
+        binding.forgotPassword.setOnClickListener { gotoForgotPassword() }
     }
 
     private fun gotoMain() {
@@ -78,6 +80,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun gotoRegister() {
         startActivity(Intent(this, RegisterActivity::class.java))
+    }
+
+    private fun gotoForgotPassword() {
+        startActivity(Intent(this, ForgotPasswordActivity::class.java))
     }
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

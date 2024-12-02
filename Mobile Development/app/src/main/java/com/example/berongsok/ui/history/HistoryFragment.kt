@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -41,9 +42,6 @@ class HistoryFragment : Fragment() {
         binding.rvHistoryTransaction.adapter = historyAdapter
         Log.d("HistoryFragment", "RecyclerView adapter dan layout manager sudah diatur")
 
-
-        val textView: TextView = binding.textDashboard
-
         historyViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
         }
@@ -54,6 +52,7 @@ class HistoryFragment : Fragment() {
                 val sortedList = listHistory.sortedByDescending { it?.createAt }
                 historyAdapter.submitList(sortedList)
             } else {
+                binding.noTransaction.visibility = VISIBLE
                 Log.d("HistoryFragment", "Data kosong untuk RecyclerView")
                 historyAdapter.submitList(emptyList())
 

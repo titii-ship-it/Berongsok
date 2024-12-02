@@ -73,6 +73,19 @@
                 app:cornerRadius="5dp" />
 
 
+            <TextView
+                android:id="@+id/forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:gravity="center"
+                android:text="@string/forgot_password"
+                android:textStyle="bold"
+                android:textColor="@color/md_theme_primary"
+                android:textSize="14sp"
+                />
+
+
         </LinearLayout>
 
         <TextView
@@ -97,38 +110,36 @@
 
     </FrameLayout>
 
+<!--    <TextView-->
+<!--        android:gravity="center"-->
+<!--        android:id="@+id/textView4"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/poppins_bold"-->
+<!--        android:textColor="@color/md_theme_primary"-->
+<!--        android:textSize="16sp"-->
+<!--        android:layout_marginVertical="12dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/ll1"-->
+<!--        android:text="@string/or"/>-->
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:textColor="@color/md_theme_primary"
-        android:textSize="16sp"
-        android:layout_marginVertical="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll1"
-        android:textAlignment="center"
-        android:text="@string/or"/>
-
-    <Button
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        android:id="@+id/googlesignin_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/md_theme_primary"
-        android:layout_marginTop="12dp"
-        android:textSize="12sp"
-        android:backgroundTint="@color/md_theme_background"
-        android:drawableLeft="@drawable/ic_google"
-        android:text="@string/login_with_google"
-        android:textStyle="bold"
-        app:cornerRadius="5dp"
-        app:iconPadding="0dp"
-        app:strokeColor="@color/md_theme_primary"
-        app:strokeWidth="1dp"
-        />
+<!--    <Button-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView4"-->
+<!--        android:id="@+id/googlesignin_btn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="@color/md_theme_primary"-->
+<!--        android:textSize="12sp"-->
+<!--        android:backgroundTint="@color/md_theme_background"-->
+<!--        android:drawableLeft="@drawable/ic_google"-->
+<!--        android:text="@string/login_with_google"-->
+<!--        android:textStyle="bold"-->
+<!--        app:cornerRadius="5dp"-->
+<!--        app:iconPadding="0dp"-->
+<!--        app:strokeColor="@color/md_theme_primary"-->
+<!--        app:strokeWidth="1dp"-->
+<!--        />-->
 
     <LinearLayout
         app:layout_constraintStart_toStartOf="parent"

@@ -15,6 +15,7 @@ import com.example.berongsok.databinding.ItemHistoryBinding
 import com.example.berongsok.ui.historydetail.HistoryDetailActivity
 import com.example.berongsok.ui.historydetail.HistoryDetailActivity.Companion.EXTRA_HISTORY
 import com.example.berongsok.ui.historydetail.HistoryDetailActivity.Companion.EXTRA_TPS
+import com.example.berongsok.utils.TextUtils.formatDate
 import com.example.berongsok.utils.TextUtils.formatRupiah
 
 class HistoryAdapter : ListAdapter<DataItem, HistoryAdapter.HistoryViewHolder>(DIFF_CALLBACK) {
@@ -34,6 +35,7 @@ class HistoryAdapter : ListAdapter<DataItem, HistoryAdapter.HistoryViewHolder>(D
             Log.d("HistoryAdapter", "Data binding: $history")
 
             binding.tvItemNasabah.text = history.nasabahName ?: "unknown name"
+            binding.tvItemCreateAt.text = history.createAt?.let { formatDate(it) } ?: "unknown date"
             binding.tvItemWasteType.text = history.wasteType ?: "Unknown type"
             binding.tvItemTotalPrice.text = formatRupiah((history.totalPrice ?: 0).toDouble())
 

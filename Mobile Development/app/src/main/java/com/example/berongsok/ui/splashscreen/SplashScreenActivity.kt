@@ -6,21 +6,38 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.TranslateAnimation
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.berongsok.MainActivity
 import com.example.berongsok.R
+import com.example.berongsok.data.local.SettingPreferences
+import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivitySplashScreenBinding
+import com.example.berongsok.ui.login.LoginActivity
+import com.example.berongsok.ui.profile.ProfileViewModel
+import com.example.berongsok.ui.profile.ProfileViewModelFactory
+import kotlinx.coroutines.launch
 
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
+
+    private val viewModel: ProfileViewModel by viewModels {
+        ProfileViewModelFactory(SettingPreferences.getInstance(this.dataStore))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        val pref = SettingPreferences.getInstance(application.dataStore)
+
 
         // Animasi mendekat ke tengah
         val imageMoveToCenter = TranslateAnimation(
@@ -49,7 +66,7 @@ class SplashScreenActivity : AppCompatActivity() {
             Animation.RELATIVE_TO_PARENT, 0.0f
         ).apply {
             duration = 1000
-            startOffset = 3000 // Mulai setelah animasi mendekat selesai
+            startOffset = 2000 // Mulai setelah animasi mendekat selesai
         }
 
         val textMoveAway = TranslateAnimation(
@@ -59,7 +76,7 @@ class SplashScreenActivity : AppCompatActivity() {
             Animation.RELATIVE_TO_PARENT, 0.0f
         ).apply {
             duration = 1000
-            startOffset = 3000 // Mulai setelah animasi mendekat selesai
+            startOffset = 2000 // Mulai setelah animasi mendekat selesai
         }
 
         // Gabungkan animasi untuk ImageView
@@ -84,12 +101,30 @@ class SplashScreenActivity : AppCompatActivity() {
         imageAnimationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
-                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
-                finish()
+                lifecycleScope.launch {
+                    pref.isLoggedIn.collect {
+                        if (it) {
+                            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+                            finish()
+                        } else {
+                            startActivity(Intent(this@SplashScreenActivity, LoginActivity::class.java))
+                            finish()
+                        }
+                    }
+                }
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
+
+        viewModel.getThemeSettings().observe(this) { isDarkModeActive ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
 
     }
 }

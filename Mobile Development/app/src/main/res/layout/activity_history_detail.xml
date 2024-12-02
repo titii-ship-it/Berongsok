@@ -40,13 +40,11 @@
 
         <ImageView
             android:id="@+id/img_predicted"
-            android:layout_width="350dp"
-            android:layout_height="300dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
+            android:minHeight="600dp"
+            android:layout_width="match_parent"
+            android:src="@drawable/ic_place_holder"
+            android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@color/material_dynamic_neutral50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_dashboard"
@@ -74,7 +72,8 @@
             app:layout_constraintStart_toStartOf="@id/tvTransactionDetail"
             app:layout_constraintTop_toBottomOf="@+id/tvTransactionDetail">
 
-            <TableRow>
+            <TableRow
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

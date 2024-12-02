@@ -47,26 +47,22 @@ class DashboardFragment : Fragment() {
             result.onSuccess { response ->
                 binding.tvTotalBalance.text = formatRupiah((response.totalPrice ?: 0).toDouble())
 
-                val plasticCupWeight =
-                    response.data?.find { it?.wasteType == "Plastic Cup" }?.totalWeight ?: 0
+                val plasticCupWeight = response.data?.find { it?.wasteType == "Plastic Cup" }?. totalWeight ?: 0
                 binding.tvPlasticCup.text = formatWeight(plasticCupWeight.toDouble())
 
-                val plasticBottleWeight =
-                    response.data?.find { it?.wasteType == "Plastic Bottle" }?.totalWeight ?: 0
+                val plasticBottleWeight = response.data?.find { it?.wasteType == "Plastic Bottle" }?. totalWeight ?: 0
                 binding.tvPlasticBottle.text = formatWeight(plasticBottleWeight.toDouble())
 
-                val canWeight = response.data?.find { it?.wasteType == "Can" }?.totalWeight ?: 0
+                val canWeight = response.data?.find { it?.wasteType == "Can" }?. totalWeight ?: 0
                 binding.tvCan.text = formatWeight(canWeight.toDouble())
 
-                val glassBottleWeight =
-                    response.data?.find { it?.wasteType == "Glass Bottle" }?.totalWeight ?: 0
+                val glassBottleWeight = response.data?.find { it?.wasteType == "Glass Bottle" }?. totalWeight ?: 0
                 binding.tvGlassBottle.text = formatWeight(glassBottleWeight.toDouble())
 
-                val cardBoardWeight =
-                    response.data?.find { it?.wasteType == "Cardboard" }?.totalWeight ?: 0
+                val cardBoardWeight = response.data?.find { it?.wasteType == "Cardboard" }?. totalWeight ?: 0
                 binding.tvCardboard.text = formatWeight(cardBoardWeight.toDouble())
 
-                val paperWeight = response.data?.find { it?.wasteType == "Paper" }?.totalWeight ?: 0
+                val paperWeight = response.data?.find { it?.wasteType == "Paper" }?. totalWeight ?: 0
                 binding.tvPaper.text = formatWeight(paperWeight.toDouble())
             }
         }
@@ -81,7 +77,7 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
-    fun gotoProfile() {
+    private fun gotoProfile(){
         startActivity(Intent(activity, ProfileActivity::class.java))
     }
 }

@@ -41,6 +41,7 @@
     <string name="email_valid">Email is valid</string>
     <string name="password_mismatch">Password doesn\'t match</string>
     <string name="succes_regist">User Registration Success</string>
+    <string name="succes_reset">Reset Password Success</string>
     <string name="succes_save">Add New Transaction Success</string>
     <string name="continue_login">Continue to Login</string>
     <string name="failed_regist">User Registration failed</string>
@@ -65,4 +66,12 @@
     <string name="check_your_otp_code">You have already requested an OTP. Please check your email or try again in 5 minutes</string>
     <string name="transaction_detail">Transaction Detail</string>
     <string name="plastic_cup">Plastic Cup</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="change_password">Change Password</string>
+    <string name="account">Account</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="otp_status">OTP Status</string>
+    <string name="Okay">Okay</string>
+    <string name="confirm_new_password">Confirm New Password</string>
 </resources>

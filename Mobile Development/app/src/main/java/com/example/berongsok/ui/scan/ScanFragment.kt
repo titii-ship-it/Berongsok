@@ -81,45 +81,71 @@ class ScanFragment : Fragment() {
         binding.uploadBtn.setOnClickListener{
             val imageUri = currentImageUri
 
-
             Log.d("Image Post", "imageURI: $currentImageUri")
-
 
             if (imageUri != null) {
                 showLoading(true)
                 scanViewModel.uploadStory(imageUri, requireActivity())
-                scanViewModel.uploadResult.observe(requireActivity()) { result ->
-                    result.onSuccess { response ->
-                        if (response.status == "success") {
-                            showLoading(false)
-                            Log.d("Predict Response", "Predict Result: ${response.result}")
-                            Log.d("Predict Response", "Confidence Score Result: ${response.result.score}")
-                            Log.d("Predict Response", "Price: ${response.result.score}")
-                            val intent = Intent(context, TransactionFormActivity::class.java).apply {
-                                putExtra(TransactionFormActivity.EXTRA_PREDICT_RESULT, response.result.result)
-                                putExtra(TransactionFormActivity.EXTRA_PREDICT_SCORE, response.result.score)
-                                putExtra(TransactionFormActivity.EXTRA_PREDICT_PRICE, response.result.price)
-                                putExtra(TransactionFormActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-                            }
-                            startActivity(intent)
-                        } else {
-                            showLoading(false)
-                            showToast(response.status)
-                        }
-                    }
-                    result.onFailure { throwable ->
-                        throwable.localizedMessage?.let {
-                            showErrorDialog(it)
-                            showLoading(false)
-                        }
-                    }
-                }
             } else {
                 showToast("All fields are required")
                 showLoading(false)
             }
 
         }
+
+//        scanViewModel.uploadResult.observe(requireActivity()) { result ->
+//            result.onSuccess { response ->
+//                if (response.status == "success") {
+//                    showLoading(false)
+//                    Log.d("Predict Response", "Predict Result: ${response.result}")
+//                    Log.d("Predict Response", "Confidence Score Result: ${response.result.score}")
+//                    Log.d("Predict Response", "Price: ${response.result.score}")
+//                    val intent = Intent(context, TransactionFormActivity::class.java).apply {
+//                        putExtra(TransactionFormActivity.EXTRA_PREDICT_RESULT, response.result.result)
+//                        putExtra(TransactionFormActivity.EXTRA_PREDICT_SCORE, response.result.score)
+//                        putExtra(TransactionFormActivity.EXTRA_PREDICT_PRICE, response.result.price)
+//                        putExtra(TransactionFormActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+//                    }
+//                    startActivity(intent)
+//                } else {
+//                    showLoading(false)
+//                    showToast(response.status)
+//                }
+//            }
+//            result.onFailure { throwable ->
+//                throwable.localizedMessage?.let {
+//                    showErrorDialog(it)
+//                    showLoading(false)
+//                }
+//            }
+//        }
+
+        scanViewModel.uploadResult.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let { result ->
+                result.onSuccess { response ->
+                    if (response.status == "success") {
+                        showLoading(false)
+                        val intent = Intent(context, TransactionFormActivity::class.java).apply {
+                            putExtra(TransactionFormActivity.EXTRA_PREDICT_RESULT, response.result.result)
+                            putExtra(TransactionFormActivity.EXTRA_PREDICT_SCORE, response.result.score)
+                            putExtra(TransactionFormActivity.EXTRA_PREDICT_PRICE, response.result.price)
+                            putExtra(TransactionFormActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
+                        }
+                        startActivity(intent)
+                    } else {
+                        showLoading(false)
+                        showToast(response.status)
+                    }
+                }
+                result.onFailure { throwable ->
+                    throwable.localizedMessage?.let {
+                        showErrorDialog(it)
+                        showLoading(false)
+                    }
+                }
+            }
+        }
+
 
         binding.openCameraBtn.setOnClickListener { openCamera() }
 
@@ -182,13 +208,34 @@ class ScanFragment : Fragment() {
             }
             .show()
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        val dataStore = requireContext().applicationContext.dataStore
+
+        val scanViewModel: ScanViewModel by viewModels {
+            ScanViewModelFactory(SettingPreferences.getInstance(dataStore), Injection.provideUserRepository())
+        }
+        scanViewModel.uploadResult.removeObservers(viewLifecycleOwner)
     }
 
     companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }
+}
+
+class Event<out T>(private val content: T) {
+    private var hasBeenHandled = false
+
+    fun getContentIfNotHandled(): T? {
+        return if (hasBeenHandled) {
+            null
+        } else {
+            hasBeenHandled = true
+            content
+        }
+    }
+
+    fun peekContent(): T = content
 }

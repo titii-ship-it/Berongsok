@@ -5,8 +5,10 @@ import com.example.berongsok.data.remote.response.DashboardResponse
 import com.example.berongsok.data.remote.response.ErrorResponse
 import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.NewTransactionResponse
+import com.example.berongsok.data.remote.response.OTPResponse
 import com.example.berongsok.data.remote.response.PredictResponse
 import com.example.berongsok.data.remote.response.RegisterResponse
+import com.example.berongsok.data.remote.response.ResetPasswordResponse
 import com.google.gson.Gson
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -50,6 +52,33 @@ class AuthRepository(private val apiService: ApiService) {
             Result.failure(Exception(errorMessage))
         }
     }
+
+    suspend fun resetPassword(email: String, otp: Int, newPassword: String): Result<ResetPasswordResponse> {
+        return try {
+            val response = apiService.resetPassword(email, otp, newPassword)
+            Result.success(response)
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message ?: "An unknown error occurred"
+
+            Result.failure(Exception(errorMessage))
+        }
+    }
+
+    suspend fun sendOTP(email: String): Result<OTPResponse> {
+        return try {
+            val response = apiService.sendOTP(email)
+            Result.success(response)
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message ?: "An unknown error occurred"
+
+            Result.failure(Exception(errorMessage))
+        }
+    }
+
 
     suspend fun uploadPhoto(token: String, multipartBody: MultipartBody.Part): Result<PredictResponse> {
         return try {

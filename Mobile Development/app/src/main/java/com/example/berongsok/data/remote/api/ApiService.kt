@@ -4,8 +4,10 @@ import com.example.berongsok.data.remote.response.DashboardResponse
 import com.example.berongsok.data.remote.response.HistoryResponse
 import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.NewTransactionResponse
+import com.example.berongsok.data.remote.response.OTPResponse
 import com.example.berongsok.data.remote.response.PredictResponse
 import com.example.berongsok.data.remote.response.RegisterResponse
+import com.example.berongsok.data.remote.response.ResetPasswordResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -33,6 +35,20 @@ interface ApiService {
         @Field("email") email: String,
         @Field("otp") otp: Int
     ): RegisterResponse
+
+    @FormUrlEncoded
+    @POST("reset-password")
+    suspend fun resetPassword(
+        @Field("email") email: String,
+        @Field("otp") otp: Int,
+        @Field("newPassword") newPassword: String,
+    ): ResetPasswordResponse
+
+    @FormUrlEncoded
+    @POST("request-password-reset")
+    suspend fun sendOTP(
+        @Field("email") email: String
+    ): OTPResponse
 
     @FormUrlEncoded
     @POST("login")

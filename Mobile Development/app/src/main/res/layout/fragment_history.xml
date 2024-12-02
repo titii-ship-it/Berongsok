@@ -21,10 +21,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold"
-        android:text="@string/title_dashboard"
+        android:text="@string/transaction_history"
         android:textAlignment="textStart"
         android:textColor="@color/md_theme_primary"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/no_transaction"
+        android:visibility="gone"
+        android:paddingVertical="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/no_transaction_history"/>
 
     <FrameLayout
         android:layout_width="match_parent"
