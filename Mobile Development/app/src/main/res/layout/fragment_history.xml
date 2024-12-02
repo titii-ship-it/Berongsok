@@ -56,12 +56,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHistoryTransaction"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
-            tools:listitem="@layout/item_history" />
+            android:id="@+id/swipeRefresh">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistoryTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                tools:listitem="@layout/item_history" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
     </FrameLayout>
 
