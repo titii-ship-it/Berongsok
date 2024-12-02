@@ -10,13 +10,13 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivSplash"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/logo_brongsok" />
 
     <TextView
         android:id="@+id/tvSplash"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:textAlignment="center"
-        android:text="Empowering Waste\nManagement Together!"
+        android:text="@string/empowering_waste_nmanagement_together"
         android:textColor="@color/md_theme_primary"
         android:layout_marginTop="12dp"
         android:textSize="24sp"
