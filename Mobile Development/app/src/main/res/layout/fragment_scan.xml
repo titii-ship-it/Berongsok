@@ -31,10 +31,10 @@
 
         <ImageView
             android:id="@+id/previewImageView"
-            android:minHeight="600dp"
             android:layout_width="match_parent"
-            android:src="@drawable/ic_place_holder"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:contentDescription="@string/no_transaction_history"
+            android:src="@drawable/img_placeholder"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

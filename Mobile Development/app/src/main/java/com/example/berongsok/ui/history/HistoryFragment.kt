@@ -55,7 +55,6 @@ class HistoryFragment : Fragment() {
                 binding.noTransaction.visibility = VISIBLE
                 Log.d("HistoryFragment", "Data kosong untuk RecyclerView")
                 historyAdapter.submitList(emptyList())
-
             }
         }
 

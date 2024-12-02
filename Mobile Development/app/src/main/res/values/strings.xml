@@ -75,4 +75,6 @@
     <string name="Okay">Okay</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="empowering_waste_nmanagement_together">Empowering Waste\nManagement Together!</string>
+    <string name="upload_photo">Upload Photo</string>
+    <string name="choose_or_take_a_photo_to_upload">Choose or Take a Photo to Upload</string>
 </resources>

@@ -26,14 +26,31 @@
         android:textColor="@color/md_theme_primary"
         android:textSize="36sp" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/no_transaction"
         android:visibility="gone"
-        android:paddingVertical="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/no_transaction_history"/>
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="340dp"
+            android:contentDescription="@string/no_transaction_history"
+            android:src="@drawable/no_transaction"/>
+
+        <TextView
+            android:paddingVertical="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="24sp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/no_transaction_history"/>
+
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
