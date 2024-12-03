@@ -4,10 +4,32 @@ function normalizeInput(input, separator = '-') {
     return input.toLowerCase().replace(/\s+/g, separator);
 }
 
-const storage = new Storage({
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-    projectId: process.env.GCLOUD_PROJECT,
-});
+let storage;
+
+try {
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    try {
+      // For production with google secrets manager
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+      storage = new Storage({
+        credentials: credentials,
+        projectId: process.env.GCLOUD_PROJECT
+      });
+    } catch (parseError) {
+      // for local development -> GOOGLE_APPLICATION_CREDENTIALS is a file path
+      storage = new Storage({
+        keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+        projectId: process.env.GCLOUD_PROJECT
+      });
+    }
+  } else {
+    // for production -> server using IAM role
+    storage = new Storage();
+  }
+} catch (error) {
+  console.error('Error initializing Storage:', error);
+  throw error;
+}
 
 async function storeImage(image,wasteType) {
     const bucketName = process.env.STORAGE_BUCKET;
