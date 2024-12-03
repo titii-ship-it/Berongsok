@@ -49,7 +49,6 @@
     <string name="fields_required">All fields are required</string>
     <string name="no_transaction_history">No transaction history</string>
     <string name="balance">Balance</string>
-    <string name="total_balance">Rp. 27.000.000</string>
     <string name="profile">Profile</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="enable_dark_mode">Enable Dark Mode</string>

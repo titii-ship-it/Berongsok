@@ -83,7 +83,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="@string/total_balance"
                         android:textAlignment="center"
                         android:textColor="@color/md_theme_primary"
                         android:textSize="24sp"
