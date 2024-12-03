@@ -3,8 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("com.google.devtools.ksp")
-
+    id("kotlin-kapt")
 }
 
 android {
@@ -76,7 +75,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
-    ksp (libs.compiler)
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    kapt ("com.github.bumptech.glide:compiler:4.16.0")
     implementation (libs.androidx.swiperefreshlayout)
 }

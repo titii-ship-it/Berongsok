@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.berongsok.MainActivity
 import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivityProfileBinding
@@ -71,7 +72,8 @@ class ProfileActivity : AppCompatActivity() {
     private suspend fun userLogout () {
         val pref = SettingPreferences.getInstance(application.dataStore)
         pref.clearUser()
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 }

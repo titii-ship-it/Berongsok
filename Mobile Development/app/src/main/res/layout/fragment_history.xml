@@ -47,7 +47,7 @@
             android:gravity="center"
             android:textColor="@color/md_theme_primary"
             android:textSize="24sp"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/no_transaction_history"/>
 
     </LinearLayout>
