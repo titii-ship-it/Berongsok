@@ -24,9 +24,7 @@ const registerHandler = async (request, h) => {
 
   try {
     // <-- validation>
-    const normalizedEmail = normalizeEmail(email);
-    const normalizedUsername = normalizeUsername(username);
-    const requiredFields = { username:normalizedUsername, email:normalizedEmail, password };
+    const requiredFields = { username, email, password };
     const missingFields = Object.keys(requiredFields).filter(field => !requiredFields[field]);
 
     if (missingFields.length > 0) {
@@ -36,6 +34,8 @@ const registerHandler = async (request, h) => {
       }).code(400);
     }
     // <-- end of validation>
+    const normalizedEmail = normalizeEmail(email);
+    const normalizedUsername = normalizeUsername(username);
     await AuthService.registerUser(normalizedUsername, normalizedEmail, password);
     const response = h.response({
       error: false,
@@ -88,6 +88,7 @@ const verifyRegistrationHandler = async (request, h) => {
     }
 
     // Move user data to userProfile collection
+    const usersCollection = db.collection('userProfile');
     await usersCollection.doc(normalizedEmail).set({
       username: pendingUserData.username,
       email: pendingUserData.email,
@@ -275,14 +276,14 @@ const predictHandler = async (request, h) => {
       // ambil model dan image dari request.payload
       const { model } = request.server.app;  
       const { image } = request.payload; //jangan di ganti
-        if (!image) {
+        if (!image || !image.hapi || !image._data || image._data.length === 0) {
           return h.response({
               status: 'fail',  
               error : false,
               message: 'Image is required'
           }).code(400);
         }
-        
+
         const { result, confidenceScore } = await predictWaste(model, image);
         const wasteType = result;
         const normalizedWasteType = normalizeWasteType(wasteType);
@@ -308,6 +309,12 @@ const predictHandler = async (request, h) => {
 
 
     }catch (error) {
+        if (error.message === 'Invalid token') {
+          return h.response({
+            status: 'fail',
+            message: error.message,
+          }).code(401);
+        }
         return h.response({
             status: 'fail',
             message: error.message //message dari predict service
@@ -321,14 +328,13 @@ const saveTransaction = async (request, h) => {
     const decoded = await AuthService.verifyToken(authorizationToken);
 
     const { image } = request.payload; //jangan di ganti
-    if (!image ) {
+    if (!image || !image.hapi || !image._data || image._data.length === 0) {
       return h.response({
           status: 'fail',  
           error : false,
           message: 'Image is required'
       }).code(400);
     }
-    
     const { nasabahName, wasteType, weight, price, totalPrice } = request.payload;
     
     // <-- validation>
@@ -347,6 +353,24 @@ const saveTransaction = async (request, h) => {
     const transactionId = crypto.randomUUID();
     const createAt = new Date().toISOString();
 
+    if (isNaN(Number(weight)) || isNaN(Number(price))) {
+      const response = h.response({
+        status: 'fail',
+        message: isNaN(Number(weight)) ? 'Weight must be a valid number' : 'Price must be a valid number'
+      })
+      response.code(400);
+      return response;
+    }
+    
+    const calculatedTotal = Number(weight) * Number(price);
+    if (Number(totalPrice) !== calculatedTotal) {
+      const response = h.response({
+        status: 'fail',
+        message: 'Total price calculation is incorrect'
+      })
+      response.code(400);
+      return response;
+    }
     
 
     await FirestoreService.storeData(transactionId, {

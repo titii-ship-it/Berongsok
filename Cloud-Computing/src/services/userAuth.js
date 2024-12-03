@@ -71,7 +71,6 @@ const loginUser = async (email, password) => {
   if (!isValidPassword) {
     throw new Error('The email or password you entered is incorrect.');
   }
-  console.log('JWT_SECRET:', process.env.JWT_SECRET);
   
   // token = jwt.sign(data, jwtSecretKey)
   const token = jwt.sign(
