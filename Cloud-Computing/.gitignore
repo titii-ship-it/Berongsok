@@ -1,0 +1,5 @@
+aboutProject.md
+node_modules/
+service_account.json
+.env
+.gitcloudignore
