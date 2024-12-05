@@ -60,6 +60,8 @@ The trained model is saved in the `.keras` format for reuse.
 model.save('model_fix.keras')
 ```
 
+You can see the `.keras` model in here: [model_fix.keras ](https://github.com/titii-ship-it/Berongsok/blob/ml_team/Machine%20Learning/Converted%20Models/model_fix.keras)
+
 ### 6. Evaluation
 
 The model is evaluated on a test dataset (not shown in the code snippet above, you can try it yourself). The performance metrics include:
