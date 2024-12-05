@@ -16,13 +16,15 @@ The dataset used for training and validation is structured into two directories:
 - `./garbage_dataset/train`: Contains the training images, organized into subdirectories by class.
 - `./garbage_dataset/validation`: Contains the validation images, organized similarly.
 
-Ensure the dataset follows this structure for proper loading. You can download our dataset from here: <br> https://drive.google.com/file/d/1o__AK8ILNQ1MIFdWJqUhVGBO7YbUZy5H/view?usp=sharing
+Ensure the dataset follows this structure for proper loading. You can download our dataset from here:
+
+[Berongsok Dataset](https://drive.google.com/file/d/1o__AK8ILNQ1MIFdWJqUhVGBO7YbUZy5H/view?usp=sharing)
 
 ## Project Workflow
 
 ### 1. Dependencies
 
-The project uses TensorFlow and Keras for deep learning. Dependencies for this project are listed in **requirements.txt**. Install them using:
+The project uses TensorFlow and Keras for deep learning. Dependencies for this project are listed in `requirements.txt`. Install them using:
 
 ```bash
 pip install -r requirements.txt
