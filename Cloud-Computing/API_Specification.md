@@ -1,8 +1,10 @@
+# API Specification
+
 This document provides the specifications for the API endpoints of our application. Each endpoint is described with its URL, HTTP method, request parameters, and possible responses. The API is designed to be RESTful and follows standard conventions for request and response formats.
 
-# 1. Register Process
+## 1. Register Process
 
-## a. Register
+### a. Register
 - URL
   - `/register`
 - Method
@@ -12,7 +14,8 @@ This document provides the specifications for the API endpoints of our applicati
   - `email` as `string`, must be `unique`
   - `password` as `string`, must be at least 8 characters
 
-if successful:
+#### Success : 
+Success  (Status code 201) :
 ```json
 {
   "error": false,
@@ -20,7 +23,8 @@ if successful:
 }
 ```
 
-if fail - email already taken:
+#### Fail 
+if fail - email already taken (Status code : 404):
 ```json
 {
   "error": true,
@@ -38,7 +42,7 @@ if fail - tried registering less than 5 minutes ago:
 
 
 
-## b. register verification
+### b. register verification
 - URL
   - `/verify-registration`
 - Method
@@ -46,7 +50,9 @@ if fail - tried registering less than 5 minutes ago:
 - Request Body :
   - `email` as `string`
   - `otp` as `int`
-if successful:
+
+#### Success
+Success  (Status code 201) :
 
 ```json
 {
@@ -63,7 +69,8 @@ if fail - no pending registration:
 }
 ```
 
-if fail - no pending registration:
+#### Fail 
+No pending registration (Status code : 404):
 ```json
 {
   "error": true, 
@@ -71,8 +78,8 @@ if fail - no pending registration:
 }
 ```
 
-
-# 2. Login
+---
+## 2. Login
 
 - URL
   - `/login`
@@ -82,8 +89,8 @@ if fail - no pending registration:
   - `email` as `string`
   - `password` as `string`
 
-Respone:
-
+#### Success
+Success  (Status code 200) :
 ```json
 {
   "error": false,
@@ -96,6 +103,7 @@ Respone:
 }
 ```
 
+#### Fail 
 if fail - email or password is incorrect.
 
 ```json
@@ -114,8 +122,8 @@ if fail - due to account was not found
 }
 ```
 
-## 3. Prediksi
-
+---
+## 3. Prediction
 - URL
   - `/predict`
 - Method
@@ -128,8 +136,8 @@ if fail - due to account was not found
 - Request body:
   - image as `file`, must be a valid image file, max size 5MB
 
-if successful :
-
+#### Success
+Success  (Status code 200) :
 ```json
 {
 	"error": false, // bool
@@ -144,11 +152,12 @@ if successful :
 } 
 ```
 
-if it fails
+#### Fail 
+No image
 ```json
 {
     "status": "fail",
-    "message": "An error occurred during prediction: Expected image (BMP, JPEG, PNG, or GIF), but got unsupported image type"
+    "message": "Image is required"
 }
 ```
 
@@ -169,9 +178,8 @@ If it fails - due to an error in the backend or the model :
 }
 ```
 
-
-
-## 4. addList
+---
+## 4. Save Transaction
 Endpoint to store data in the database
 
 - URL
@@ -234,7 +242,8 @@ if fail - User not logged in:
 }
 ```
 
-# 5. getHistory
+---
+## 5. getHistory
 Endpoint to retrieve prediction history
 - URL
   - `/transactionhistory?tpsId=param`
@@ -295,8 +304,8 @@ if fail - internal server error (Status code: 500):
 }
 ```
 
-
-# 6. get transaksi tertentu
+---
+## 6. Get Specific Transaction
 Endpoint to retrieve prediction history by transaction ID
 - URL
   - `/transactionhistory/detail?tpsId=param&transactionId=param`
@@ -346,7 +355,9 @@ if fail - internal server error (Status code : 500) :
 }
 ```
 
-# 7. Request OTP
+---
+## 7. Reset Password
+### a. Request OTP
 - URL
   - `/request-password-reset`
 
@@ -356,9 +367,8 @@ if fail - internal server error (Status code : 500) :
 - request body
   - email as `string`
 
-## response :
 
-### Success
+#### Success
 Success  (Status code 200) :
 ```json
 {
@@ -367,7 +377,7 @@ Success  (Status code 200) :
 }
 ```
 
-### Fail
+#### Fail
 Email not found (Status code : 404):
 ```json
 {
@@ -384,7 +394,7 @@ Server error (Status code : 404):
 }
 ```
 
-# 8. Reset Pssword
+### b. Reset Pssword
 
 - URL
   - `/reset-password`
@@ -398,9 +408,7 @@ Server error (Status code : 404):
   - newPassword -> `string` min 8 character
 
 
-## response :
-
-### Success
+#### Success
 Success  (Status code 201) :
 ```json
 {
@@ -409,7 +417,7 @@ Success  (Status code 201) :
 }
 ```
 
-### Fail 
+#### Fail 
 Email not found (Status code : 404):
 ```json
 {
@@ -463,8 +471,8 @@ Password less than 8 character
 }
 ```
 
-
-# 9. Dashboard
+---
+## 8. Dashboard
 - URL
   - `/dashboard`
 
@@ -474,7 +482,8 @@ Password less than 8 character
 - header
   - Authorization: Bearer \<token>
 
-respone 
+#### Success
+Success  (Status code 200) :
 ```json
 {
   "status": "success",      // string
@@ -517,7 +526,8 @@ respone
 }
 ```
 
-if fail
+#### Fail 
+(Status code : 404):
 ```json
 {
   "status": "fail",
@@ -525,7 +535,9 @@ if fail
 }
 ```
 
-### About Normalize Waste Type
+
+---
+## About Normalize Waste Type
 1. Input: `"plastic bottle"`
     - Output: `"Plastic Bottle"`
 

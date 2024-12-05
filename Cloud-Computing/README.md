@@ -1,4 +1,3 @@
-
 # QUEST for Cloud Computing
 ## Main Quest
 - [x] **Utilize Google Cloud services to support application needs**, such as:
@@ -15,9 +14,9 @@
     
     -> [Berongsok Cloud Architecure](https://drive.google.com/file/d/1FlO6iHROCfSK34uJjDR3csRMNirflBDQ/view?usp=sharing)
 
-- [ ] **Calculate the costs** via Google Cloud Pricing Calculator to avoid sudden credit running out, and use the minimum costs.
+- [x] **Calculate the costs** via Google Cloud Pricing Calculator to avoid sudden credit running out, and use the minimum costs.
 
-- [ ] **Manage access to your Google** Cloud Project to ensure only the Cloud Computing team has access and can manage the costs.
+- [x] **Manage access to your Google** Cloud Project to ensure only the Cloud Computing team has access and can manage the costs.
 
 
 ## Side Quest 
