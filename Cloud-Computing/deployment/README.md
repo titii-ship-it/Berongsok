@@ -97,7 +97,7 @@ After deployment, verify that your service is running:
  - Security: Consider using Google Secret Manager to store `JWT_SECRET`, `EMAIL_PASSWORD`, or `GOOGLE_APPLICATION_CREDENTIALS`
 
 
-# Additional Information
+## References
 For more details on using Docker with Google Cloud, refer to the [Google Cloud documentation](https://cloud.google.com/artifact-registry/docs/docker/quickstart).
 
 For troubleshooting and best practices, consult the [Docker documentation](https://docs.docker.com/get-started/).

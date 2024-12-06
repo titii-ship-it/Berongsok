@@ -12,6 +12,10 @@ const db = require('../services/firestore');
 const usersCollection = db.collection('userProfile');
 
 function normalizeEmail(email) {
+  // jika email tidak valid (tidak memiliki @ atau .)
+  if (!email.includes('@') || !email.includes('.')) {
+    throw new Error('Invalid email format');
+  }
   return email.trim().toLowerCase();
 }
 
