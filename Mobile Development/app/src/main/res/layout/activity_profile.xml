@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    tools:context=".ui.profile.ProfileActivity">
+
+    <TextView
+        android:id="@+id/tvProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/profile"
+        android:textSize="36sp"
+        android:textColor="@color/md_theme_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvLabelUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/username"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="21sp"
+        app:layout_constraintStart_toStartOf="@+id/tvProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfile" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/username"
+        android:textColor="@color/md_theme_primary"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelUsername" />
+
+    <TextView
+        android:id="@+id/tvLabelEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21sp"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_marginTop="32dp"
+        android:text="@string/email"
+        app:layout_constraintStart_toStartOf="@+id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/email"
+        android:textColor="@color/md_theme_primary"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelEmail"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelEmail" />
+
+    <View
+        android:id="@+id/lineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/md_theme_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+    <TextView
+        android:id="@+id/tvDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/md_theme_primary"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/dark_mode"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/lineHorizontal"
+        app:layout_constraintTop_toBottomOf="@+id/lineHorizontal" />
+
+    <TextView
+        android:id="@+id/tvLabelDarkMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_italic"
+        android:text="@string/enable_dark_mode"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tvDarkMode"
+        app:layout_constraintTop_toBottomOf="@+id/tvDarkMode" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:minHeight="48dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLabelDarkMode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvDarkMode" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_marginHorizontal="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_logout_24"
+        android:drawablePadding="12dp"
+        app:icon="@drawable/ic_logout_24"
+        android:text="@string/logout"
+        app:cornerRadius="5dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelDarkMode"
+        app:layout_constraintVertical_bias="0.605" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

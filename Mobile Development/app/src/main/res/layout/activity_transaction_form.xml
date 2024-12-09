@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="?attr/actionBarSize"
+    tools:context=".ui.transaction.TransactionFormActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="3"
+            android:id="@+id/tv_waste_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/transaction_form"
+            android:textSize="24sp"
+            android:textColor="@color/md_theme_primary"
+            />
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="textStart"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/transaction_form"
+            android:textSize="16sp"
+            android:textColor="@color/md_theme_primary"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/previewImageView"
+        android:layout_weight="1"
+        android:minHeight="200dp"
+        android:layout_width="match_parent"
+        android:src="@drawable/ic_place_holder"
+        android:layout_height="0dp"/>
+
+    <ProgressBar
+        android:layout_marginVertical="12dp"
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_surfaceContainerHighest"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:cornerRadius="5dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/md_theme_primary"
+            app:errorEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_nasabah_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nasabah_name"
+                android:autofillHints="username"
+                android:inputType="text"
+                android:textColorHint="@color/md_theme_primary"
+                android:textColor="@color/md_theme_primary"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/md_theme_primary"
+            app:errorEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:enabled="false"
+                android:id="@+id/ed_waste_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/waste_type"
+                android:autofillHints="username"
+                android:inputType="text"
+                android:textColorHint="@color/md_theme_primary"
+                android:textColor="@color/md_theme_primary"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/md_theme_primary"
+            app:errorEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:enabled="false"
+                android:id="@+id/ed_waste_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/waste_price"
+                android:autofillHints="username"
+                android:inputType="text"
+                android:textColorHint="@color/md_theme_primary"
+                android:textColor="@color/md_theme_primary"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/md_theme_primary"
+            app:errorEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_waste_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/weight_kg"
+                android:autofillHints="username"
+                android:inputType="numberDecimal"
+                android:textColorHint="@color/md_theme_primary"
+                android:textColor="@color/md_theme_primary"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/total_price"
+                android:autofillHints="username"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="24sp"
+                android:textColorHint="@color/md_theme_primary"
+                />
+
+            <TextView
+                android:gravity="end"
+                android:id="@+id/tv_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/rp_0"
+                android:autofillHints="username"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="24sp"
+                android:textColorHint="@color/md_theme_primary"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/submit"
+            app:cornerRadius="5dp" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
