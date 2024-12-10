@@ -1,6 +1,6 @@
-# Berongsok Mobile Development Documentation
+# Mobile Development Documentation
 
-Welcome to Berongsok!
+Welcome to Berongsok App!
 
 ## Installing the Kotlin Android Project
 
@@ -28,8 +28,17 @@ Welcome to Berongsok!
 
      - Wait for Android Studio to complete project synchronization.
      - Ensure all dependencies are installed by running `Sync Project with Gradle Files`.
+    
+   - Step 4: Setting Api Base Url.
 
-   - Step 4: Ready for development!
+     - Open local.properties file.
+     - Add this line.
+       
+       ```
+       BASE_URL = {Enter base URL in API documentation Cloud Computing Folder}
+       ```
+
+   - Step 5: Ready for development!
      - The project is now ready to be compiled and run on your device or emulator.
 
 ## Dependencies
@@ -42,8 +51,3 @@ Welcome to Berongsok!
 - [Ok Http 3](https://square.github.io/okhttp/)
 - [Swipe Refresh Layout](https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout)
 
-## License
-
-This project is licensed under the Bangkit Academy 2024 batch 2
-
-Thank you for joining and supporting Berongsok! Let's work together to create a more sustainable world.
