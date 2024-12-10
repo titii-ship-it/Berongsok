@@ -58,13 +58,12 @@ Berongsok is an AI-powered waste classification app designed to assist Trash Ban
 ## Features
 - AI-based waste classification using MobileNetV2.
 - Automatic price calculation for waste transactions.
-- Automatic financial reporting for Trash Banks.
 - Dashboard for waste and financial data visualization.
 
 
 ## Tech Stack
 - **Machine Learning**: Python, TensorFlow, MobileNetV2
-- **Frontend**: Android (Java/Kotlin)
+- **Frontend**: Android (Kotlin)
 - **Backend**: Node.js, Express
 - **Database**: Firebase Realtime Database
 - **Deployment**: TensorFlow.js for the ML model
