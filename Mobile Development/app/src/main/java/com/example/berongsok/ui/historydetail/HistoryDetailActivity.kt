@@ -21,7 +21,7 @@ class HistoryDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHistoryDetailBinding
 
     private val historyDetailViewModel: HistoryDetailViewModel by viewModels {
-        HistoryDetailViewModelFactory(SettingPreferences.getInstance(this.applicationContext.dataStore))
+        HistoryDetailViewModelFactory()
     }
 
     companion object {

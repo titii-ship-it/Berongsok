@@ -13,19 +13,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.FragmentScanBinding
 import com.example.berongsok.ui.transaction.TransactionFormActivity
 import com.example.berongsok.utils.Injection
 import com.example.berongsok.utils.getImageUri
-import com.example.berongsok.utils.uriToFile
 
 class ScanFragment : Fragment() {
 

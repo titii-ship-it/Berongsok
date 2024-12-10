@@ -66,7 +66,7 @@ class VerifyOTPActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.succes_regist)
             .setMessage(message)
-            .setPositiveButton(R.string.continue_login) { dialog, _ ->
+            .setPositiveButton(R.string.continue_login) { _, _ ->
                 goToLogin()
             }
             .show()

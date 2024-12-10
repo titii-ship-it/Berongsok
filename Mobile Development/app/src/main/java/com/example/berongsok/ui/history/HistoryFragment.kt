@@ -20,7 +20,7 @@ class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val historyViewModel: HistoryViewModel by viewModels {
-        HistoryViewModelFactory(SettingPreferences.getInstance(requireActivity().applicationContext.dataStore))
+        HistoryViewModelFactory()
     }
     private lateinit var historyAdapter: HistoryAdapter
 

@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.berongsok.MainActivity
 import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivityProfileBinding
