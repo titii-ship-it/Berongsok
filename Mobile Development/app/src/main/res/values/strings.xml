@@ -76,4 +76,6 @@
     <string name="empowering_waste_nmanagement_together">Empowering Waste\nManagement Together!</string>
     <string name="upload_photo">Upload Photo</string>
     <string name="choose_or_take_a_photo_to_upload">Choose or Take a Photo to Upload</string>
+    <string name="image_preview">Image Preview</string>
+    <string name="button_to_profile">Button to Profile</string>
 </resources>

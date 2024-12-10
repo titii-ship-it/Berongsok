@@ -1,6 +1,5 @@
 package com.example.berongsok
 
-import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +7,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.berongsok.databinding.ActivityMainBinding
-import com.example.berongsok.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,10 +35,5 @@ class MainActivity : AppCompatActivity() {
             // Use `setSelectedItemId` to sync with BottomNavigationView
             navView.selectedItemId = R.id.navigation_history
         }
-    }
-
-    private fun gotoLogin() {
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
     }
 }

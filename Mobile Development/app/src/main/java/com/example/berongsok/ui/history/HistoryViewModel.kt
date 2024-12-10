@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HistoryViewModel(private val dataStoreManager: SettingPreferences) : ViewModel() {
+class HistoryViewModel : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -55,12 +55,12 @@ class HistoryViewModel(private val dataStoreManager: SettingPreferences) : ViewM
     }
 }
 
-class HistoryViewModelFactory(private val dataStoreManager: SettingPreferences) :
+class HistoryViewModelFactory :
     ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
-            return HistoryViewModel(dataStoreManager) as T
+            return HistoryViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

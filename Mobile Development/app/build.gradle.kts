@@ -75,7 +75,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.glide)
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    annotationProcessor(libs.compiler)
     kapt ("com.github.bumptech.glide:compiler:4.16.0")
     implementation (libs.androidx.swiperefreshlayout)
 }

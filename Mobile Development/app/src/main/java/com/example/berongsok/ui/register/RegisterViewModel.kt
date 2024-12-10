@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.berongsok.data.remote.AuthRepository
-import com.example.berongsok.data.remote.response.LoginResponse
 import com.example.berongsok.data.remote.response.RegisterResponse
 import kotlinx.coroutines.launch
 

@@ -42,6 +42,7 @@
     <ImageView
         android:id="@+id/previewImageView"
         android:layout_weight="1"
+        android:contentDescription="@string/image_preview"
         android:minHeight="200dp"
         android:layout_width="match_parent"
         android:src="@drawable/ic_place_holder"

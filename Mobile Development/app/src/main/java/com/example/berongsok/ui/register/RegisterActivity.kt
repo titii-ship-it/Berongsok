@@ -9,19 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import com.example.berongsok.MainActivity
 import com.example.berongsok.R
-import com.example.berongsok.data.local.SettingPreferences
-import com.example.berongsok.data.local.dataStore
-import com.example.berongsok.databinding.ActivityLoginBinding
 import com.example.berongsok.databinding.ActivityRegisterBinding
-import com.example.berongsok.ui.component.OTPEditText
 import com.example.berongsok.ui.login.LoginActivity
 import com.example.berongsok.utils.Injection
-import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -114,7 +105,4 @@ class RegisterActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun goToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
 }

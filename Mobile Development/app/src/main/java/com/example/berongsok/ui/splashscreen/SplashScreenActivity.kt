@@ -9,11 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.berongsok.MainActivity
-import com.example.berongsok.R
 import com.example.berongsok.data.local.SettingPreferences
 import com.example.berongsok.data.local.dataStore
 import com.example.berongsok.databinding.ActivitySplashScreenBinding
