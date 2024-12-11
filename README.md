@@ -64,9 +64,9 @@ Berongsok is an AI-powered waste classification app designed to assist Trash Ban
 ## Tech Stack
 - **Machine Learning**: Python, TensorFlow, MobileNetV2
 - **Frontend**: Android (Kotlin)
-- **Backend**: Node.js, Express
-- **Database**: Firebase Realtime Database
-- **Deployment**: TensorFlow.js for the ML model
+- **Backend**: Node.js, Hapi.js
+- **Database**: Google Firestore
+- **Deployment**: Backend server deployed on Google Cloud Run, utilizing TensorFlow.js to load the ML model
 
 
 ## Step-by-Step Guide
@@ -108,15 +108,15 @@ Berongsok is an AI-powered waste classification app designed to assist Trash Ban
 
 ### 3. Backend Development
 1. **Setup Backend**:
-   - Initialize a Node.js project.
-   - Install Express.js and TensorFlow.js libraries.
+   - Initialize a Node.js project and install the necessary dependencies or libraries.
+   - Configure the server code in `server.js` and set up the required handlers for application functionality.
 
 2. **API Development**:
-   - Create APIs for image upload and model inference.
+   - Create RESTful APIs using the Hapi.js framework to handle application requests.
 
 3. **Integrate Model**:
-   - Load the TensorFlow.js model and use it for waste classification requests.
-
+   - Load the formatted model within the backend application.
+   - Create handlers to use the model for classifying images and returning prediction results via the API.
 
 ### 4. Frontend Development
 1. **Design UI**:
@@ -140,7 +140,9 @@ Berongsok is an AI-powered waste classification app designed to assist Trash Ban
 
 ### 6. Deployment
 1. **Backend Deployment**:
-   - Deploy the Node.js backend on a cloud platform like AWS or Heroku.
+     - Containerized the backend using Docker.
+     - Deployed on Google Cloud Run, utilizing other GCP services like Firestore and Cloud Storage.
+     - For detailed deployment steps, refer to the [Deployment Guide](https://github.com/titii-ship-it/Berongsok/tree/main/Cloud-Computing/deployment).
 
 2. **Frontend Deployment**:
    - Package the Android app as an APK for distribution.
@@ -160,8 +162,7 @@ Berongsok is an AI-powered waste classification app designed to assist Trash Ban
 
 
 ## Contributing
-
-Contributions are what make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+If you want to contributing to this project, please do so by following the steps below. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
