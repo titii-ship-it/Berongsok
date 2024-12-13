@@ -7,8 +7,9 @@ const db = require('../services/firestore');
 const errorService = require('../services/error');
 
 function normalizeEmail(email) {
-  const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/;
-                  // /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  const emailRegex = /^([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"([a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*)+\")@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|(\[(([0-9]{1,3}\.){3}[0-9]{1,3})\])$/;
+
+  // /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   if (!emailRegex.test(email)) {
     throw new errorService.BadRequestError('Invalid email format');
   }
