@@ -157,7 +157,7 @@ No image
 ```json
 {
     "status": "fail",
-    "message": "Image is required"
+    "message": "Image is required. Please ensure the image is uploaded and in the correct format."
 }
 ```
 
@@ -174,7 +174,7 @@ If it fails - due to an error in the backend or the model :
 ```json
 {
   "status": "fail",
-  "message": "Terjadi kesalahan dalam melakukan prediksi"
+  "message": "An error occurred. Please try again or contact support if the problem persists."
 }
 ```
 

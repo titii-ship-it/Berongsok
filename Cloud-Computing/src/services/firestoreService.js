@@ -1,6 +1,8 @@
-const { Firestore } = require('@google-cloud/firestore');
 const AuthService = require('./userAuth');
 const db = require(`./firestore`);
+const errorService = require('./error');
+
+const defaultErrorMessage = 'Server error, Please try again or contact support if the problem persists.';
 
 // untuk upload history predict ke firebase
 async function storeData(id, data) {
@@ -10,40 +12,44 @@ async function storeData(id, data) {
 }
 
 async function getWastePrice(wasteType){
+  try {
     const normalizeWasteType = wasteType.toLowerCase().replace(/\s+/g, "-");
-    console.log(normalizeWasteType);
     const priceCollection = db.collection('wastePricing');
     const priceData = await priceCollection.doc(normalizeWasteType).get();
 
     if (!priceData.exists) {
-        throw new Error(`Price data for waste type "${wasteType}" not found`);
+      throw new errorService.NotFoundError(`Price data for waste type "${wasteType}" not found`);
     }
 
     const price = priceData.data();
     return price.wastePrice;
-    
+
+  } catch (error) {
+    if (error instanceof errorService.ApplicationError) {
+      throw error;
+    } else {
+      console.error(`Error while getting waste price data for "${wasteType}"`);
+      throw new errorService.InternalServerError(defaultErrorMessage);
+    }
+  }
 }
 
 async function getDataDashboard(authorizationToken){
+  try{
     const decoded = await AuthService.verifyToken(authorizationToken);
-
     const tpsId = decoded.tpsId;
     const email = decoded.email;
-    
-    if (!email || typeof email !== 'string' || email.trim() === '') {
-      throw new Error('Invalid email address, please register or login again.');
-    }
 
-    // get username dari profil pengguna
+    // get username data
     const usersCollection = db.collection('userProfile');
     const userDoc = await usersCollection.doc(email).get();
     if (!userDoc.exists) {
-      throw new Error('User not found.');
+      throw new errorService.NotFoundError('User not found.');
     }
     const userData = userDoc.data();
     const username = userData.username;
 
-    // get riwayat transaksi tpsId
+    // get transaction history data 
     const historyCollection = db.collection('transactionHistory')
       .where('tpsId', '==', tpsId);
     const historySnapshot = await historyCollection.get();
@@ -71,8 +77,16 @@ async function getDataDashboard(authorizationToken){
     });
 
     const mainData = Object.values(wasteTypeData);
-
     return { username, totalWeight, totalPrice, mainData };
+
+  } catch (error) {
+    if (error instanceof errorService.ApplicationError) {
+      throw error;
+    } else {
+      console.error(`Error while get dashboard data, ${error}`);
+      throw new errorService.InternalServerError(defaultErrorMessage);
+    }
+  }
 }
 
 async function getWasteHistory(tpsId){

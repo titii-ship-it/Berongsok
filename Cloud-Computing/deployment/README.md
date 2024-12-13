@@ -40,8 +40,7 @@ gcloud auth configure-docker asia-southeast2-docker.pkg.dev
 #### 4. Build the Docker Image
 Build the Docker image using the provided Dockerfile:
 ```sh
-docker build -t asia-southeast2-docker.pkg.dev/your-project-id/berongsok-backend-repo/berongsok-backend:latest \
-  -f Cloud-Computing/Dockerfile .
+docker build -f Cloud-Computing/Dockerfile -t asia-southeast2-docker.pkg.dev/your-project-id/berongsok-backend-repo/berongsok-backend:latest  .
 ```
 
 #### 5. Push the Docker Image to Artifact Registry

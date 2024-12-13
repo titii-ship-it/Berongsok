@@ -4,10 +4,13 @@ WORKDIR /app
 # WORKDIR /usr/src/app
 
 COPY Cloud-Computing/package.json Cloud-Computing/package-lock.json ./
+# COPY ./package.json ./package-lock.json ./
 
 RUN npm install --legacy-peer-deps
+# RUN npm install
 
 COPY Cloud-Computing/ ./
+# COPY . ./
 
 # Set environment variables
 ENV PORT=8080

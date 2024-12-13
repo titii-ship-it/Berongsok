@@ -29,8 +29,6 @@ steps:
       '--allow-unauthenticated',
       '--set-secrets',
       'JWT_SECRET=projects/346176766742/secrets/JWT_SECRET:latest,EMAIL_PASSWORD=projects/346176766742/secrets/EMAIL_PASSWORD:latest,GOOGLE_APPLICATION_CREDENTIALS=projects/346176766742/secrets/GOOGLE_APPLICATION_CREDENTIALS:latest',
-        # '--update-secrets',
-        # 'GOOGLE_APPLICATION_CREDENTIALS=GOOGLE_APPLICATION_CREDENTIALS:latest',
       '--set-env-vars',
       'GCLOUD_PROJECT=berongsok-capstone,STORAGE_BUCKET=berongsok-bucket,MODEL_PATH=./src/model/model.json,EMAIL_USERNAME=berongsok.app@gmail.com'
     ]

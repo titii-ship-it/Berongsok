@@ -1,7 +1,11 @@
 const tf = require('@tensorflow/tfjs-node');
+const errorService = require('./error');
 
 async function predictWaste(model, imageStream) {
     try {
+        if (!model || typeof model.predict !== 'function') {
+            throw new errorService.InternalServerError('Model is not loaded properly');
+        }
         // Read image stream into buffer
         const chunks = [];
         for await (const chunk of imageStream) {
@@ -15,7 +19,6 @@ async function predictWaste(model, imageStream) {
             .expandDims()
             .toFloat()
             .div(tf.scalar(255.0));
-        console.log("Converting image to tensor");
 
         // Make prediction
         const prediction = model.predict(tensor);
@@ -24,7 +27,6 @@ async function predictWaste(model, imageStream) {
         const classResult = score[0].indexOf(Math.max(...score[0]));
         const wasteLabel = ['Can', 'Cardboard', 'Glass Bottle', 'Paper', 'Plastic Bottle', 'Plastic Cup'];
         const result = wasteLabel[classResult];
-        console.log('result:', result);
 
         return {
             result,
@@ -32,7 +34,8 @@ async function predictWaste(model, imageStream) {
         };
 
     } catch (error) {
-        throw new Error(`An error occurred during prediction: ${error.message}`);
+        console.error(`An error occurred during prediction: ${error.message}`);
+        throw new errorService.InternalServerError(`An error occurred. Please try again or contact support if the problem persists.`);
     }
 }
 
