@@ -31,14 +31,12 @@ function validateRequiredFields(fields, payload) {
 }
 
 const registerHandler = async (request, h) => {
-  const { username, email, password } = request.payload;
-
   try {
+    const { username, email, password } = request.payload;
     validateRequiredFields(['username', 'email', 'password'], request.payload);
 
     const normalizedEmail = normalizeEmail(email);
     const normalizedUsername = username.trim();
-
     await AuthService.registerUser(normalizedUsername, normalizedEmail, password);
     
     const response = h.response({
@@ -61,16 +59,14 @@ const registerHandler = async (request, h) => {
 };
 
 const verifyRegistrationHandler = async (request, h) => {
-  const { email, otp } = request.payload;
-  
   try {
+    const { email, otp } = request.payload;
     if (!email || !otp) {
       throw new errorService.BadRequestError('Email and OTP are required.');
     }
 
-    // Get user from pendingUsers collection
     const normalizedEmail = normalizeEmail(email);
-    await AuthService.verifyRegistration(normalizedEmail);
+    await AuthService.verifyRegistration(normalizedEmail, otp);
     
     const response = h.response({
       error: false,
@@ -123,9 +119,8 @@ const loginHandler = async (request, h) => {
 
 // send OTP
 const requestPasswordResetHandler = async (request, h) => {
-  const { email } = request.payload;
-
   try {
+    const { email } = request.payload;
     if (!email) {
       throw new errorService.BadRequestError('Email is required.');
     }
@@ -148,24 +143,27 @@ const requestPasswordResetHandler = async (request, h) => {
 
 // reset password
 const resetPasswordHandler = async (request, h) => {
-  const { email, otp, newPassword } = request.payload;
-
   try {
+    const { email, otp, newPassword } = request.payload;
     validateRequiredFields(['email', 'otp', 'newPassword'], request.payload);
     const normalizedEmail = normalizeEmail(email);
     await AuthService.resetPassword(normalizedEmail, otp, newPassword);
 
-    return h.response({
+    const response = h.response({
       status: 'success',
       message: 'Password Anda berhasil diubah.',
-    }).code(201);
+    })
+    response.code(201);
+    return response;
 
   } catch (error) {
     const statusCode = error.statusCode || 500;
-    return h.response({
+    const response = h.response({
       status: 'fail',
       message: error.message,
-    }).code(statusCode);
+    })
+    response.code(statusCode);
+    return response;
   }
 };
 
@@ -177,18 +175,18 @@ const predictHandler = async (request, h) => {
     const { model } = request.server.app;  
     const { image } = request.payload; 
     if (!image || !image.hapi || !image._data || image._data.length === 0 || !image.hapi.headers["content-type"].startsWith("image/")) {
-      return h.response({
+      const response = h.response({
           status: 'fail',  
           error : false,
           message: 'Image is required. Please ensure the image is uploaded and in the correct format.'
-      }).code(400);
+      })
+      response.code(400);
+      return response;
     }
 
     const { result, confidenceScore } = await predictWaste(model, image);
-    
     const wasteType = result;
     const normalizedWasteType = normalizeWasteType(wasteType);
-    
     const price = await FirestoreService.getWastePrice(wasteType);
     const createAt = new Date().toISOString();
     
@@ -272,7 +270,7 @@ const saveTransaction = async (request, h) => {
     const statusCode = error.statusCode || 500;
     const response = h.response({
       status: 'fail',
-      message: `An error occurred while saving to the database, ${error.message}`
+      message: `An error occurred while saving to the database. ${error.message}`
     })
     response.code(statusCode);
     return response;
@@ -281,18 +279,18 @@ const saveTransaction = async (request, h) => {
 };
 
 const getHistoryHandler = async (request, h) => {
-  const { tpsId } = request.query;
-
-  if (!tpsId) {
-    const response = h.response({
-      status: 'fail',
-      message: 'tpsId is required'
-    });
-    response.code(400);
-    return response;
-  }
-
   try {
+    const { tpsId } = request.query;
+
+    if (!tpsId) {
+      const response = h.response({
+        status: 'fail',
+        message: 'tpsId is required'
+      });
+      response.code(400);
+      return response;
+    }
+  
     const historyCollection = db.collection("transactionHistory").where("tpsId", "==", tpsId);
     const historySnapshot = await historyCollection.get();
 
@@ -302,15 +300,15 @@ const getHistoryHandler = async (request, h) => {
       const history = doc.data();
       data.push({
         id: doc.id,
-        createAt: history.createAt,
-        totalPrice: history.totalPrice,
-        imgUrl: history.imageUrl,
-        weight: history.weight,
+        tpsId: history.tpsId,
+        transactionId: history.transactionId,
         nasabahName: history.nasabahName,
         wasteType: history.wasteType,
         price: history.price,
-        transactionId: history.transactionId,
-        tpsId: history.tpsId
+        weight: history.weight,
+        totalPrice: history.totalPrice,
+        createAt: history.createAt,
+        imgUrl: history.imageUrl,
       });
     });
 
@@ -320,7 +318,7 @@ const getHistoryHandler = async (request, h) => {
         data: data,
         message: 'No history found'
       });
-      response.code(204);
+      response.code(404);
       return response;
     }
 
@@ -343,18 +341,17 @@ const getHistoryHandler = async (request, h) => {
   };
 
 const getTransactionDetailHandler = async (request, h) => {
-  const { transactionId } = request.query;
-
-  if (!transactionId) {
-    const response = h.response({
-      status: 'fail',
-      message: 'transactionId is required',
-    });
-    response.code(400);
-    return response;
-  }
-
   try {
+    const { transactionId } = request.query;
+
+    if (!transactionId) {
+      const response = h.response({
+        status: 'fail',
+        message: 'transactionId is required',
+      });
+      response.code(400);
+      return response;
+    }
     const historyCollection = db.collection("transactionHistory").where("transactionId", "==", transactionId);
     const historySnapshot = await historyCollection.get();
 
@@ -364,25 +361,25 @@ const getTransactionDetailHandler = async (request, h) => {
       const history = doc.data();
       data.push({
         id: doc.id,
-        createAt: history.createAt,
-        totalPrice: history.totalPrice,
-        imgUrl: history.imageUrl,
-        weight: history.weight,
+        tpsId: history.tpsId,
+        transactionId: history.transactionId,
         nasabahName: history.nasabahName,
         wasteType: history.wasteType,
         price: history.price,
-        transactionId: history.transactionId,
-        tpsId: history.tpsId
+        weight: history.weight,
+        totalPrice: history.totalPrice,     
+        imgUrl: history.imageUrl,
+        createAt: history.createAt,
       });
     });
 
     if (data.length === 0) {
       const response = h.response({
         status: 'success',
-        data: data,
+        data: [],
         message: 'No history found',
       });
-      response.code(204);
+      response.code(404);
       return response;
     }
 

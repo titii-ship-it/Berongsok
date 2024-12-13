@@ -12,7 +12,7 @@ try {
         credentials: credentials,
         projectId: process.env.GCLOUD_PROJECT
       });
-    } catch (parseError) {
+    } catch (jsonParseError) {
       // for local development -> GOOGLE_APPLICATION_CREDENTIALS is a file path
       storage = new Storage({
         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
