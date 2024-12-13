@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:rowCount="3"
+    android:layout_marginBottom="?attr/actionBarSize"
+    tools:context=".ui.scan.ScanFragment">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/title_dashboard"
+        android:textSize="36sp"
+        android:textColor="@color/md_theme_primary"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/previewImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/no_transaction_history"
+            android:src="@drawable/img_placeholder"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+    </FrameLayout>
+
+
+
+    <GridLayout
+        android:layout_weight="0"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:rowCount="2"
+        android:layout_gravity="center_horizontal"
+        android:columnCount="4"
+        android:layout_marginBottom="16dp"
+        >
+
+        <Button
+            android:id="@+id/openGaleryBtn"
+            app:cornerRadius="5dp"
+            android:layout_height="wrap_content"
+            android:minWidth="120dp"
+            android:drawableStart="@drawable/solar__gallery_bold"
+            app:icon="@drawable/solar__gallery_bold"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:text="@string/open_gallery"
+            />
+
+        <Button
+            android:id="@+id/openCameraBtn"
+            app:cornerRadius="5dp"
+            android:drawableStart="@drawable/solar__gallery_bold"
+            app:icon="@drawable/solar__object_scan_bold"
+            android:layout_height="48dp"
+            android:minWidth="120dp"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:text="@string/open_camera" />
+
+        <Button
+            android:id="@+id/uploadBtn"
+            app:cornerRadius="5dp"
+            android:layout_height="60dp"
+            android:layout_row="1"
+            android:layout_columnSpan="3"
+            android:layout_width="match_parent"
+            android:text="@string/start_scan"
+            />
+
+    </GridLayout>
+
+</LinearLayout>
