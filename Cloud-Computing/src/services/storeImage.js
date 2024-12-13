@@ -1,9 +1,6 @@
 const { Storage } = require('@google-cloud/storage');
-
-function normalizeInput(input, separator = '-') {
-    return input.toLowerCase().replace(/\s+/g, separator);
-}
-
+const errorService = require('./error');
+const defaultErrorMessage = "Server error, Please try again or contact support if the problem persists.";
 let storage;
 
 try {
@@ -28,13 +25,13 @@ try {
   }
 } catch (error) {
   console.error('Error initializing Storage:', error);
-  throw error;
+  throw errorService.InternalServerError(defaultErrorMessage);
 }
 
 async function storeImage(image,wasteType) {
+  try {
     const bucketName = process.env.STORAGE_BUCKET;
     const bucket = storage.bucket(bucketName);
-    console.log(`mencoba menyimpan gambar ke bucket: ${bucketName}`);
     // const filename = `${wasteType}-${Date.now()}-${image.hapi.filename}`
     const formattedDate = new Date().toISOString().replace(/[:.]/g, '-');
     const normalizeWasteType = wasteType.trim().toLowerCase().replace(/\s+/g, "-");
@@ -62,6 +59,10 @@ async function storeImage(image,wasteType) {
         });
         blobStream.end(imageBuffer);
     });
+  } catch (error) {
+    console.error(`Error while storing image: ${error}`);
+    throw new errorService.InternalServerError(`An error occurred while saving to the database. Please try again later.`);
+  } 
 }
 
 
