@@ -1,8 +1,8 @@
+const path = require('path');
 const handlers = require('./handlers');
 
 const routes = [
     {
-      //menangani semua tipe request
       method: '*', 
       path: '/',
       handler: (request,h) => {
@@ -13,6 +13,18 @@ const routes = [
         response.code(200);
         return response;
       },
+    },
+    {
+      method: '*',
+      path: '/{any*}',
+      handler: (request,h) => {
+        const response = h.response({
+          status: 'fail',
+          message: 'Please check your request path',
+        })
+        response.code(404);
+        return response;
+      }
     },
     {
       method: 'POST',
@@ -82,39 +94,6 @@ const routes = [
       path: `/dashboard`,
       handler: handlers.getDashboardHandler,
     }
-
-    // <---- Kumpulan test routes ---->
-    
-    // -> test logout
-    // {
-    //   method: 'POST',
-    //   path: '/logout',
-    //   handler: handlers.logoutHandler,
-    // },
-
-    // -> test untuk fungsi auth 
-    // { 
-    //   method: 'POST',
-    //   path: '/testauth',
-    //   handler: handlers.testHandler,
-    // },
-
-    // -> test untuk menyimpan data ke firestore + cloud storage
-    // { 
-    //   method: 'POST',
-    //   path: `/saveTransaction`,
-    //   handler: handlers.testSaveHandler,
-    //   // handler: handlers.saveTransaction,
-    //   options: {
-    //     payload: {
-    //       maxBytes: 5 * 1024 * 1024, // Batas ukuran payload 5 MB
-    //       output: 'stream',
-    //       parse: true,
-    //       allow: 'multipart/form-data',
-    //       multipart: true,
-    //     }
-    //   }
-    // },
 ]
 
 

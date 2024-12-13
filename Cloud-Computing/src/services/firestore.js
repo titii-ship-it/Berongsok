@@ -1,4 +1,5 @@
 const { Firestore } = require('@google-cloud/firestore');
+const errorService = require('./error');
 
 let db;
 try {
@@ -7,7 +8,7 @@ try {
     let credentials;
     try {
       credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-    } catch (parseError) {
+    } catch (error) {
       // for local development -> GOOGLE_APPLICATION_CREDENTIALS is a file path
       db = new Firestore({
         keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
@@ -29,7 +30,7 @@ try {
   }
 } catch (error) {
   console.error('Error initializing Firestore:', error);
-  throw error;
+  throw new errorService.InternalServerError('Server error, Please try again or contact support if the problem persists.');
 }
 
 module.exports = db;

@@ -9,11 +9,28 @@ const init = async () => {
     host: '0.0.0.0',
   });
 
+  const requiredEnvVars = [
+    'MODEL_PATH',
+    'JWT_SECRET',
+    'GCLOUD_PROJECT',
+    'STORAGE_BUCKET',
+    'EMAIL_USERNAME',
+    'EMAIL_PASSWORD'
+  ];
   
+  const validateEnv = () => {
+    const missing = requiredEnvVars.filter(key => !process.env[key]);
+    if (missing.length > 0) {
+      console.error(`Missing required environment variables: ${missing.join(', ')}`);
+      process.exit(1);
+    }
+    console.log('-> Environment variables loaded successfully');
+  };
+  validateEnv();
+
   const model = await loadModel();
   server.app.model = model;
 
-  console.log('JWT_SECRET:', process.env.JWT_SECRET);
   console.log('GOOGLE_APPLICATION_CREDENTIALS:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
   server.route(routes);
 
@@ -35,6 +52,6 @@ const init = async () => {
 
   await server.start();
   console.log(`Server running on ${server.info.uri}`);
-};
+};  
 
 init();
