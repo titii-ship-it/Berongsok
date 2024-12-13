@@ -1,6 +1,7 @@
 aboutProject.md
 node_modules/
 service_account.json
+service_account2.json
 .env
 .gitcloudignore
 test/
